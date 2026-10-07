@@ -218,8 +218,6 @@ header {
     gap: 1px;
 
     background: #cfd5da;
-
-    transition: height .25s ease;
 }
 
 .editor-panel,
@@ -373,31 +371,6 @@ header {
         translateY(0);
 }
 
-/* ================= FULLSCREEN MODE ================= */
-
-/*
-   هذا ليس Fullscreen للمتصفح نفسه.
-   إنه وضع ملء الشاشة داخل الصفحة.
-*/
-
-body.fullscreen-mode header,
-body.fullscreen-mode .tabs {
-
-    display: none;
-}
-
-body.fullscreen-mode .editor-container {
-
-    height: 100vh;
-}
-
-/* عند ملء الشاشة نكبر عنوان اللوحة قليلاً */
-
-body.fullscreen-mode .panel-title {
-
-    height: 44px;
-}
-
 /* ================= MOBILE ================= */
 
 @media (max-width: 800px) {
@@ -450,13 +423,6 @@ body.fullscreen-mode .panel-title {
         height: calc(100vh - 118px);
 
         grid-template-columns: 1fr;
-
-        grid-template-rows: 1fr 1fr;
-    }
-
-    body.fullscreen-mode .editor-container {
-
-        height: 100vh;
 
         grid-template-rows: 1fr 1fr;
     }
@@ -537,16 +503,6 @@ body.fullscreen-mode .panel-title {
 
         <button onclick="clearProject()">
             🗑️ مسح
-        </button>
-
-        <!-- زر ملء الشاشة -->
-
-        <button
-            id="fullscreenBtn"
-            onclick="toggleFullscreen()">
-
-            ⛶ ملء الشاشة
-
         </button>
 
     </div>
@@ -921,11 +877,6 @@ function showEditor(type) {
     ).textContent = names[type];
 
 
-    /*
-       تحديث CodeMirror بعد إظهار المحرر
-       حتى لا تختفي الكتابة أو المؤشر.
-    */
-
     setTimeout(() => {
 
         editors[type].refresh();
@@ -1221,24 +1172,39 @@ function clearProject() {
     }
 
 
-    editors.html.setValue(
-        defaultHTML
-    );
+    /*
+       مسح جميع الأكواد بالكامل
+    */
 
-    editors.css.setValue(
-        defaultCSS
-    );
+    editors.html.setValue("");
 
-    editors.js.setValue(
-        defaultJS
-    );
+    editors.css.setValue("");
+
+    editors.js.setValue("");
 
 
-    runCode();
+    /*
+       مسح المعاينة
+    */
+
+    document.getElementById(
+        "preview"
+    ).srcdoc = "";
+
+
+    /*
+       تحديث المحررات
+    */
+
+    editors.html.refresh();
+
+    editors.css.refresh();
+
+    editors.js.refresh();
 
 
     showStatus(
-        "تمت إعادة الأكواد الافتراضية 🗑️"
+        "تم مسح جميع الأكواد 🗑️"
     );
 
 }
@@ -1281,137 +1247,6 @@ function showStatus(message) {
             );
 
         }, 2500);
-
-}
-
-
-/* =====================================================
-   FULLSCREEN TOGGLE
-===================================================== */
-
-function toggleFullscreen() {
-
-    const body =
-        document.body;
-
-    const button =
-        document.getElementById(
-            "fullscreenBtn"
-        );
-
-
-    const isFullscreen =
-        body.classList.contains(
-            "fullscreen-mode"
-        );
-
-
-    if (!isFullscreen) {
-
-        /*
-           دخول وضع ملء الشاشة
-        */
-
-        body.classList.add(
-            "fullscreen-mode"
-        );
-
-
-        button.innerHTML =
-            "↙️ خروج من ملء الشاشة";
-
-
-        showStatus(
-            "تم الدخول إلى ملء الشاشة ⛶"
-        );
-
-
-    } else {
-
-        /*
-           الخروج من وضع ملء الشاشة
-        */
-
-        exitFullscreenMode();
-
-    }
-
-
-    refreshAllEditors();
-
-}
-
-
-/* =====================================================
-   EXIT FULLSCREEN
-===================================================== */
-
-function exitFullscreenMode() {
-
-    document.body.classList.remove(
-        "fullscreen-mode"
-    );
-
-
-    const button =
-        document.getElementById(
-            "fullscreenBtn"
-        );
-
-
-    button.innerHTML =
-        "⛶ ملء الشاشة";
-
-
-    showStatus(
-        "تم الخروج من ملء الشاشة ↙️"
-    );
-
-
-    refreshAllEditors();
-
-}
-
-
-/* =====================================================
-   ESC KEY
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Escape" &&
-            document.body.classList.contains(
-                "fullscreen-mode"
-            )
-        ) {
-
-            exitFullscreenMode();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   REFRESH EDITORS
-===================================================== */
-
-function refreshAllEditors() {
-
-    setTimeout(() => {
-
-        Object.keys(editors)
-            .forEach(key => {
-
-                editors[key].refresh();
-
-            });
-
-    }, 100);
 
 }
 
@@ -1467,7 +1302,16 @@ window.addEventListener(
     "resize",
     function() {
 
-        refreshAllEditors();
+        setTimeout(() => {
+
+            Object.keys(editors)
+                .forEach(key => {
+
+                    editors[key].refresh();
+
+                });
+
+        }, 100);
 
     }
 );
