@@ -7,15 +7,619 @@
 
 <title>محرر الأكواد من مكتبة عامودا الرقمية</title>
 
-<!-- =====================================================
-     CodeMirror
-===================================================== -->
+<!-- Tajawal -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
+<!-- CodeMirror -->
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
+<style>
+
+:root {
+    --navy: #001D3D;
+    --navy2: #002855;
+    --blue: #003566;
+    --gold: #D4AF37;
+    --gold-light: #E8D18A;
+    --white: #ffffff;
+    --bg: #f4f6f8;
+    --border: #d8dee5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: "Tajawal", sans-serif;
+    background: var(--bg);
+    color: #222;
+    overflow: hidden;
+}
+
+/* ================= HEADER ================= */
+
+header {
+    height: 70px;
+    background: linear-gradient(135deg, var(--navy), var(--navy2));
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+
+    position: relative;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        var(--gold),
+        var(--gold-light)
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.25);
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-title {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.logo-subtitle {
+    font-size: 11px;
+    color: #dbe6f1;
+    margin-top: 2px;
+}
+
+/* ================= TOOLBAR ================= */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.toolbar button {
+    font-family: "Tajawal", sans-serif;
+
+    border: 1px solid rgba(255,255,255,.15);
+
+    background: rgba(255,255,255,.08);
+
+    color: white;
+
+    padding: 8px 13px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: .2s;
+}
+
+.toolbar button:hover {
+    background: var(--gold);
+    color: #111;
+    border-color: var(--gold);
+}
+
+.toolbar button:active {
+    transform: scale(.96);
+}
+
+/* ================= TABS ================= */
+
+.tabs {
+    height: 48px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 12px;
+
+    gap: 5px;
+
+    position: relative;
+    z-index: 90;
+}
+
+.tab {
+    height: 36px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    background: transparent;
+
+    font-family: "Tajawal", sans-serif;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    border-radius: 6px;
+
+    color: #555;
+
+    user-select: none;
+
+    transition: .2s;
+}
+
+.tab:hover {
+    background: #eef2f5;
+}
+
+.tab.active {
+    background: var(--navy);
+    color: white;
+}
+
+/* ================= MAIN EDITOR ================= */
+
+.editor-container {
+
+    height: calc(100vh - 118px);
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 1px;
+
+    background: #cfd5da;
+}
+
+.editor-panel,
+.preview-panel {
+
+    min-width: 0;
+
+    min-height: 0;
+
+    background: white;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+/* ================= EDITOR ================= */
+
+.panel-title {
+
+    height: 42px;
+
+    background: var(--navy2);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 13px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.panel-title span {
+    color: var(--gold-light);
+}
+
+.code-area {
+
+    flex: 1;
+
+    min-height: 0;
+
+    pointer-events: auto;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+/* ================= CODEMIRROR ================= */
+
+.CodeMirror {
+
+    height: 100% !important;
+
+    width: 100%;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+
+    direction: ltr;
+
+    text-align: left;
+
+    pointer-events: auto;
+
+    cursor: text;
+
+    position: relative;
+
+    z-index: 10;
+}
+
+.CodeMirror-scroll {
+
+    overflow: auto !important;
+
+    cursor: text;
+}
+
+.CodeMirror textarea {
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace !important;
+}
+
+/* ================= PREVIEW ================= */
+
+.preview-frame {
+
+    flex: 1;
+
+    border: none;
+
+    width: 100%;
+
+    background: white;
+}
+
+/* ================= STATUS ================= */
+
+.status {
+
+    position: fixed;
+
+    bottom: 18px;
+
+    left: 50%;
+
+    transform: translateX(-50%) translateY(80px);
+
+    background: var(--navy);
+
+    color: white;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.25);
+
+    opacity: 0;
+
+    transition: .3s;
+
+    z-index: 9999;
+
+    pointer-events: none;
+}
+
+.status.show {
+
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 800px) {
+
+    body {
+        overflow: auto;
+    }
+
+    header {
+
+        height: auto;
+
+        min-height: 70px;
+
+        padding: 10px;
+
+        gap: 10px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .logo {
+
+        justify-content: center;
+    }
+
+    .toolbar {
+
+        justify-content: center;
+    }
+
+    .toolbar button {
+
+        padding: 7px 10px;
+
+        font-size: 12px;
+    }
+
+    .tabs {
+
+        overflow-x: auto;
+
+        white-space: nowrap;
+    }
+
+    .editor-container {
+
+        height: calc(100vh - 118px);
+
+        grid-template-columns: 1fr;
+
+        grid-template-rows: 1fr 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .logo-title {
+        font-size: 15px;
+    }
+
+    .logo-subtitle {
+        font-size: 10px;
+    }
+
+    .toolbar button {
+
+        padding: 6px 8px;
+
+        font-size: 11px;
+    }
+
+    .tab {
+
+        padding: 0 13px;
+
+        font-size: 13px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            📚
+        </div>
+
+        <div class="logo-text">
+
+            <div class="logo-title">
+                محرر الأكواد من مكتبة عامودا الرقمية
+            </div>
+
+            <div class="logo-subtitle">
+                HTML • CSS • JavaScript
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="toolbar">
+
+        <button onclick="runCode()">
+            ▶️ تشغيل
+        </button>
+
+        <button onclick="saveProject()">
+            💾 حفظ
+        </button>
+
+        <button onclick="loadProject()">
+            📂 تحميل
+        </button>
+
+        <button onclick="downloadHTML()">
+            ⬇️ تنزيل
+        </button>
+
+        <button onclick="clearProject()">
+            🗑️ مسح
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= TABS ================= -->
+
+<div class="tabs">
+
+    <button
+        class="tab active"
+        data-editor="html"
+        onclick="showEditor('html')">
+
+        HTML
+
+    </button>
+
+    <button
+        class="tab"
+        data-editor="css"
+        onclick="showEditor('css')">
+
+        CSS
+
+    </button>
+
+    <button
+        class="tab"
+        data-editor="js"
+        onclick="showEditor('js')">
+
+        JavaScript
+
+    </button>
+
+</div>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="editor-container">
+
+    <!-- EDITOR -->
+
+    <section class="editor-panel">
+
+        <div class="panel-title">
+
+            <span>
+                💻 محرر الأكواد
+            </span>
+
+            <span id="currentLanguage">
+                HTML
+            </span>
+
+        </div>
+
+        <div
+            id="htmlEditor"
+            class="code-area">
+        </div>
+
+        <div
+            id="cssEditor"
+            class="code-area"
+            style="display:none;">
+        </div>
+
+        <div
+            id="jsEditor"
+            class="code-area"
+            style="display:none;">
+        </div>
+
+    </section>
+
+
+    <!-- PREVIEW -->
+
+    <section class="preview-panel">
+
+        <div class="panel-title">
+
+            <span>
+                👁️ المعاينة
+            </span>
+
+            <span>
+                Live Preview
+            </span>
+
+        </div>
+
+        <iframe
+            id="preview"
+            class="preview-frame"
+            sandbox="allow-scripts allow-forms allow-modals allow-popups">
+        </iframe>
+
+    </section>
+
+</div>
+
+
+<!-- ================= STATUS ================= -->
+
+<div
+    id="status"
+    class="status">
+</div>
+
+
+<!-- ================= CODEMIRROR ================= -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 
@@ -25,627 +629,99 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.mi
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 
-<!-- إغلاق الوسوم والأقواس تلقائياً -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
 
 
-<style>
-
-/* =====================================================
-   GLOBAL
-===================================================== */
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-}
-
-body {
-    background: #001D3D;
-    color: white;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-header {
-    height: 60px;
-    background: #002855;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 18px;
-
-    box-shadow: 0 2px 10px rgba(0,0,0,.4);
-
-    position: relative;
-    z-index: 20;
-}
-
-.logo {
-    font-size: 20px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.logo span {
-    color: #00b4d8;
-}
-
-
-/* =====================================================
-   TOOLBAR
-===================================================== */
-
-.toolbar {
-    display: flex;
-    gap: 7px;
-    flex-wrap: wrap;
-}
-
-button {
-    border: none;
-    border-radius: 7px;
-
-    padding: 9px 13px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-    font-size: 14px;
-
-    transition: .2s;
-}
-
-button:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.1);
-}
-
-button:active {
-    transform: scale(.97);
-}
-
-.run {
-    background: #00b4d8;
-    color: white;
-}
-
-.save {
-    background: #38b000;
-    color: white;
-}
-
-.download {
-    background: #fca311;
-    color: black;
-}
-
-.clear {
-    background: #d90429;
-    color: white;
-}
-
-.fullscreen {
-    background: #6c5ce7;
-    color: white;
-}
-
-
-/* =====================================================
-   TABS
-===================================================== */
-
-.tabs {
-    height: 48px;
-
-    background: #001529;
-
-    display: flex;
-    align-items: center;
-
-    padding-right: 10px;
-
-    gap: 4px;
-
-    overflow-x: auto;
-}
-
-.tab {
-    padding: 12px 22px;
-
-    cursor: pointer;
-
-    border-radius: 6px 6px 0 0;
-
-    color: #aaa;
-
-    white-space: nowrap;
-
-    transition: .2s;
-}
-
-.tab:hover {
-    color: white;
-}
-
-.tab.active {
-    background: #282a36;
-
-    color: white;
-
-    border-bottom: 3px solid #00b4d8;
-}
-
-
-/* =====================================================
-   MAIN EDITOR
-===================================================== */
-
-.editor-container {
-    height: calc(100vh - 108px);
-
-    display: grid;
-
-    grid-template-columns: 50% 50%;
-
-    min-height: 0;
-}
-
-
-/* =====================================================
-   CODE AREA
-===================================================== */
-
-.code-area {
-    direction: ltr;
-
-    height: 100%;
-
-    min-height: 0;
-
-    background: #282a36;
-
-    overflow: hidden;
-}
-
-.code-area textarea {
-    display: none;
-}
-
-.CodeMirror {
-    height: 100%;
-
-    font-size: 15px;
-
-    direction: ltr;
-
-    text-align: left;
-
-    font-family:
-        Consolas,
-        "Courier New",
-        monospace;
-}
-
-
-/* =====================================================
-   PREVIEW
-===================================================== */
-
-.preview-area {
-    background: white;
-
-    position: relative;
-
-    height: 100%;
-
-    min-height: 0;
-
-    border-right: 2px solid #003566;
-
-    overflow: hidden;
-}
-
-.preview-title {
-    position: absolute;
-
-    top: 0;
-    right: 0;
-    left: 0;
-
-    height: 35px;
-
-    background: #003566;
-
-    color: white;
-
-    display: flex;
-
-    align-items: center;
-
-    padding-right: 15px;
-
-    z-index: 5;
-
-    font-weight: bold;
-}
-
-.preview-frame {
-    position: absolute;
-
-    top: 35px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    background: white;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    border: none;
-
-    background: white;
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-.status {
-    position: fixed;
-
-    bottom: 12px;
-    left: 12px;
-
-    background: rgba(0,0,0,.75);
-
-    color: white;
-
-    padding: 7px 12px;
-
-    border-radius: 6px;
-
-    font-size: 12px;
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition: .3s;
-
-    z-index: 100;
-}
-
-.status.show {
-    opacity: 1;
-}
-
-
-/* =====================================================
-   FULLSCREEN
-===================================================== */
-
-body.fullscreen-mode header,
-body.fullscreen-mode .tabs {
-    display: none;
-}
-
-body.fullscreen-mode .editor-container {
-    height: 100vh;
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media(max-width:800px) {
-
-    body {
-        overflow: auto;
-    }
-
-    header {
-        height: auto;
-
-        min-height: 60px;
-
-        flex-direction: column;
-
-        gap: 10px;
-
-        padding: 10px;
-    }
-
-    .toolbar {
-        justify-content: center;
-    }
-
-    .tabs {
-        height: 48px;
-
-        overflow-x: auto;
-
-        direction: rtl;
-    }
-
-    .editor-container {
-
-        height: calc(100vh - 155px);
-
-        min-height: 500px;
-
-        grid-template-columns: 1fr;
-
-        grid-template-rows: 50% 50%;
-    }
-
-    .preview-area {
-
-        border-right: none;
-
-        border-top: 2px solid #003566;
-    }
-
-    .CodeMirror {
-        font-size: 14px;
-    }
-
-    .logo {
-        font-size: 18px;
-    }
-
-    button {
-        padding: 8px 10px;
-
-        font-size: 13px;
-    }
-
-}
-
-
-/* =====================================================
-   VERY SMALL SCREENS
-===================================================== */
-
-@media(max-width:480px) {
-
-    .toolbar {
-        gap: 4px;
-    }
-
-    button {
-        padding: 7px 8px;
-        font-size: 12px;
-    }
-
-    .tab {
-        padding: 11px 15px;
-    }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header>
-
-<div class="logo">
-   محرر<span>الأكواد</span>من مكتبة عامودا الرقمية  
-</div>
-
-
-<div class="toolbar">
-
-<button class="run" onclick="runCode()">
-▶ تشغيل
-</button>
-
-<button class="save" onclick="saveProject()">
-💾 حفظ
-</button>
-
-<button class="download" onclick="downloadHTML()">
-📥 تحميل
-</button>
-
-<button class="clear" onclick="clearAll()">
-🗑️ مسح
-</button>
-
-<button class="fullscreen" onclick="toggleFullscreen()">
-⛶ ملء الشاشة
-</button>
-
-</div>
-
-</header>
-
-
-
-<!-- =====================================================
-     TABS
-===================================================== -->
-
-<div class="tabs">
-
-<div class="tab active"
-     onclick="showEditor('html',this)">
-HTML
-</div>
-
-<div class="tab"
-     onclick="showEditor('css',this)">
-CSS
-</div>
-
-<div class="tab"
-     onclick="showEditor('js',this)">
-JavaScript
-</div>
-
-</div>
-
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<div class="editor-container">
-
-
-<!-- CODE -->
-
-<div class="code-area">
-
-<textarea id="html"></textarea>
-
-<textarea id="css"></textarea>
-
-<textarea id="js"></textarea>
-
-</div>
-
-
-<!-- PREVIEW -->
-
-<div class="preview-area">
-
-<div class="preview-title">
-    👁️ المعاينة
-</div>
-
-<div class="preview-frame">
-
-<iframe
-id="preview"
-sandbox="allow-scripts allow-forms allow-modals allow-popups">
-</iframe>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- STATUS -->
-
-<div id="status"
-class="status">
-تم الحفظ
-</div>
-
-
-
 <script>
 
 /* =====================================================
-   DEFAULT HTML
+   DEFAULT CODE
 ===================================================== */
 
-const defaultHTML = `
-<div class="container">
+const defaultHTML = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
-    <h1>مرحبا بك 👋</h1>
+<head>
+<meta charset="UTF-8">
 
-    <p>
-        هذا محرر HTML احترافي
-    </p>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <button onclick="hello()">
-        اضغط هنا
-    </button>
+<title>صفحتي</title>
 
-</div>
-`;
+</head>
+
+<body>
+
+<h1>مرحباً بك 👋</h1>
+
+<p>
+هذه صفحة تجريبية من محرر الأكواد.
+</p>
+
+<button onclick="sayHello()">
+اضغط هنا
+</button>
+
+</body>
+
+</html>`;
 
 
-/* =====================================================
-   DEFAULT CSS
-===================================================== */
+const defaultCSS = `body {
 
-const defaultCSS = `
-body {
-    font-family: Arial, sans-serif;
+    font-family: Tajawal, sans-serif;
+
+    background: #f4f6f8;
+
+    color: #001D3D;
+
     text-align: center;
-    padding: 40px;
-    background: #f5f5f5;
-}
 
-.container {
-    max-width: 600px;
-    margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px #ccc;
+    padding: 50px;
+
 }
 
 h1 {
-    color: #0077b6;
+
+    color: #001D3D;
+
 }
 
 button {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    background: #0077b6;
+
+    background: #001D3D;
+
     color: white;
+
+    border: none;
+
+    padding: 12px 25px;
+
+    border-radius: 8px;
+
     cursor: pointer;
-    font-size: 16px;
+
+    font-family: Tajawal, sans-serif;
+
 }
 
 button:hover {
-    background: #005f8a;
-}
-`;
+
+    background: #D4AF37;
+
+    color: #111;
+
+}`;
 
 
-/* =====================================================
-   DEFAULT JAVASCRIPT
-===================================================== */
+const defaultJS = `function sayHello() {
 
-const defaultJS = `
-function hello() {
+    alert("مرحباً بك في محرر الأكواد!");
 
-    alert("أهلا بكم في محرر الأكواد من مكتبة عامودا الرقمية");
-
-}
-`;
+}`;
 
 
 /* =====================================================
@@ -657,91 +733,111 @@ const editors = {};
 
 /* HTML */
 
-editors.html = CodeMirror.fromTextArea(
-    document.getElementById("html"),
+editors.html = CodeMirror(
+    document.getElementById("htmlEditor"),
     {
+
+        value: defaultHTML,
+
         mode: "xml",
+
         theme: "dracula",
 
         lineNumbers: true,
 
-        lineWrapping: true,
+        lineWrapping: false,
 
         autoCloseTags: true,
 
         autoCloseBrackets: true,
 
-        tabSize: 2,
+        matchBrackets: true,
 
-        indentUnit: 2,
+        indentUnit: 4,
 
-        indentWithTabs: false
+        tabSize: 4,
+
+        autofocus: true
+
     }
 );
 
 
 /* CSS */
 
-editors.css = CodeMirror.fromTextArea(
-    document.getElementById("css"),
+editors.css = CodeMirror(
+    document.getElementById("cssEditor"),
     {
+
+        value: defaultCSS,
+
         mode: "css",
+
         theme: "dracula",
 
         lineNumbers: true,
 
-        lineWrapping: true,
+        lineWrapping: false,
 
         autoCloseBrackets: true,
 
-        tabSize: 2,
+        matchBrackets: true,
 
-        indentUnit: 2,
+        indentUnit: 4,
 
-        indentWithTabs: false
+        tabSize: 4
+
     }
 );
 
 
-/* JAVASCRIPT */
+/* JavaScript */
 
-editors.js = CodeMirror.fromTextArea(
-    document.getElementById("js"),
+editors.js = CodeMirror(
+    document.getElementById("jsEditor"),
     {
+
+        value: defaultJS,
+
         mode: "javascript",
+
         theme: "dracula",
 
         lineNumbers: true,
 
-        lineWrapping: true,
+        lineWrapping: false,
 
         autoCloseBrackets: true,
 
-        tabSize: 2,
+        matchBrackets: true,
 
-        indentUnit: 2,
+        indentUnit: 4,
 
-        indentWithTabs: false
+        tabSize: 4
+
     }
 );
-
-
-/* =====================================================
-   DEFAULT CONTENT
-===================================================== */
-
-editors.html.setValue(defaultHTML.trim());
-
-editors.css.setValue(defaultCSS.trim());
-
-editors.js.setValue(defaultJS.trim());
 
 
 /* =====================================================
    SHOW EDITOR
 ===================================================== */
 
-function showEditor(type, element) {
+function showEditor(type) {
+
+    document
+        .querySelectorAll(".code-area")
+        .forEach(area => {
+
+            area.style.display = "none";
+
+        });
+
+
+    document.getElementById(
+        type + "Editor"
+    ).style.display = "block";
+
 
     document
         .querySelectorAll(".tab")
@@ -752,45 +848,53 @@ function showEditor(type, element) {
         });
 
 
-    element.classList.add("active");
+    const activeTab =
+        document.querySelector(
+            `.tab[data-editor="${type}"]`
+        );
 
 
-    Object.keys(editors).forEach(key => {
+    if (activeTab) {
 
-        editors[key]
-            .getWrapperElement()
-            .style.display = "none";
+        activeTab.classList.add("active");
 
-    });
+    }
 
 
-    editors[type]
-        .getWrapperElement()
-        .style.display = "block";
+    const names = {
+
+        html: "HTML",
+
+        css: "CSS",
+
+        js: "JavaScript"
+
+    };
 
 
-    editors[type].refresh();
+    document.getElementById(
+        "currentLanguage"
+    ).textContent = names[type];
+
+
+    setTimeout(() => {
+
+        editors[type].refresh();
+
+        editors[type].focus();
+
+    }, 20);
 
 }
 
 
 /* =====================================================
-   INITIAL EDITOR
+   BUILD FULL HTML
 ===================================================== */
 
-showEditor(
-    "html",
-    document.querySelector(".tab")
-);
+function buildHTML() {
 
-
-/* =====================================================
-   BUILD HTML
-===================================================== */
-
-function buildDocument() {
-
-    const html =
+    let html =
         editors.html.getValue();
 
     const css =
@@ -800,60 +904,80 @@ function buildDocument() {
         editors.js.getValue();
 
 
-    return `
-<!DOCTYPE html>
+    /* إضافة CSS */
 
-<html lang="ar" dir="rtl">
+    if (css.trim()) {
 
-<head>
+        if (html.includes("</head>")) {
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<style>
-
+            html = html.replace(
+                "</head>",
+                `<style>
 ${css}
-
 </style>
+</head>`
+            );
 
-</head>
+        } else {
 
-<body>
+            html =
+                `<style>
+${css}
+</style>
+` + html;
 
-${html}
+        }
 
-<script>
+    }
 
+
+    /* إضافة JavaScript */
+
+    if (js.trim()) {
+
+        if (html.includes("</body>")) {
+
+            html = html.replace(
+                "</body>",
+                `<script>
 ${js}
-
 <\/script>
+</body>`
+            );
 
-</body>
+        } else {
 
-</html>
-`;
+            html +=
+                `<script>
+${js}
+<\/script>`;
 
+        }
+
+    }
+
+
+    return html;
 }
 
 
 /* =====================================================
-   RUN
+   RUN CODE
 ===================================================== */
 
 function runCode() {
 
-    const documentCode =
-        buildDocument();
+    const preview =
+        document.getElementById("preview");
 
 
-    document
-        .getElementById("preview")
-        .srcdoc = documentCode;
+    preview.srcdoc =
+        buildHTML();
 
 
-    showStatus("تم تشغيل المشروع ▶");
+    showStatus(
+        "تم تشغيل الكود بنجاح ▶️"
+    );
 
 }
 
@@ -873,40 +997,20 @@ function saveProject() {
             editors.css.getValue(),
 
         js:
-            editors.js.getValue(),
-
-        savedAt:
-            new Date().toISOString()
+            editors.js.getValue()
 
     };
 
 
-    try {
-
-        localStorage.setItem(
-            "webEditorProject",
-            JSON.stringify(project)
-        );
+    localStorage.setItem(
+        "webEditorProject",
+        JSON.stringify(project)
+    );
 
 
-        localStorage.setItem(
-            "webEditorAutoSave",
-            JSON.stringify(project)
-        );
-
-
-        showStatus("تم حفظ المشروع بنجاح 💾");
-
-
-    } catch(error) {
-
-        alert(
-            "تعذر حفظ المشروع في المتصفح."
-        );
-
-        console.error(error);
-
-    }
+    showStatus(
+        "تم حفظ المشروع بنجاح 💾"
+    );
 
 }
 
@@ -917,31 +1021,27 @@ function saveProject() {
 
 function loadProject() {
 
+    const saved =
+        localStorage.getItem(
+            "webEditorProject"
+        );
+
+
+    if (!saved) {
+
+        showStatus(
+            "لا يوجد مشروع محفوظ 📂"
+        );
+
+        return;
+
+    }
+
+
     try {
-
-        const saved =
-            localStorage.getItem(
-                "webEditorProject"
-            );
-
-
-        if (!saved) {
-
-            return false;
-
-        }
-
 
         const project =
             JSON.parse(saved);
-
-
-        if (!project ||
-            typeof project !== "object") {
-
-            return false;
-
-        }
 
 
         editors.html.setValue(
@@ -957,21 +1057,19 @@ function loadProject() {
         );
 
 
-        showStatus("تم استرجاع المشروع 💾");
+        runCode();
 
 
-        return true;
-
-
-    } catch(error) {
-
-        console.error(
-            "خطأ أثناء تحميل المشروع:",
-            error
+        showStatus(
+            "تم تحميل المشروع بنجاح 📂"
         );
 
 
-        return false;
+    } catch (error) {
+
+        showStatus(
+            "حدث خطأ أثناء تحميل المشروع"
+        );
 
     }
 
@@ -982,7 +1080,7 @@ function loadProject() {
    AUTO SAVE
 ===================================================== */
 
-function autoSave() {
+setInterval(() => {
 
     const project = {
 
@@ -993,57 +1091,34 @@ function autoSave() {
             editors.css.getValue(),
 
         js:
-            editors.js.getValue(),
-
-        savedAt:
-            new Date().toISOString()
+            editors.js.getValue()
 
     };
 
 
-    try {
+    localStorage.setItem(
+        "webEditorAutoSave",
+        JSON.stringify(project)
+    );
 
-        localStorage.setItem(
-            "webEditorAutoSave",
-            JSON.stringify(project)
-        );
-
-    } catch(error) {
-
-        console.error(
-            "خطأ في الحفظ التلقائي:",
-            error
-        );
-
-    }
-
-}
-
-
-/* حفظ تلقائي كل 5 ثوانٍ */
-
-setInterval(
-    autoSave,
-    5000
-);
+}, 5000);
 
 
 /* =====================================================
-   DOWNLOAD
+   DOWNLOAD HTML
 ===================================================== */
 
 function downloadHTML() {
 
-    const fullHTML =
-        buildDocument();
+    const content =
+        buildHTML();
 
 
     const blob =
         new Blob(
-            [fullHTML],
+            [content],
             {
-                type:
-                    "text/html;charset=utf-8"
+                type: "text/html;charset=utf-8"
             }
         );
 
@@ -1052,32 +1127,27 @@ function downloadHTML() {
         URL.createObjectURL(blob);
 
 
-    const a =
+    const link =
         document.createElement("a");
 
 
-    a.href = url;
+    link.href = url;
 
-    a.download =
-        "my-page.html";
-
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    document.body.removeChild(a);
+    link.download =
+        "my-web-page.html";
 
 
-    setTimeout(() => {
+    document.body.appendChild(link);
 
-        URL.revokeObjectURL(url);
+    link.click();
 
-    }, 100);
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
 
 
     showStatus(
-        "تم تحميل الصفحة 📥"
+        "تم تنزيل ملف HTML ⬇️"
     );
 
 }
@@ -1087,20 +1157,24 @@ function downloadHTML() {
    CLEAR
 ===================================================== */
 
-function clearAll() {
+function clearProject() {
 
-    const answer =
+    const confirmed =
         confirm(
-            "هل تريد مسح جميع الأكواد والحفظ؟"
+            "هل تريد مسح جميع الأكواد؟"
         );
 
 
-    if (!answer) {
+    if (!confirmed) {
 
         return;
 
     }
 
+
+    /*
+       مسح جميع الأكواد بالكامل
+    */
 
     editors.html.setValue("");
 
@@ -1109,34 +1183,35 @@ function clearAll() {
     editors.js.setValue("");
 
 
-    try {
+    /*
+       مسح المعاينة
+    */
 
-        localStorage.removeItem(
-            "webEditorProject"
-        );
-
-        localStorage.removeItem(
-            "webEditorAutoSave"
-        );
-
-    } catch(error) {
-
-        console.error(error);
-
-    }
+    document.getElementById(
+        "preview"
+    ).srcdoc = "";
 
 
-    runCode();
+    /*
+       تحديث المحررات
+    */
+
+    editors.html.refresh();
+
+    editors.css.refresh();
+
+    editors.js.refresh();
+
 
     showStatus(
-        "تم مسح المشروع 🗑️"
+        "تم مسح جميع الأكواد 🗑️"
     );
 
 }
 
 
 /* =====================================================
-   STATUS MESSAGE
+   STATUS
 ===================================================== */
 
 let statusTimer;
@@ -1159,7 +1234,9 @@ function showStatus(message) {
     );
 
 
-    clearTimeout(statusTimer);
+    clearTimeout(
+        statusTimer
+    );
 
 
     statusTimer =
@@ -1169,34 +1246,7 @@ function showStatus(message) {
                 "show"
             );
 
-        }, 2000);
-
-}
-
-
-/* =====================================================
-   FULLSCREEN
-===================================================== */
-
-function toggleFullscreen() {
-
-    document.body
-        .classList
-        .toggle(
-            "fullscreen-mode"
-        );
-
-
-    setTimeout(() => {
-
-        Object.keys(editors)
-            .forEach(key => {
-
-                editors[key].refresh();
-
-            });
-
-    }, 100);
+        }, 2500);
 
 }
 
@@ -1209,11 +1259,12 @@ document.addEventListener(
     "keydown",
     function(event) {
 
-
-        /* Ctrl + S */
+        /*
+           Ctrl + S
+        */
 
         if (
-            event.ctrlKey &&
+            (event.ctrlKey || event.metaKey) &&
             event.key.toLowerCase() === "s"
         ) {
 
@@ -1224,10 +1275,12 @@ document.addEventListener(
         }
 
 
-        /* Ctrl + Enter */
+        /*
+           Ctrl + Enter
+        */
 
         if (
-            event.ctrlKey &&
+            (event.ctrlKey || event.metaKey) &&
             event.key === "Enter"
         ) {
 
@@ -1242,43 +1295,6 @@ document.addEventListener(
 
 
 /* =====================================================
-   INITIAL LOAD
-===================================================== */
-
-const projectLoaded =
-    loadProject();
-
-
-/*
-   إذا لم يوجد مشروع محفوظ،
-   استخدم الأكواد الافتراضية.
-*/
-
-if (!projectLoaded) {
-
-    editors.html.setValue(
-        defaultHTML.trim()
-    );
-
-    editors.css.setValue(
-        defaultCSS.trim()
-    );
-
-    editors.js.setValue(
-        defaultJS.trim()
-    );
-
-}
-
-
-/* =====================================================
-   FIRST RUN
-===================================================== */
-
-runCode();
-
-
-/* =====================================================
    WINDOW RESIZE
 ===================================================== */
 
@@ -1286,27 +1302,29 @@ window.addEventListener(
     "resize",
     function() {
 
-        Object.keys(editors)
-            .forEach(key => {
+        setTimeout(() => {
 
-                editors[key].refresh();
+            Object.keys(editors)
+                .forEach(key => {
 
-            });
+                    editors[key].refresh();
+
+                });
+
+        }, 100);
 
     }
 );
+
+
+/* =====================================================
+   INITIAL RUN
+===================================================== */
+
+runCode();
 
 </script>
 
 </body>
 </html>
-```supabase-js@2:13  GET https://hvuezrpzzbordyfxmpqn.supabase.co/rest/v1/store_admins?select=user_id&user_id=eq.3101503e-03a0-45e4-8980-368521b655dd 403 (Forbidden)
-(anonymous) @ supabase-js@2:13
-(anonymous) @ supabase-js@2:13
-await in (anonymous)
-ie @ supabase-js@2:7
-(anonymous) @ supabase-js@2:7
-then @ supabase-js@2:7
-admin.html:965 USER UID: 3101503e-03a0-45e4-8980-368521b655dd
-admin.html:966 ADMIN DATA: null
-admin.html:967 ADMIN ERROR: {code: '42501', details: null, hint: 'Grant the required privileges to the current role …T SELECT ON public.store_admins TO authenticated;', message: 'permission denied for table store_admins'}
+```
