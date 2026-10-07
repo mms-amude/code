@@ -2,29 +2,14 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>محرر الأكواد من مكتبة عامودا الرقمية</title>
 
-
-<!-- Tajawal -->
-
-<link rel="preconnect"
-href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap"
-rel="stylesheet">
-
-
-<!-- CodeMirror -->
+<!-- =====================================================
+     CodeMirror
+===================================================== -->
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
@@ -32,686 +17,434 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.c
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+
+<!-- إغلاق الوسوم والأقواس تلقائياً -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
 
 
 <style>
 
-/* =========================
-   الأساس
-========================= */
+/* =====================================================
+   GLOBAL
+===================================================== */
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+* {
+    box-sizing: border-box;
 }
 
-:root{
-
-    --navy:#0b2239;
-    --navy2:#123754;
-    --navy3:#19496b;
-
-    --gold:#c7a45b;
-    --gold2:#e2ca91;
-
-    --cream:#f6f2e9;
-    --cream2:#eee8dc;
-
-    --white:#ffffff;
-
-    --success:#2d8a57;
-    --danger:#b63b3b;
-
-    --shadow:0 10px 30px rgba(0,0,0,.15);
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
 }
 
-body{
-
-    font-family:"Tajawal",sans-serif;
-
-    background:
-        radial-gradient(
-            circle at top right,
-            rgba(199,164,91,.10),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            var(--cream),
-            var(--cream2)
-        );
-
-    color:var(--navy);
-
-    min-height:100vh;
+body {
+    background: #001D3D;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
 
-/* =========================
-   Header
-========================= */
+/* =====================================================
+   HEADER
+===================================================== */
 
-header{
+header {
+    height: 60px;
+    background: #002855;
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--navy),
-            var(--navy2)
-        );
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    color:white;
+    padding: 0 18px;
 
-    padding:16px 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.4);
 
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    box-shadow:var(--shadow);
-
-    position:sticky;
-
-    top:0;
-
-    z-index:1000;
+    position: relative;
+    z-index: 20;
 }
 
-.logo{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:13px;
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-.logo-icon{
-
-    width:52px;
-
-    height:52px;
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:27px;
-
-    box-shadow:
-        0 5px 18px rgba(0,0,0,.25);
-}
-
-.logo-text h1{
-
-    font-size:21px;
-
-    font-weight:800;
-
-    margin-bottom:2px;
-}
-
-.logo-text p{
-
-    color:var(--gold2);
-
-    font-size:12px;
-
-    font-weight:500;
+.logo span {
+    color: #00b4d8;
 }
 
 
-/* =========================
-   Toolbar
-========================= */
+/* =====================================================
+   TOOLBAR
+===================================================== */
 
-.toolbar{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:8px;
-
-    padding:13px;
-
-    background:white;
-
-    border-bottom:1px solid rgba(0,0,0,.08);
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,.05);
-
-    position:sticky;
-
-    top:84px;
-
-    z-index:900;
+.toolbar {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
 }
 
-.tool-btn{
+button {
+    border: none;
+    border-radius: 7px;
 
-    border:none;
+    padding: 9px 13px;
 
-    border-radius:10px;
+    cursor: pointer;
 
-    padding:10px 16px;
+    font-weight: bold;
+    font-size: 14px;
 
-    font-family:inherit;
-
-    font-size:14px;
-
-    font-weight:700;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:6px;
+    transition: .2s;
 }
 
-.tool-btn:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:
-        0 5px 12px rgba(0,0,0,.12);
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
 }
 
-.btn-run{
-
-    background:var(--success);
-
-    color:white;
+button:active {
+    transform: scale(.97);
 }
 
-.btn-save{
-
-    background:var(--navy);
-
-    color:white;
+.run {
+    background: #00b4d8;
+    color: white;
 }
 
-.btn-download{
-
-    background:var(--gold);
-
-    color:var(--navy);
+.save {
+    background: #38b000;
+    color: white;
 }
 
-.btn-clear{
+.download {
+    background: #fca311;
+    color: black;
+}
 
-    background:var(--danger);
+.clear {
+    background: #d90429;
+    color: white;
+}
 
-    color:white;
+.fullscreen {
+    background: #6c5ce7;
+    color: white;
 }
 
 
-/* =========================
-   Main
-========================= */
+/* =====================================================
+   TABS
+===================================================== */
 
-.main-container{
+.tabs {
+    height: 48px;
 
-    width:100%;
+    background: #001529;
 
-    max-width:1600px;
+    display: flex;
+    align-items: center;
 
-    margin:auto;
+    padding-right: 10px;
 
-    padding:18px;
+    gap: 4px;
+
+    overflow-x: auto;
+}
+
+.tab {
+    padding: 12px 22px;
+
+    cursor: pointer;
+
+    border-radius: 6px 6px 0 0;
+
+    color: #aaa;
+
+    white-space: nowrap;
+
+    transition: .2s;
+}
+
+.tab:hover {
+    color: white;
+}
+
+.tab.active {
+    background: #282a36;
+
+    color: white;
+
+    border-bottom: 3px solid #00b4d8;
 }
 
 
-/* =========================
-   Tabs
-========================= */
+/* =====================================================
+   MAIN EDITOR
+===================================================== */
 
-.editor-tabs{
+.editor-container {
+    height: calc(100vh - 108px);
 
-    display:flex;
+    display: grid;
 
-    gap:5px;
+    grid-template-columns: 50% 50%;
 
-    background:var(--navy);
-
-    padding:7px;
-
-    border-radius:12px 12px 0 0;
-}
-
-.editor-tab{
-
-    border:none;
-
-    background:transparent;
-
-    color:#cbd5df;
-
-    font-family:inherit;
-
-    font-weight:700;
-
-    padding:11px 20px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.editor-tab:hover{
-
-    color:white;
-
-    background:
-        rgba(255,255,255,.08);
-}
-
-.editor-tab.active{
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--gold),
-            var(--gold2)
-        );
-
-    color:var(--navy);
+    min-height: 0;
 }
 
 
-/* =========================
-   Workspace
-========================= */
+/* =====================================================
+   CODE AREA
+===================================================== */
 
-.workspace{
+.code-area {
+    direction: ltr;
 
-    display:grid;
+    height: 100%;
 
-    grid-template-columns:
-        minmax(0,1fr)
-        minmax(0,1fr);
+    min-height: 0;
 
-    gap:15px;
+    background: #282a36;
 
-    margin-top:15px;
+    overflow: hidden;
 }
 
-
-/* =========================
-   Editor
-========================= */
-
-.editor-panel{
-
-    background:#282a36;
-
-    border-radius:12px;
-
-    overflow:hidden;
-
-    box-shadow:var(--shadow);
-
-    min-width:0;
+.code-area textarea {
+    display: none;
 }
 
-.editor-header{
+.CodeMirror {
+    height: 100%;
 
-    background:#20222c;
+    font-size: 15px;
 
-    color:white;
+    direction: ltr;
 
-    padding:10px 15px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    font-size:13px;
-
-    font-weight:700;
-}
-
-.editor-language{
-
-    color:var(--gold2);
-
-    font-size:12px;
-}
-
-.editor-wrapper{
-
-    height:560px;
-
-    position:relative;
-}
-
-
-/* =========================
-   CodeMirror
-========================= */
-
-.CodeMirror{
-
-    height:100% !important;
+    text-align: left;
 
     font-family:
         Consolas,
         "Courier New",
         monospace;
-
-    font-size:14px;
-
-    direction:ltr;
-
-    text-align:left;
-}
-
-.CodeMirror-hints{
-
-    font-family:
-        Consolas,
-        "Courier New",
-        monospace;
-
-    font-size:13px;
-
-    z-index:999999;
-}
-
-.CodeMirror-hint{
-
-    padding:7px 12px;
-}
-
-.CodeMirror-hint-active{
-
-    background:#c7a45b !important;
-
-    color:#0b2239 !important;
 }
 
 
-/* =========================
-   Preview
-========================= */
+/* =====================================================
+   PREVIEW
+===================================================== */
 
-.preview-panel{
+.preview-area {
+    background: white;
 
-    background:white;
+    position: relative;
 
-    border-radius:12px;
+    height: 100%;
 
-    overflow:hidden;
+    min-height: 0;
 
-    box-shadow:var(--shadow);
+    border-right: 2px solid #003566;
 
-    min-width:0;
+    overflow: hidden;
 }
 
-.preview-header{
+.preview-title {
+    position: absolute;
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--navy),
-            var(--navy2)
-        );
+    top: 0;
+    right: 0;
+    left: 0;
 
-    color:white;
+    height: 35px;
 
-    padding:10px 15px;
+    background: #003566;
 
-    display:flex;
+    color: white;
 
-    justify-content:space-between;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    font-size:13px;
+    padding-right: 15px;
 
-    font-weight:700;
+    z-index: 5;
+
+    font-weight: bold;
 }
 
-.preview-status{
+.preview-frame {
+    position: absolute;
 
-    color:var(--gold2);
+    top: 35px;
+    right: 0;
+    bottom: 0;
+    left: 0;
 
-    font-size:12px;
+    background: white;
 }
 
-#preview{
+iframe {
+    width: 100%;
+    height: 100%;
 
-    width:100%;
+    display: block;
 
-    height:560px;
+    border: none;
 
-    border:none;
-
-    background:white;
-}
-
-
-/* =========================
-   المعلومات
-========================= */
-
-.bottom-info{
-
-    margin-top:15px;
-
-    background:white;
-
-    border-radius:12px;
-
-    padding:14px 18px;
-
-    box-shadow:
-        0 5px 18px rgba(0,0,0,.08);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-    font-size:13px;
-}
-
-.help-text{
-
-    color:#66717c;
-}
-
-.shortcut{
-
-    background:var(--cream2);
-
-    padding:5px 9px;
-
-    border-radius:7px;
-
-    font-weight:700;
-
-    color:var(--navy);
-
-    margin-right:4px;
-
-    direction:ltr;
-
-    display:inline-block;
+    background: white;
 }
 
 
-/* =========================
-   Toast
-========================= */
+/* =====================================================
+   STATUS
+===================================================== */
 
-.status-toast{
+.status {
+    position: fixed;
 
-    position:fixed;
+    bottom: 12px;
+    left: 12px;
 
-    bottom:25px;
+    background: rgba(0,0,0,.75);
 
-    left:50%;
+    color: white;
 
-    transform:
-        translateX(-50%)
-        translateY(100px);
+    padding: 7px 12px;
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--navy),
-            var(--navy2)
-        );
+    border-radius: 6px;
 
-    color:white;
+    font-size: 12px;
 
-    padding:13px 22px;
+    opacity: 0;
 
-    border-radius:10px;
+    pointer-events: none;
 
-    box-shadow:var(--shadow);
+    transition: .3s;
 
-    opacity:0;
-
-    transition:.3s;
-
-    z-index:99999;
-
-    font-size:14px;
-
-    font-weight:600;
-
-    pointer-events:none;
+    z-index: 100;
 }
 
-.status-toast.show{
-
-    opacity:1;
-
-    transform:
-        translateX(-50%)
-        translateY(0);
+.status.show {
+    opacity: 1;
 }
 
 
-/* =========================
-   Responsive
-========================= */
+/* =====================================================
+   FULLSCREEN
+===================================================== */
 
-@media(max-width:900px){
+body.fullscreen-mode header,
+body.fullscreen-mode .tabs {
+    display: none;
+}
 
-    header{
+body.fullscreen-mode .editor-container {
+    height: 100vh;
+}
 
-        padding:13px 15px;
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px) {
+
+    body {
+        overflow: auto;
     }
 
-    .logo-text h1{
+    header {
+        height: auto;
 
-        font-size:17px;
+        min-height: 60px;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        padding: 10px;
     }
 
-    .logo-icon{
-
-        width:45px;
-
-        height:45px;
-
-        font-size:23px;
+    .toolbar {
+        justify-content: center;
     }
 
-    .toolbar{
+    .tabs {
+        height: 48px;
 
-        top:71px;
+        overflow-x: auto;
+
+        direction: rtl;
     }
 
-    .workspace{
+    .editor-container {
 
-        grid-template-columns:1fr;
+        height: calc(100vh - 155px);
+
+        min-height: 500px;
+
+        grid-template-columns: 1fr;
+
+        grid-template-rows: 50% 50%;
     }
 
-    .editor-wrapper,
-    #preview{
+    .preview-area {
 
-        height:450px;
+        border-right: none;
+
+        border-top: 2px solid #003566;
     }
 
-    .editor-tabs{
-
-        overflow-x:auto;
+    .CodeMirror {
+        font-size: 14px;
     }
 
-    .editor-tab{
-
-        white-space:nowrap;
-
-        padding:10px 15px;
+    .logo {
+        font-size: 18px;
     }
+
+    button {
+        padding: 8px 10px;
+
+        font-size: 13px;
+    }
+
 }
 
 
-@media(max-width:500px){
+/* =====================================================
+   VERY SMALL SCREENS
+===================================================== */
 
-    .main-container{
+@media(max-width:480px) {
 
-        padding:10px;
+    .toolbar {
+        gap: 4px;
     }
 
-    .toolbar{
-
-        gap:5px;
-
-        padding:9px;
+    button {
+        padding: 7px 8px;
+        font-size: 12px;
     }
 
-    .tool-btn{
-
-        padding:8px 11px;
-
-        font-size:12px;
+    .tab {
+        padding: 11px 15px;
     }
 
-    .editor-wrapper,
-    #preview{
-
-        height:400px;
-    }
 }
 
 </style>
@@ -722,1141 +455,342 @@ header{
 <body>
 
 
-<!-- =========================
-     Header
-========================= -->
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
 <header>
 
-    <div class="logo">
+<div class="logo">
+   محرر<span>الأكواد</span>من مكتبة عامودا الرقمية  
+</div>
 
-        <div class="logo-icon">
-            📚
-        </div>
-
-        <div class="logo-text">
-
-            <h1>
-                محرر الأكواد من مكتبة عامودا الرقمية
-            </h1>
-
-            <p>
-                HTML • CSS • JavaScript
-            </p>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-<!-- =========================
-     Toolbar
-========================= -->
 
 <div class="toolbar">
 
-    <button
-        class="tool-btn btn-run"
-        onclick="runCode()">
-
-        ▶️ تشغيل
-
-    </button>
-
-
-    <button
-        class="tool-btn btn-save"
-        onclick="saveProject()">
-
-        💾 حفظ
-
-    </button>
-
-
-    <button
-        class="tool-btn btn-save"
-        onclick="loadProject()">
-
-        📂 استرجاع
-
-    </button>
-
-
-    <button
-        class="tool-btn btn-download"
-        onclick="downloadHTML()">
-
-        ⬇️ تنزيل
-
-    </button>
-
-
-    <button
-        class="tool-btn btn-clear"
-        onclick="clearProject()">
-
-        🗑️ مسح
-
-    </button>
-
-</div>
-
-
-<!-- =========================
-     Main
-========================= -->
-
-<div class="main-container">
-
-
-    <div class="editor-tabs">
-
-        <button
-            class="editor-tab active"
-            data-editor="html"
-            onclick="showEditor('html')">
-
-            HTML
-
-        </button>
-
-
-        <button
-            class="editor-tab"
-            data-editor="css"
-            onclick="showEditor('css')">
-
-            CSS
-
-        </button>
-
-
-        <button
-            class="editor-tab"
-            data-editor="js"
-            onclick="showEditor('js')">
-
-            JavaScript
-
-        </button>
-
-    </div>
-
-
-    <div class="workspace">
-
-
-        <!-- Editor -->
-
-        <div class="editor-panel">
-
-            <div class="editor-header">
-
-                <span id="editorTitle">
-                    محرر HTML
-                </span>
-
-                <span
-                    class="editor-language"
-                    id="languageLabel">
-
-                    HTML
-
-                </span>
-
-            </div>
-
-
-            <div class="editor-wrapper">
-
-                <div
-                    id="htmlEditor"
-                    class="code-area">
-                </div>
-
-
-                <div
-                    id="cssEditor"
-                    class="code-area"
-                    style="display:none;">
-                </div>
-
-
-                <div
-                    id="jsEditor"
-                    class="code-area"
-                    style="display:none;">
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- Preview -->
-
-        <div class="preview-panel">
-
-            <div class="preview-header">
-
-                <span>
-                    👁️ المعاينة
-                </span>
-
-                <span
-                    class="preview-status"
-                    id="previewStatus">
-
-                    جاهز
-
-                </span>
-
-            </div>
-
-
-            <iframe
-                id="preview"
-                sandbox="allow-scripts allow-forms allow-modals allow-popups">
-            </iframe>
-
-        </div>
-
-    </div>
-
-
-    <div class="bottom-info">
-
-        <div class="help-text">
-
-            💡 اكتب
-            <b>&lt;</b>
-            في محرر HTML لعرض اقتراحات الوسوم.
-
-            <span class="shortcut">
-                Ctrl + Space
-            </span>
-
-            لفتح الاقتراحات.
-
-        </div>
-
-
-        <div>
-
-            <span class="shortcut">
-                Ctrl + S
-            </span>
-
-            حفظ
-
-            <span class="shortcut">
-                Ctrl + Enter
-            </span>
-
-            تشغيل
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<div
-    id="statusToast"
-    class="status-toast">
-</div>
-
-
-<!-- =========================
-     CodeMirror
-========================= -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
-
-
-<!-- Modes -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
-
-
-<!-- Editing -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
-
-
-<!-- Hints -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/xml-hint.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/css-hint.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/javascript-hint.min.js"></script>
-
-
-<script>
-
-/* ==========================================================
-   المتغيرات
-========================================================== */
-
-const editors = {};
-
-let currentLanguage = "html";
-
-
-/* ==========================================================
-   HTML الافتراضي
-========================================================== */
-
-const defaultHTML = `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>صفحتي الجديدة</title>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>مرحباً بك 👋</h1>
-
-<p>
-ابدأ بكتابة HTML هنا.
-</p>
-
-<button onclick="showMessage()">
-اضغط هنا
+<button class="run" onclick="runCode()">
+▶ تشغيل
+</button>
+
+<button class="save" onclick="saveProject()">
+💾 حفظ
+</button>
+
+<button class="download" onclick="downloadHTML()">
+📥 تحميل
+</button>
+
+<button class="clear" onclick="clearAll()">
+🗑️ مسح
+</button>
+
+<button class="fullscreen" onclick="toggleFullscreen()">
+⛶ ملء الشاشة
 </button>
 
 </div>
 
-</body>
-
-</html>`;
+</header>
 
 
-/* ==========================================================
-   CSS الافتراضي
-========================================================== */
 
-const defaultCSS = `body {
+<!-- =====================================================
+     TABS
+===================================================== -->
 
-font-family: Tajawal, sans-serif;
+<div class="tabs">
 
-background:#f6f2e9;
+<div class="tab active"
+     onclick="showEditor('html',this)">
+HTML
+</div>
 
-color:#0b2239;
+<div class="tab"
+     onclick="showEditor('css',this)">
+CSS
+</div>
 
-margin:0;
+<div class="tab"
+     onclick="showEditor('js',this)">
+JavaScript
+</div>
 
-padding:40px;
+</div>
 
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="editor-container">
+
+
+<!-- CODE -->
+
+<div class="code-area">
+
+<textarea id="html"></textarea>
+
+<textarea id="css"></textarea>
+
+<textarea id="js"></textarea>
+
+</div>
+
+
+<!-- PREVIEW -->
+
+<div class="preview-area">
+
+<div class="preview-title">
+    👁️ المعاينة
+</div>
+
+<div class="preview-frame">
+
+<iframe
+id="preview"
+sandbox="allow-scripts allow-forms allow-modals allow-popups">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- STATUS -->
+
+<div id="status"
+class="status">
+تم الحفظ
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   DEFAULT HTML
+===================================================== */
+
+const defaultHTML = `
+<div class="container">
+
+    <h1>مرحبا بك 👋</h1>
+
+    <p>
+        هذا محرر HTML احترافي
+    </p>
+
+    <button onclick="hello()">
+        اضغط هنا
+    </button>
+
+</div>
+`;
+
+
+/* =====================================================
+   DEFAULT CSS
+===================================================== */
+
+const defaultCSS = `
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px;
+    background: #f5f5f5;
 }
 
 .container {
-
-max-width:700px;
-
-margin:auto;
-
-text-align:center;
-
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #ccc;
 }
 
 h1 {
-
-color:#19496b;
-
+    color: #0077b6;
 }
 
 button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: #0077b6;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
 
-background:#c7a45b;
-
-color:#0b2239;
-
-border:none;
-
-padding:12px 25px;
-
-border-radius:8px;
-
-cursor:pointer;
-
-font-family:inherit;
-
-font-weight:bold;
-
-}`;
+button:hover {
+    background: #005f8a;
+}
+`;
 
 
-/* ==========================================================
-   JavaScript الافتراضي
-========================================================== */
+/* =====================================================
+   DEFAULT JAVASCRIPT
+===================================================== */
 
-const defaultJS = `function showMessage() {
+const defaultJS = `
+function hello() {
 
-alert("مرحباً بك في محرر الأكواد 📚");
+    alert("أهلا بكم في محرر الأكواد من مكتبة عامودا الرقمية");
 
-}`;
+}
+`;
 
 
-/* ==========================================================
-   إنشاء HTML Editor
-========================================================== */
+/* =====================================================
+   EDITORS
+===================================================== */
 
-editors.html = CodeMirror(
-    document.getElementById("htmlEditor"),
+const editors = {};
+
+
+/* HTML */
+
+editors.html = CodeMirror.fromTextArea(
+    document.getElementById("html"),
     {
+        mode: "xml",
+        theme: "dracula",
 
-        value:defaultHTML,
+        lineNumbers: true,
 
-        mode:"xml",
+        lineWrapping: true,
 
-        theme:"dracula",
+        autoCloseTags: true,
 
-        lineNumbers:true,
+        autoCloseBrackets: true,
 
-        lineWrapping:false,
+        tabSize: 2,
 
-        autoCloseBrackets:true,
+        indentUnit: 2,
 
-        matchBrackets:true,
-
-        indentUnit:4,
-
-        tabSize:4,
-
-        autofocus:true,
-
-        extraKeys:{
-
-            "Ctrl-Space":function(cm){
-
-                openHints(cm);
-
-            },
-
-            "Enter":function(cm){
-
-                CodeMirror.Pass;
-
-                htmlAutoClose(cm);
-
-            }
-
-        }
-
+        indentWithTabs: false
     }
 );
 
 
-/* ==========================================================
-   CSS Editor
-========================================================== */
+/* CSS */
 
-editors.css = CodeMirror(
-    document.getElementById("cssEditor"),
+editors.css = CodeMirror.fromTextArea(
+    document.getElementById("css"),
     {
+        mode: "css",
+        theme: "dracula",
 
-        value:defaultCSS,
+        lineNumbers: true,
 
-        mode:"css",
+        lineWrapping: true,
 
-        theme:"dracula",
+        autoCloseBrackets: true,
 
-        lineNumbers:true,
+        tabSize: 2,
 
-        lineWrapping:false,
+        indentUnit: 2,
 
-        autoCloseBrackets:true,
-
-        matchBrackets:true,
-
-        indentUnit:4,
-
-        tabSize:4,
-
-        extraKeys:{
-
-            "Ctrl-Space":function(cm){
-
-                openHints(cm);
-
-            }
-
-        }
-
+        indentWithTabs: false
     }
 );
 
 
-/* ==========================================================
-   JavaScript Editor
-========================================================== */
+/* JAVASCRIPT */
 
-editors.js = CodeMirror(
-    document.getElementById("jsEditor"),
+editors.js = CodeMirror.fromTextArea(
+    document.getElementById("js"),
     {
+        mode: "javascript",
+        theme: "dracula",
 
-        value:defaultJS,
+        lineNumbers: true,
 
-        mode:"javascript",
+        lineWrapping: true,
 
-        theme:"dracula",
+        autoCloseBrackets: true,
 
-        lineNumbers:true,
+        tabSize: 2,
 
-        lineWrapping:false,
+        indentUnit: 2,
 
-        autoCloseBrackets:true,
-
-        matchBrackets:true,
-
-        indentUnit:4,
-
-        tabSize:4,
-
-        extraKeys:{
-
-            "Ctrl-Space":function(cm){
-
-                openHints(cm);
-
-            }
-
-        }
-
+        indentWithTabs: false
     }
 );
 
 
-/* ==========================================================
-   قائمة وسوم HTML
-========================================================== */
+/* =====================================================
+   DEFAULT CONTENT
+===================================================== */
 
-const htmlTags = [
+editors.html.setValue(defaultHTML.trim());
 
+editors.css.setValue(defaultCSS.trim());
+
+editors.js.setValue(defaultJS.trim());
+
+
+/* =====================================================
+   SHOW EDITOR
+===================================================== */
+
+function showEditor(type, element) {
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+            tab.classList.remove("active");
+
+        });
+
+
+    element.classList.add("active");
+
+
+    Object.keys(editors).forEach(key => {
+
+        editors[key]
+            .getWrapperElement()
+            .style.display = "none";
+
+    });
+
+
+    editors[type]
+        .getWrapperElement()
+        .style.display = "block";
+
+
+    editors[type].refresh();
+
+}
+
+
+/* =====================================================
+   INITIAL EDITOR
+===================================================== */
+
+showEditor(
     "html",
-    "head",
-    "body",
-    "title",
-    "meta",
-    "link",
-    "style",
-    "script",
-
-    "header",
-    "nav",
-    "main",
-    "section",
-    "article",
-    "aside",
-    "footer",
-
-    "div",
-    "span",
-
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-
-    "p",
-
-    "a",
-
-    "img",
-
-    "picture",
-    "source",
-
-    "ul",
-    "ol",
-    "li",
-
-    "table",
-    "thead",
-    "tbody",
-    "tfoot",
-    "tr",
-    "th",
-    "td",
-
-    "form",
-    "label",
-    "input",
-    "textarea",
-    "select",
-    "option",
-    "button",
-
-    "video",
-    "audio",
-    "iframe",
-
-    "canvas",
-
-    "br",
-    "hr",
-
-    "strong",
-    "b",
-    "em",
-    "i",
-    "u",
-    "small",
-    "mark",
-
-    "details",
-    "summary",
-
-    "figure",
-    "figcaption"
-];
-
-
-/* ==========================================================
-   الوسوم التي لا تحتاج إغلاق
-========================================================== */
-
-const voidTags = new Set([
-
-    "area",
-    "base",
-    "br",
-    "col",
-    "embed",
-    "hr",
-    "img",
-    "input",
-    "link",
-    "meta",
-    "param",
-    "source",
-    "track",
-    "wbr"
-
-]);
-
-
-/* ==========================================================
-   اقتراحات HTML مخصصة
-========================================================== */
-
-function htmlHint(cm){
-
-    const cursor =
-        cm.getCursor();
-
-    const line =
-        cm.getLine(cursor.line);
-
-    const before =
-        line.substring(
-            0,
-            cursor.ch
-        );
-
-
-    const match =
-        before.match(
-            /<([a-zA-Z0-9-]*)$/
-        );
-
-
-    if(!match){
-
-        return CodeMirror.hint.xml(cm);
-
-    }
-
-
-    const typed =
-        match[1].toLowerCase();
-
-
-    const start =
-        cursor.ch - typed.length;
-
-
-    const list =
-        htmlTags
-            .filter(
-                tag =>
-                    tag.startsWith(typed)
-            )
-            .map(
-                tag => ({
-                    text:tag,
-                    display:
-                        "<" + tag + ">"
-                })
-            );
-
-
-    return {
-
-        list:list,
-
-        from:CodeMirror.Pos(
-            cursor.line,
-            start
-        ),
-
-        to:CodeMirror.Pos(
-            cursor.line,
-            cursor.ch
-        )
-
-    };
-
-}
-
-
-/* ==========================================================
-   CSS / JS / HTML Hints
-========================================================== */
-
-function openHints(cm){
-
-    const mode =
-        cm.getMode().name;
-
-
-    if(
-        mode === "xml" ||
-        mode === "htmlmixed"
-    ){
-
-        CodeMirror.showHint(
-            cm,
-            htmlHint,
-            {
-                completeSingle:false
-            }
-        );
-
-        return;
-
-    }
-
-
-    if(mode === "css"){
-
-        CodeMirror.showHint(
-            cm,
-            CodeMirror.hint.css,
-            {
-                completeSingle:false
-            }
-        );
-
-        return;
-
-    }
-
-
-    if(mode === "javascript"){
-
-        CodeMirror.showHint(
-            cm,
-            CodeMirror.hint.javascript,
-            {
-                completeSingle:false
-            }
-        );
-
-    }
-
-}
-
-
-/* ==========================================================
-   إغلاق HTML تلقائيًا
-========================================================== */
-
-function htmlAutoClose(cm){
-
-    const cursor =
-        cm.getCursor();
-
-    const line =
-        cm.getLine(cursor.line);
-
-
-    /*
-       نبحث عن آخر وسم مفتوح
-       مثل:
-
-       <div>
-
-       <section class="box">
-
-       <h1>
-    */
-
-    const match =
-        line
-            .substring(
-                0,
-                cursor.ch
-            )
-            .match(
-                /<([a-zA-Z][\w:-]*)(?:\s[^<>]*)?>$/
-            );
-
-
-    if(!match){
-
-        CodeMirror.Pass;
-
-        return;
-
-    }
-
-
-    const tagName =
-        match[1].toLowerCase();
-
-
-    /* لا نغلق الوسوم الذاتية */
-
-    if(voidTags.has(tagName)){
-
-        CodeMirror.Pass;
-
-        return;
-
-    }
-
-
-    const closingTag =
-        "</" +
-        tagName +
-        ">";
-
-
-    /*
-       نضع وسم الإغلاق بعد المؤشر
-    */
-
-    cm.replaceRange(
-        closingTag,
-        cursor,
-        cursor
-    );
-
-
-    /*
-       يبقى المؤشر داخل الوسم
-    */
-
-    cm.setCursor(
-        cursor
-    );
-
-}
-
-
-/* ==========================================================
-   معالجة الكتابة داخل HTML
-========================================================== */
-
-editors.html.on(
-    "beforeChange",
-    function(cm, change){
-
-        /*
-           لا نتدخل في اللصق
-           أو العمليات البرمجية
-        */
-
-        if(
-            change.origin !== "+input"
-        ){
-
-            return;
-
-        }
-
-    }
+    document.querySelector(".tab")
 );
 
 
-/* ==========================================================
-   فتح الاقتراحات عند كتابة <
-========================================================== */
+/* =====================================================
+   BUILD HTML
+===================================================== */
 
-editors.html.on(
-    "inputRead",
-    function(cm, change){
+function buildDocument() {
 
-        if(
-            !change.text ||
-            change.origin === "complete"
-        ){
-
-            return;
-
-        }
-
-
-        const text =
-            change.text.join("");
-
-
-        if(
-            text === "<" ||
-            /^[a-zA-Z]$/.test(text)
-        ){
-
-            setTimeout(
-                function(){
-
-                    if(cm.hasFocus()){
-
-                        openHints(cm);
-
-                    }
-
-                },
-                80
-            );
-
-        }
-
-    }
-);
-
-
-/* ==========================================================
-   CSS autocomplete
-========================================================== */
-
-editors.css.on(
-    "inputRead",
-    function(cm, change){
-
-        if(
-            !change.text ||
-            change.origin === "complete"
-        ){
-
-            return;
-
-        }
-
-
-        const text =
-            change.text.join("");
-
-
-        if(
-            /^[a-zA-Z-]$/.test(text)
-        ){
-
-            setTimeout(
-                function(){
-
-                    if(cm.hasFocus()){
-
-                        openHints(cm);
-
-                    }
-
-                },
-                100
-            );
-
-        }
-
-    }
-);
-
-
-/* ==========================================================
-   JavaScript autocomplete
-========================================================== */
-
-editors.js.on(
-    "inputRead",
-    function(cm, change){
-
-        if(
-            !change.text ||
-            change.origin === "complete"
-        ){
-
-            return;
-
-        }
-
-
-        const text =
-            change.text.join("");
-
-
-        if(
-            /^[a-zA-Z_$]$/.test(text) ||
-            text === "."
-        ){
-
-            setTimeout(
-                function(){
-
-                    if(cm.hasFocus()){
-
-                        openHints(cm);
-
-                    }
-
-                },
-                100
-            );
-
-        }
-
-    }
-);
-
-
-/* ==========================================================
-   تبديل المحررات
-========================================================== */
-
-function showEditor(type){
-
-    currentLanguage =
-        type;
-
-
-    document
-        .querySelectorAll(".code-area")
-        .forEach(
-            function(area){
-
-                area.style.display =
-                    "none";
-
-            }
-        );
-
-
-    document.getElementById(
-        type + "Editor"
-    ).style.display =
-        "block";
-
-
-    document
-        .querySelectorAll(".editor-tab")
-        .forEach(
-            function(tab){
-
-                tab.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-
-    const activeTab =
-        document.querySelector(
-            '[data-editor="' +
-            type +
-            '"]'
-        );
-
-
-    if(activeTab){
-
-        activeTab.classList.add(
-            "active"
-        );
-
-    }
-
-
-    const titles = {
-
-        html:"محرر HTML",
-
-        css:"محرر CSS",
-
-        js:"محرر JavaScript"
-
-    };
-
-
-    const labels = {
-
-        html:"HTML",
-
-        css:"CSS",
-
-        js:"JavaScript"
-
-    };
-
-
-    document.getElementById(
-        "editorTitle"
-    ).textContent =
-        titles[type];
-
-
-    document.getElementById(
-        "languageLabel"
-    ).textContent =
-        labels[type];
-
-
-    setTimeout(
-        function(){
-
-            editors[type].refresh();
-
-            editors[type].focus();
-
-        },
-        30
-    );
-
-}
-
-
-/* ==========================================================
-   بناء HTML النهائي
-========================================================== */
-
-function buildHTML(){
-
-    let html =
+    const html =
         editors.html.getValue();
 
     const css =
@@ -1866,118 +800,69 @@ function buildHTML(){
         editors.js.getValue();
 
 
-    if(css.trim()){
+    return `
+<!DOCTYPE html>
 
-        const style =
-`<style>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
 ${css}
-</style>`;
 
+</style>
 
-        if(
-            /<\/head>/i.test(html)
-        ){
+</head>
 
-            html =
-                html.replace(
-                    /<\/head>/i,
-                    style +
-                    "\n</head>"
-                );
+<body>
 
-        }else{
+${html}
 
-            html =
-                style +
-                "\n" +
-                html;
+<script>
 
-        }
-
-    }
-
-
-    if(js.trim()){
-
-        const script =
-`<script>
 ${js}
-<\/script>`;
 
+<\/script>
 
-        if(
-            /<\/body>/i.test(html)
-        ){
+</body>
 
-            html =
-                html.replace(
-                    /<\/body>/i,
-                    script +
-                    "\n</body>"
-                );
-
-        }else{
-
-            html +=
-                "\n" +
-                script;
-
-        }
-
-    }
-
-
-    return html;
+</html>
+`;
 
 }
 
 
-/* ==========================================================
-   تشغيل
-========================================================== */
+/* =====================================================
+   RUN
+===================================================== */
 
-function runCode(){
+function runCode() {
 
-    const preview =
-        document.getElementById(
-            "preview"
-        );
+    const documentCode =
+        buildDocument();
 
 
-    try{
-
-        preview.srcdoc =
-            buildHTML();
-
-
-        document.getElementById(
-            "previewStatus"
-        ).textContent =
-            "تم التشغيل ✓";
+    document
+        .getElementById("preview")
+        .srcdoc = documentCode;
 
 
-        showStatus(
-            "تم تشغيل الكود بنجاح ▶️"
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        showStatus(
-            "حدث خطأ أثناء تشغيل الكود"
-        );
-
-    }
+    showStatus("تم تشغيل المشروع ▶");
 
 }
 
 
-/* ==========================================================
-   حفظ
-========================================================== */
+/* =====================================================
+   SAVE PROJECT
+===================================================== */
 
-function saveProject(){
+function saveProject() {
 
     const project = {
 
@@ -1988,51 +873,75 @@ function saveProject(){
             editors.css.getValue(),
 
         js:
-            editors.js.getValue()
+            editors.js.getValue(),
+
+        savedAt:
+            new Date().toISOString()
 
     };
 
 
-    localStorage.setItem(
-        "webEditorProject",
-        JSON.stringify(project)
-    );
+    try {
+
+        localStorage.setItem(
+            "webEditorProject",
+            JSON.stringify(project)
+        );
 
 
-    showStatus(
-        "تم حفظ المشروع بنجاح 💾"
-    );
+        localStorage.setItem(
+            "webEditorAutoSave",
+            JSON.stringify(project)
+        );
+
+
+        showStatus("تم حفظ المشروع بنجاح 💾");
+
+
+    } catch(error) {
+
+        alert(
+            "تعذر حفظ المشروع في المتصفح."
+        );
+
+        console.error(error);
+
+    }
 
 }
 
 
-/* ==========================================================
-   استرجاع
-========================================================== */
+/* =====================================================
+   LOAD PROJECT
+===================================================== */
 
-function loadProject(){
+function loadProject() {
 
-    const saved =
-        localStorage.getItem(
-            "webEditorProject"
-        );
+    try {
 
-
-    if(!saved){
-
-        showStatus(
-            "لا يوجد مشروع محفوظ"
-        );
-
-        return;
-
-    }
+        const saved =
+            localStorage.getItem(
+                "webEditorProject"
+            );
 
 
-    try{
+        if (!saved) {
+
+            return false;
+
+        }
+
 
         const project =
             JSON.parse(saved);
+
+
+        if (!project ||
+            typeof project !== "object") {
+
+            return false;
+
+        }
 
 
         editors.html.setValue(
@@ -2048,26 +957,62 @@ function loadProject(){
         );
 
 
-        editors.html.refresh();
-
-        editors.css.refresh();
-
-        editors.js.refresh();
+        showStatus("تم استرجاع المشروع 💾");
 
 
-        runCode();
+        return true;
 
 
-        showStatus(
-            "تم استرجاع المشروع بنجاح 📂"
+    } catch(error) {
+
+        console.error(
+            "خطأ أثناء تحميل المشروع:",
+            error
         );
 
-    }catch(error){
 
-        console.error(error);
+        return false;
 
-        showStatus(
-            "تعذر استرجاع المشروع"
+    }
+
+}
+
+
+/* =====================================================
+   AUTO SAVE
+===================================================== */
+
+function autoSave() {
+
+    const project = {
+
+        html:
+            editors.html.getValue(),
+
+        css:
+            editors.css.getValue(),
+
+        js:
+            editors.js.getValue(),
+
+        savedAt:
+            new Date().toISOString()
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            "webEditorAutoSave",
+            JSON.stringify(project)
+        );
+
+    } catch(error) {
+
+        console.error(
+            "خطأ في الحفظ التلقائي:",
+            error
         );
 
     }
@@ -2075,50 +1020,27 @@ function loadProject(){
 }
 
 
-/* ==========================================================
-   حفظ تلقائي
-========================================================== */
+/* حفظ تلقائي كل 5 ثوانٍ */
 
 setInterval(
-    function(){
-
-        const project = {
-
-            html:
-                editors.html.getValue(),
-
-            css:
-                editors.css.getValue(),
-
-            js:
-                editors.js.getValue()
-
-        };
-
-
-        localStorage.setItem(
-            "webEditorAutoSave",
-            JSON.stringify(project)
-        );
-
-    },
+    autoSave,
     5000
 );
 
 
-/* ==========================================================
-   تنزيل
-========================================================== */
+/* =====================================================
+   DOWNLOAD
+===================================================== */
 
-function downloadHTML(){
+function downloadHTML() {
 
-    const content =
-        buildHTML();
+    const fullHTML =
+        buildDocument();
 
 
     const blob =
         new Blob(
-            [content],
+            [fullHTML],
             {
                 type:
                     "text/html;charset=utf-8"
@@ -2130,55 +1052,50 @@ function downloadHTML(){
         URL.createObjectURL(blob);
 
 
-    const link =
+    const a =
         document.createElement("a");
 
 
-    link.href =
-        url;
+    a.href = url;
 
-    link.download =
-        "my-web-page.html";
-
-
-    document.body.appendChild(
-        link
-    );
+    a.download =
+        "my-page.html";
 
 
-    link.click();
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
 
 
-    document.body.removeChild(
-        link
-    );
+    setTimeout(() => {
 
+        URL.revokeObjectURL(url);
 
-    URL.revokeObjectURL(
-        url
-    );
+    }, 100);
 
 
     showStatus(
-        "تم تنزيل ملف HTML ⬇️"
+        "تم تحميل الصفحة 📥"
     );
 
 }
 
 
-/* ==========================================================
-   مسح
-========================================================== */
+/* =====================================================
+   CLEAR
+===================================================== */
 
-function clearProject(){
+function clearAll() {
 
-    const confirmed =
+    const answer =
         confirm(
-            "هل أنت متأكد من مسح جميع الأكواد؟"
+            "هل تريد مسح جميع الأكواد والحفظ؟"
         );
 
 
-    if(!confirmed){
+    if (!answer) {
 
         return;
 
@@ -2192,90 +1109,113 @@ function clearProject(){
     editors.js.setValue("");
 
 
-    document.getElementById(
-        "preview"
-    ).srcdoc = "";
+    try {
+
+        localStorage.removeItem(
+            "webEditorProject"
+        );
+
+        localStorage.removeItem(
+            "webEditorAutoSave"
+        );
+
+    } catch(error) {
+
+        console.error(error);
+
+    }
 
 
-    localStorage.removeItem(
-        "webEditorProject"
-    );
-
-
-    localStorage.removeItem(
-        "webEditorAutoSave"
-    );
-
-
-    document.getElementById(
-        "previewStatus"
-    ).textContent =
-        "فارغ";
-
+    runCode();
 
     showStatus(
-        "تم مسح جميع الأكواد 🗑️"
+        "تم مسح المشروع 🗑️"
     );
 
 }
 
 
-/* ==========================================================
-   الرسائل
-========================================================== */
+/* =====================================================
+   STATUS MESSAGE
+===================================================== */
 
 let statusTimer;
 
 
-function showStatus(message){
+function showStatus(message) {
 
-    const toast =
+    const status =
         document.getElementById(
-            "statusToast"
+            "status"
         );
 
 
-    toast.textContent =
+    status.textContent =
         message;
 
 
-    toast.classList.add(
+    status.classList.add(
         "show"
     );
 
 
-    clearTimeout(
-        statusTimer
-    );
+    clearTimeout(statusTimer);
 
 
     statusTimer =
-        setTimeout(
-            function(){
+        setTimeout(() => {
 
-                toast.classList.remove(
-                    "show"
-                );
+            status.classList.remove(
+                "show"
+            );
 
-            },
-            2500
-        );
+        }, 2000);
 
 }
 
 
-/* ==========================================================
-   اختصارات لوحة المفاتيح
-========================================================== */
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+function toggleFullscreen() {
+
+    document.body
+        .classList
+        .toggle(
+            "fullscreen-mode"
+        );
+
+
+    setTimeout(() => {
+
+        Object.keys(editors)
+            .forEach(key => {
+
+                editors[key].refresh();
+
+            });
+
+    }, 100);
+
+}
+
+
+/* =====================================================
+   KEYBOARD SHORTCUTS
+===================================================== */
 
 document.addEventListener(
     "keydown",
-    function(event){
+    function(event) {
 
-        if(
+
+        /* Ctrl + S */
+
+        if (
             event.ctrlKey &&
             event.key.toLowerCase() === "s"
-        ){
+        ) {
 
             event.preventDefault();
 
@@ -2284,10 +1224,12 @@ document.addEventListener(
         }
 
 
-        if(
+        /* Ctrl + Enter */
+
+        if (
             event.ctrlKey &&
             event.key === "Enter"
-        ){
+        ) {
 
             event.preventDefault();
 
@@ -2299,34 +1241,72 @@ document.addEventListener(
 );
 
 
-/* ==========================================================
-   Resize
-========================================================== */
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+const projectLoaded =
+    loadProject();
+
+
+/*
+   إذا لم يوجد مشروع محفوظ،
+   استخدم الأكواد الافتراضية.
+*/
+
+if (!projectLoaded) {
+
+    editors.html.setValue(
+        defaultHTML.trim()
+    );
+
+    editors.css.setValue(
+        defaultCSS.trim()
+    );
+
+    editors.js.setValue(
+        defaultJS.trim()
+    );
+
+}
+
+
+/* =====================================================
+   FIRST RUN
+===================================================== */
+
+runCode();
+
+
+/* =====================================================
+   WINDOW RESIZE
+===================================================== */
 
 window.addEventListener(
     "resize",
-    function(){
+    function() {
 
-        editors.html.refresh();
+        Object.keys(editors)
+            .forEach(key => {
 
-        editors.css.refresh();
+                editors[key].refresh();
 
-        editors.js.refresh();
+            });
 
     }
 );
-
-
-/* ==========================================================
-   البداية
-========================================================== */
-
-showEditor("html");
-
-runCode();
 
 </script>
 
 </body>
 </html>
-```
+```supabase-js@2:13  GET https://hvuezrpzzbordyfxmpqn.supabase.co/rest/v1/store_admins?select=user_id&user_id=eq.3101503e-03a0-45e4-8980-368521b655dd 403 (Forbidden)
+(anonymous) @ supabase-js@2:13
+(anonymous) @ supabase-js@2:13
+await in (anonymous)
+ie @ supabase-js@2:7
+(anonymous) @ supabase-js@2:7
+then @ supabase-js@2:7
+admin.html:965 USER UID: 3101503e-03a0-45e4-8980-368521b655dd
+admin.html:966 ADMIN DATA: null
+admin.html:967 ADMIN ERROR: {code: '42501', details: null, hint: 'Grant the required privileges to the current role …T SELECT ON public.store_admins TO authenticated;', message: 'permission denied for table store_admins'}
