@@ -2,19 +2,28 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>محرر الأكواد من مكتبة عامودا الرقمية</title>
 
+
 <!-- =====================================================
-     خط Tajawal
+     Tajawal
 ===================================================== -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+rel="stylesheet">
 
 
 <!-- =====================================================
@@ -27,6 +36,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.c
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
@@ -35,7 +45,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.mi
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 
-<!-- إغلاق الوسوم والأقواس تلقائياً -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
@@ -55,15 +64,17 @@ html,
 body {
     margin: 0;
     padding: 0;
+
     width: 100%;
     height: 100%;
 }
 
 body {
+
     background: #001D3D;
+
     color: white;
 
-    /* Tajawal */
     font-family: "Tajawal", sans-serif;
 
     overflow: hidden;
@@ -75,6 +86,7 @@ body {
 ===================================================== */
 
 header {
+
     height: 60px;
 
     background: #002855;
@@ -87,8 +99,7 @@ header {
 
     padding: 0 18px;
 
-    box-shadow:
-        0 2px 10px rgba(0,0,0,.4);
+    box-shadow: 0 2px 10px rgba(0,0,0,.4);
 
     position: relative;
 
@@ -96,6 +107,7 @@ header {
 }
 
 .logo {
+
     font-size: 20px;
 
     font-weight: 700;
@@ -104,6 +116,7 @@ header {
 }
 
 .logo span {
+
     color: #00b4d8;
 }
 
@@ -113,6 +126,7 @@ header {
 ===================================================== */
 
 .toolbar {
+
     display: flex;
 
     gap: 7px;
@@ -121,6 +135,7 @@ header {
 }
 
 button {
+
     border: none;
 
     border-radius: 7px;
@@ -139,40 +154,47 @@ button {
 }
 
 button:hover {
+
     transform: translateY(-1px);
 
     filter: brightness(1.1);
 }
 
 button:active {
+
     transform: scale(.97);
 }
 
 .run {
+
     background: #00b4d8;
 
     color: white;
 }
 
 .save {
+
     background: #38b000;
 
     color: white;
 }
 
 .download {
+
     background: #fca311;
 
     color: black;
 }
 
 .clear {
+
     background: #d90429;
 
     color: white;
 }
 
 .fullscreen {
+
     background: #6c5ce7;
 
     color: white;
@@ -184,6 +206,7 @@ button:active {
 ===================================================== */
 
 .tabs {
+
     height: 48px;
 
     background: #001529;
@@ -197,9 +220,14 @@ button:active {
     gap: 4px;
 
     overflow-x: auto;
+
+    position: relative;
+
+    z-index: 20;
 }
 
 .tab {
+
     padding: 12px 22px;
 
     cursor: pointer;
@@ -215,13 +243,17 @@ button:active {
     font-weight: 500;
 
     transition: .2s;
+
+    user-select: none;
 }
 
 .tab:hover {
+
     color: white;
 }
 
 .tab.active {
+
     background: #282a36;
 
     color: white;
@@ -235,6 +267,7 @@ button:active {
 ===================================================== */
 
 .editor-container {
+
     height: calc(100vh - 108px);
 
     display: grid;
@@ -242,6 +275,10 @@ button:active {
     grid-template-columns: 50% 50%;
 
     min-height: 0;
+
+    position: relative;
+
+    z-index: 1;
 }
 
 
@@ -250,6 +287,7 @@ button:active {
 ===================================================== */
 
 .code-area {
+
     direction: ltr;
 
     height: 100%;
@@ -259,14 +297,24 @@ button:active {
     background: #282a36;
 
     overflow: hidden;
+
+    position: relative;
+
+    z-index: 2;
+
+    pointer-events: auto;
 }
 
-.code-area textarea {
-    display: none;
-}
+
+/* =====================================================
+   CODEMIRROR
+===================================================== */
 
 .CodeMirror {
-    height: 100%;
+
+    height: 100% !important;
+
+    width: 100%;
 
     font-size: 15px;
 
@@ -275,14 +323,40 @@ button:active {
     text-align: left;
 
     /*
-       يبقى خط الأكواد برمجياً
-       حتى تكون الأكواد واضحة
+       مهم:
+       يبقى محرر الأكواد بخط برمجي
+       وليس Tajawal
     */
 
     font-family:
         Consolas,
         "Courier New",
         monospace;
+
+    position: relative;
+
+    z-index: 10;
+
+    pointer-events: auto;
+
+    cursor: text;
+}
+
+.CodeMirror-scroll {
+
+    min-height: 100%;
+
+    overflow: auto !important;
+
+    cursor: text;
+}
+
+.CodeMirror textarea {
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace !important;
 }
 
 
@@ -291,6 +365,7 @@ button:active {
 ===================================================== */
 
 .preview-area {
+
     background: white;
 
     position: relative;
@@ -302,9 +377,12 @@ button:active {
     border-right: 2px solid #003566;
 
     overflow: hidden;
+
+    z-index: 1;
 }
 
 .preview-title {
+
     position: absolute;
 
     top: 0;
@@ -333,6 +411,7 @@ button:active {
 }
 
 .preview-frame {
+
     position: absolute;
 
     top: 35px;
@@ -347,6 +426,7 @@ button:active {
 }
 
 iframe {
+
     width: 100%;
 
     height: 100%;
@@ -364,6 +444,7 @@ iframe {
 ===================================================== */
 
 .status {
+
     position: fixed;
 
     bottom: 12px;
@@ -392,6 +473,7 @@ iframe {
 }
 
 .status.show {
+
     opacity: 1;
 }
 
@@ -402,10 +484,12 @@ iframe {
 
 body.fullscreen-mode header,
 body.fullscreen-mode .tabs {
+
     display: none;
 }
 
 body.fullscreen-mode .editor-container {
+
     height: 100vh;
 }
 
@@ -417,10 +501,12 @@ body.fullscreen-mode .editor-container {
 @media(max-width:800px) {
 
     body {
+
         overflow: auto;
     }
 
     header {
+
         height: auto;
 
         min-height: 60px;
@@ -433,10 +519,12 @@ body.fullscreen-mode .editor-container {
     }
 
     .toolbar {
+
         justify-content: center;
     }
 
     .tabs {
+
         height: 48px;
 
         overflow-x: auto;
@@ -463,19 +551,21 @@ body.fullscreen-mode .editor-container {
     }
 
     .CodeMirror {
+
         font-size: 14px;
     }
 
     .logo {
+
         font-size: 18px;
     }
 
     button {
+
         padding: 8px 10px;
 
         font-size: 13px;
     }
-
 }
 
 
@@ -486,19 +576,21 @@ body.fullscreen-mode .editor-container {
 @media(max-width:480px) {
 
     .toolbar {
+
         gap: 4px;
     }
 
     button {
+
         padding: 7px 8px;
 
         font-size: 12px;
     }
 
     .tab {
+
         padding: 11px 15px;
     }
-
 }
 
 </style>
@@ -516,36 +608,40 @@ body.fullscreen-mode .editor-container {
 <header>
 
 <div class="logo">
-   محرر<span> الأكواد</span>من مكتبة عامودا الرقمية
+    محرر<span> الأكواد</span> من مكتبة عامودا الرقمية
 </div>
 
 
 <div class="toolbar">
 
-<button class="run" onclick="runCode()">
+<button class="run"
+onclick="runCode()">
 ▶ تشغيل
 </button>
 
-<button class="save" onclick="saveProject()">
+<button class="save"
+onclick="saveProject()">
 💾 حفظ
 </button>
 
-<button class="download" onclick="downloadHTML()">
+<button class="download"
+onclick="downloadHTML()">
 📥 تحميل
 </button>
 
-<button class="clear" onclick="clearAll()">
+<button class="clear"
+onclick="clearAll()">
 🗑️ مسح
 </button>
 
-<button class="fullscreen" onclick="toggleFullscreen()">
+<button class="fullscreen"
+onclick="toggleFullscreen()">
 ⛶ ملء الشاشة
 </button>
 
 </div>
 
 </header>
-
 
 
 <!-- =====================================================
@@ -555,22 +651,21 @@ body.fullscreen-mode .editor-container {
 <div class="tabs">
 
 <div class="tab active"
-     onclick="showEditor('html',this)">
+onclick="showEditor('html',this)">
 HTML
 </div>
 
 <div class="tab"
-     onclick="showEditor('css',this)">
+onclick="showEditor('css',this)">
 CSS
 </div>
 
 <div class="tab"
-     onclick="showEditor('js',this)">
+onclick="showEditor('js',this)">
 JavaScript
 </div>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -615,14 +710,12 @@ sandbox="allow-scripts allow-forms allow-modals allow-popups">
 </div>
 
 
-
 <!-- STATUS -->
 
 <div id="status"
 class="status">
 تم الحفظ
 </div>
-
 
 
 <script>
@@ -710,12 +803,16 @@ function hello() {
 const editors = {};
 
 
-/* HTML */
+/* =====================================================
+   HTML EDITOR
+===================================================== */
 
 editors.html = CodeMirror.fromTextArea(
     document.getElementById("html"),
     {
+
         mode: "xml",
+
         theme: "dracula",
 
         lineNumbers: true,
@@ -730,17 +827,24 @@ editors.html = CodeMirror.fromTextArea(
 
         indentUnit: 2,
 
-        indentWithTabs: false
+        indentWithTabs: false,
+
+        autofocus: true
+
     }
 );
 
 
-/* CSS */
+/* =====================================================
+   CSS EDITOR
+===================================================== */
 
 editors.css = CodeMirror.fromTextArea(
     document.getElementById("css"),
     {
+
         mode: "css",
+
         theme: "dracula",
 
         lineNumbers: true,
@@ -754,16 +858,21 @@ editors.css = CodeMirror.fromTextArea(
         indentUnit: 2,
 
         indentWithTabs: false
+
     }
 );
 
 
-/* JAVASCRIPT */
+/* =====================================================
+   JAVASCRIPT EDITOR
+===================================================== */
 
 editors.js = CodeMirror.fromTextArea(
     document.getElementById("js"),
     {
+
         mode: "javascript",
+
         theme: "dracula",
 
         lineNumbers: true,
@@ -777,6 +886,7 @@ editors.js = CodeMirror.fromTextArea(
         indentUnit: 2,
 
         indentWithTabs: false
+
     }
 );
 
@@ -785,11 +895,17 @@ editors.js = CodeMirror.fromTextArea(
    DEFAULT CONTENT
 ===================================================== */
 
-editors.html.setValue(defaultHTML.trim());
+editors.html.setValue(
+    defaultHTML.trim()
+);
 
-editors.css.setValue(defaultCSS.trim());
+editors.css.setValue(
+    defaultCSS.trim()
+);
 
-editors.js.setValue(defaultJS.trim());
+editors.js.setValue(
+    defaultJS.trim()
+);
 
 
 /* =====================================================
@@ -824,7 +940,13 @@ function showEditor(type, element) {
         .style.display = "block";
 
 
-    editors[type].refresh();
+    setTimeout(() => {
+
+        editors[type].refresh();
+
+        editors[type].focus();
+
+    }, 20);
 
 }
 
@@ -866,8 +988,6 @@ function buildDocument() {
 
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
-
-<!-- Tajawal -->
 
 <link rel="preconnect"
 href="https://fonts.googleapis.com">
@@ -920,13 +1040,15 @@ function runCode() {
         .srcdoc = documentCode;
 
 
-    showStatus("تم تشغيل المشروع ▶");
+    showStatus(
+        "تم تشغيل المشروع ▶"
+    );
 
 }
 
 
 /* =====================================================
-   SAVE PROJECT
+   SAVE
 ===================================================== */
 
 function saveProject() {
@@ -962,7 +1084,9 @@ function saveProject() {
         );
 
 
-        showStatus("تم حفظ المشروع بنجاح 💾");
+        showStatus(
+            "تم حفظ المشروع بنجاح 💾"
+        );
 
 
     } catch(error) {
@@ -1003,8 +1127,10 @@ function loadProject() {
             JSON.parse(saved);
 
 
-        if (!project ||
-            typeof project !== "object") {
+        if (
+            !project ||
+            typeof project !== "object"
+        ) {
 
             return false;
 
@@ -1024,7 +1150,9 @@ function loadProject() {
         );
 
 
-        showStatus("تم استرجاع المشروع 💾");
+        showStatus(
+            "تم استرجاع المشروع 💾"
+        );
 
 
         return true;
@@ -1086,8 +1214,6 @@ function autoSave() {
 
 }
 
-
-/* حفظ تلقائي كل 5 ثوانٍ */
 
 setInterval(
     autoSave,
@@ -1195,6 +1321,7 @@ function clearAll() {
 
     runCode();
 
+
     showStatus(
         "تم مسح المشروع 🗑️"
     );
@@ -1203,7 +1330,7 @@ function clearAll() {
 
 
 /* =====================================================
-   STATUS MESSAGE
+   STATUS
 ===================================================== */
 
 let statusTimer;
@@ -1276,9 +1403,6 @@ document.addEventListener(
     "keydown",
     function(event) {
 
-
-        /* Ctrl + S */
-
         if (
             event.ctrlKey &&
             event.key.toLowerCase() === "s"
@@ -1290,8 +1414,6 @@ document.addEventListener(
 
         }
 
-
-        /* Ctrl + Enter */
 
         if (
             event.ctrlKey &&
@@ -1315,11 +1437,6 @@ document.addEventListener(
 const projectLoaded =
     loadProject();
 
-
-/*
-   إذا لم يوجد مشروع محفوظ،
-   استخدم الأكواد الافتراضية.
-*/
 
 if (!projectLoaded) {
 
