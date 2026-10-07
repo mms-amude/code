@@ -1,0 +1,1304 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Web Editor Pro</title>
+
+<!-- =====================================================
+     CodeMirror
+===================================================== -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+
+<!-- إغلاق الوسوم والأقواس تلقائياً -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #001D3D;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header {
+    height: 60px;
+    background: #002855;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.4);
+
+    position: relative;
+    z-index: 20;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.logo span {
+    color: #00b4d8;
+}
+
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.toolbar {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+    border-radius: 7px;
+
+    padding: 9px 13px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    transition: .2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: scale(.97);
+}
+
+.run {
+    background: #00b4d8;
+    color: white;
+}
+
+.save {
+    background: #38b000;
+    color: white;
+}
+
+.download {
+    background: #fca311;
+    color: black;
+}
+
+.clear {
+    background: #d90429;
+    color: white;
+}
+
+.fullscreen {
+    background: #6c5ce7;
+    color: white;
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.tabs {
+    height: 48px;
+
+    background: #001529;
+
+    display: flex;
+    align-items: center;
+
+    padding-right: 10px;
+
+    gap: 4px;
+
+    overflow-x: auto;
+}
+
+.tab {
+    padding: 12px 22px;
+
+    cursor: pointer;
+
+    border-radius: 6px 6px 0 0;
+
+    color: #aaa;
+
+    white-space: nowrap;
+
+    transition: .2s;
+}
+
+.tab:hover {
+    color: white;
+}
+
+.tab.active {
+    background: #282a36;
+
+    color: white;
+
+    border-bottom: 3px solid #00b4d8;
+}
+
+
+/* =====================================================
+   MAIN EDITOR
+===================================================== */
+
+.editor-container {
+    height: calc(100vh - 108px);
+
+    display: grid;
+
+    grid-template-columns: 50% 50%;
+
+    min-height: 0;
+}
+
+
+/* =====================================================
+   CODE AREA
+===================================================== */
+
+.code-area {
+    direction: ltr;
+
+    height: 100%;
+
+    min-height: 0;
+
+    background: #282a36;
+
+    overflow: hidden;
+}
+
+.code-area textarea {
+    display: none;
+}
+
+.CodeMirror {
+    height: 100%;
+
+    font-size: 15px;
+
+    direction: ltr;
+
+    text-align: left;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+}
+
+
+/* =====================================================
+   PREVIEW
+===================================================== */
+
+.preview-area {
+    background: white;
+
+    position: relative;
+
+    height: 100%;
+
+    min-height: 0;
+
+    border-right: 2px solid #003566;
+
+    overflow: hidden;
+}
+
+.preview-title {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    left: 0;
+
+    height: 35px;
+
+    background: #003566;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-right: 15px;
+
+    z-index: 5;
+
+    font-weight: bold;
+}
+
+.preview-frame {
+    position: absolute;
+
+    top: 35px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background: white;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border: none;
+
+    background: white;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+    position: fixed;
+
+    bottom: 12px;
+    left: 12px;
+
+    background: rgba(0,0,0,.75);
+
+    color: white;
+
+    padding: 7px 12px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: .3s;
+
+    z-index: 100;
+}
+
+.status.show {
+    opacity: 1;
+}
+
+
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+body.fullscreen-mode header,
+body.fullscreen-mode .tabs {
+    display: none;
+}
+
+body.fullscreen-mode .editor-container {
+    height: 100vh;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:800px) {
+
+    body {
+        overflow: auto;
+    }
+
+    header {
+        height: auto;
+
+        min-height: 60px;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        padding: 10px;
+    }
+
+    .toolbar {
+        justify-content: center;
+    }
+
+    .tabs {
+        height: 48px;
+
+        overflow-x: auto;
+
+        direction: rtl;
+    }
+
+    .editor-container {
+
+        height: calc(100vh - 155px);
+
+        min-height: 500px;
+
+        grid-template-columns: 1fr;
+
+        grid-template-rows: 50% 50%;
+    }
+
+    .preview-area {
+
+        border-right: none;
+
+        border-top: 2px solid #003566;
+    }
+
+    .CodeMirror {
+        font-size: 14px;
+    }
+
+    .logo {
+        font-size: 18px;
+    }
+
+    button {
+        padding: 8px 10px;
+
+        font-size: 13px;
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL SCREENS
+===================================================== */
+
+@media(max-width:480px) {
+
+    .toolbar {
+        gap: 4px;
+    }
+
+    button {
+        padding: 7px 8px;
+        font-size: 12px;
+    }
+
+    .tab {
+        padding: 11px 15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+<div class="logo">
+    Web <span>Editor</span> Pro
+</div>
+
+
+<div class="toolbar">
+
+<button class="run" onclick="runCode()">
+▶ تشغيل
+</button>
+
+<button class="save" onclick="saveProject()">
+💾 حفظ
+</button>
+
+<button class="download" onclick="downloadHTML()">
+📥 تحميل
+</button>
+
+<button class="clear" onclick="clearAll()">
+🗑️ مسح
+</button>
+
+<button class="fullscreen" onclick="toggleFullscreen()">
+⛶ ملء الشاشة
+</button>
+
+</div>
+
+</header>
+
+
+
+<!-- =====================================================
+     TABS
+===================================================== -->
+
+<div class="tabs">
+
+<div class="tab active"
+     onclick="showEditor('html',this)">
+HTML
+</div>
+
+<div class="tab"
+     onclick="showEditor('css',this)">
+CSS
+</div>
+
+<div class="tab"
+     onclick="showEditor('js',this)">
+JavaScript
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="editor-container">
+
+
+<!-- CODE -->
+
+<div class="code-area">
+
+<textarea id="html"></textarea>
+
+<textarea id="css"></textarea>
+
+<textarea id="js"></textarea>
+
+</div>
+
+
+<!-- PREVIEW -->
+
+<div class="preview-area">
+
+<div class="preview-title">
+    👁️ المعاينة
+</div>
+
+<div class="preview-frame">
+
+<iframe
+id="preview"
+sandbox="allow-scripts allow-forms allow-modals allow-popups">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- STATUS -->
+
+<div id="status"
+class="status">
+تم الحفظ
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   DEFAULT HTML
+===================================================== */
+
+const defaultHTML = `
+<div class="container">
+
+    <h1>مرحبا بك 👋</h1>
+
+    <p>
+        هذا محرر HTML احترافي
+    </p>
+
+    <button onclick="hello()">
+        اضغط هنا
+    </button>
+
+</div>
+`;
+
+
+/* =====================================================
+   DEFAULT CSS
+===================================================== */
+
+const defaultCSS = `
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px;
+    background: #f5f5f5;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #ccc;
+}
+
+h1 {
+    color: #0077b6;
+}
+
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: #0077b6;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #005f8a;
+}
+`;
+
+
+/* =====================================================
+   DEFAULT JAVASCRIPT
+===================================================== */
+
+const defaultJS = `
+function hello() {
+
+    alert("أهلاً بك في Web Editor!");
+
+}
+`;
+
+
+/* =====================================================
+   EDITORS
+===================================================== */
+
+const editors = {};
+
+
+/* HTML */
+
+editors.html = CodeMirror.fromTextArea(
+    document.getElementById("html"),
+    {
+        mode: "xml",
+        theme: "dracula",
+
+        lineNumbers: true,
+
+        lineWrapping: true,
+
+        autoCloseTags: true,
+
+        autoCloseBrackets: true,
+
+        tabSize: 2,
+
+        indentUnit: 2,
+
+        indentWithTabs: false
+    }
+);
+
+
+/* CSS */
+
+editors.css = CodeMirror.fromTextArea(
+    document.getElementById("css"),
+    {
+        mode: "css",
+        theme: "dracula",
+
+        lineNumbers: true,
+
+        lineWrapping: true,
+
+        autoCloseBrackets: true,
+
+        tabSize: 2,
+
+        indentUnit: 2,
+
+        indentWithTabs: false
+    }
+);
+
+
+/* JAVASCRIPT */
+
+editors.js = CodeMirror.fromTextArea(
+    document.getElementById("js"),
+    {
+        mode: "javascript",
+        theme: "dracula",
+
+        lineNumbers: true,
+
+        lineWrapping: true,
+
+        autoCloseBrackets: true,
+
+        tabSize: 2,
+
+        indentUnit: 2,
+
+        indentWithTabs: false
+    }
+);
+
+
+/* =====================================================
+   DEFAULT CONTENT
+===================================================== */
+
+editors.html.setValue(defaultHTML.trim());
+
+editors.css.setValue(defaultCSS.trim());
+
+editors.js.setValue(defaultJS.trim());
+
+
+/* =====================================================
+   SHOW EDITOR
+===================================================== */
+
+function showEditor(type, element) {
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+            tab.classList.remove("active");
+
+        });
+
+
+    element.classList.add("active");
+
+
+    Object.keys(editors).forEach(key => {
+
+        editors[key]
+            .getWrapperElement()
+            .style.display = "none";
+
+    });
+
+
+    editors[type]
+        .getWrapperElement()
+        .style.display = "block";
+
+
+    editors[type].refresh();
+
+}
+
+
+/* =====================================================
+   INITIAL EDITOR
+===================================================== */
+
+showEditor(
+    "html",
+    document.querySelector(".tab")
+);
+
+
+/* =====================================================
+   BUILD HTML
+===================================================== */
+
+function buildDocument() {
+
+    const html =
+        editors.html.getValue();
+
+    const css =
+        editors.css.getValue();
+
+    const js =
+        editors.js.getValue();
+
+
+    return `
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+${css}
+
+</style>
+
+</head>
+
+<body>
+
+${html}
+
+<script>
+
+${js}
+
+<\/script>
+
+</body>
+
+</html>
+`;
+
+}
+
+
+/* =====================================================
+   RUN
+===================================================== */
+
+function runCode() {
+
+    const documentCode =
+        buildDocument();
+
+
+    document
+        .getElementById("preview")
+        .srcdoc = documentCode;
+
+
+    showStatus("تم تشغيل المشروع ▶");
+
+}
+
+
+/* =====================================================
+   SAVE PROJECT
+===================================================== */
+
+function saveProject() {
+
+    const project = {
+
+        html:
+            editors.html.getValue(),
+
+        css:
+            editors.css.getValue(),
+
+        js:
+            editors.js.getValue(),
+
+        savedAt:
+            new Date().toISOString()
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            "webEditorProject",
+            JSON.stringify(project)
+        );
+
+
+        localStorage.setItem(
+            "webEditorAutoSave",
+            JSON.stringify(project)
+        );
+
+
+        showStatus("تم حفظ المشروع بنجاح 💾");
+
+
+    } catch(error) {
+
+        alert(
+            "تعذر حفظ المشروع في المتصفح."
+        );
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD PROJECT
+===================================================== */
+
+function loadProject() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "webEditorProject"
+            );
+
+
+        if (!saved) {
+
+            return false;
+
+        }
+
+
+        const project =
+            JSON.parse(saved);
+
+
+        if (!project ||
+            typeof project !== "object") {
+
+            return false;
+
+        }
+
+
+        editors.html.setValue(
+            project.html || ""
+        );
+
+        editors.css.setValue(
+            project.css || ""
+        );
+
+        editors.js.setValue(
+            project.js || ""
+        );
+
+
+        showStatus("تم استرجاع المشروع 💾");
+
+
+        return true;
+
+
+    } catch(error) {
+
+        console.error(
+            "خطأ أثناء تحميل المشروع:",
+            error
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   AUTO SAVE
+===================================================== */
+
+function autoSave() {
+
+    const project = {
+
+        html:
+            editors.html.getValue(),
+
+        css:
+            editors.css.getValue(),
+
+        js:
+            editors.js.getValue(),
+
+        savedAt:
+            new Date().toISOString()
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            "webEditorAutoSave",
+            JSON.stringify(project)
+        );
+
+    } catch(error) {
+
+        console.error(
+            "خطأ في الحفظ التلقائي:",
+            error
+        );
+
+    }
+
+}
+
+
+/* حفظ تلقائي كل 5 ثوانٍ */
+
+setInterval(
+    autoSave,
+    5000
+);
+
+
+/* =====================================================
+   DOWNLOAD
+===================================================== */
+
+function downloadHTML() {
+
+    const fullHTML =
+        buildDocument();
+
+
+    const blob =
+        new Blob(
+            [fullHTML],
+            {
+                type:
+                    "text/html;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+
+    a.href = url;
+
+    a.download =
+        "my-page.html";
+
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+
+    setTimeout(() => {
+
+        URL.revokeObjectURL(url);
+
+    }, 100);
+
+
+    showStatus(
+        "تم تحميل الصفحة 📥"
+    );
+
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearAll() {
+
+    const answer =
+        confirm(
+            "هل تريد مسح جميع الأكواد والحفظ؟"
+        );
+
+
+    if (!answer) {
+
+        return;
+
+    }
+
+
+    editors.html.setValue("");
+
+    editors.css.setValue("");
+
+    editors.js.setValue("");
+
+
+    try {
+
+        localStorage.removeItem(
+            "webEditorProject"
+        );
+
+        localStorage.removeItem(
+            "webEditorAutoSave"
+        );
+
+    } catch(error) {
+
+        console.error(error);
+
+    }
+
+
+    runCode();
+
+    showStatus(
+        "تم مسح المشروع 🗑️"
+    );
+
+}
+
+
+/* =====================================================
+   STATUS MESSAGE
+===================================================== */
+
+let statusTimer;
+
+
+function showStatus(message) {
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    status.textContent =
+        message;
+
+
+    status.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(statusTimer);
+
+
+    statusTimer =
+        setTimeout(() => {
+
+            status.classList.remove(
+                "show"
+            );
+
+        }, 2000);
+
+}
+
+
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+function toggleFullscreen() {
+
+    document.body
+        .classList
+        .toggle(
+            "fullscreen-mode"
+        );
+
+
+    setTimeout(() => {
+
+        Object.keys(editors)
+            .forEach(key => {
+
+                editors[key].refresh();
+
+            });
+
+    }, 100);
+
+}
+
+
+/* =====================================================
+   KEYBOARD SHORTCUTS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+
+        /* Ctrl + S */
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() === "s"
+        ) {
+
+            event.preventDefault();
+
+            saveProject();
+
+        }
+
+
+        /* Ctrl + Enter */
+
+        if (
+            event.ctrlKey &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            runCode();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
+
+const projectLoaded =
+    loadProject();
+
+
+/*
+   إذا لم يوجد مشروع محفوظ،
+   استخدم الأكواد الافتراضية.
+*/
+
+if (!projectLoaded) {
+
+    editors.html.setValue(
+        defaultHTML.trim()
+    );
+
+    editors.css.setValue(
+        defaultCSS.trim()
+    );
+
+    editors.js.setValue(
+        defaultJS.trim()
+    );
+
+}
+
+
+/* =====================================================
+   FIRST RUN
+===================================================== */
+
+runCode();
+
+
+/* =====================================================
+   WINDOW RESIZE
+===================================================== */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        Object.keys(editors)
+            .forEach(key => {
+
+                editors[key].refresh();
+
+            });
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
