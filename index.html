@@ -462,7 +462,7 @@ body.fullscreen-mode .editor-container {
 <header>
 
 <div class="logo">
-    من مكتبة عامودا الرقمية<span>الأكواد</span> محرر
+   محرر<span>الأكواد</span>من مكتبة عامودا الرقمية  
 </div>
 
 
@@ -1300,4 +1300,13 @@ window.addEventListener(
 
 </body>
 </html>
-```
+```supabase-js@2:13  GET https://hvuezrpzzbordyfxmpqn.supabase.co/rest/v1/store_admins?select=user_id&user_id=eq.3101503e-03a0-45e4-8980-368521b655dd 403 (Forbidden)
+(anonymous) @ supabase-js@2:13
+(anonymous) @ supabase-js@2:13
+await in (anonymous)
+ie @ supabase-js@2:7
+(anonymous) @ supabase-js@2:7
+then @ supabase-js@2:7
+admin.html:965 USER UID: 3101503e-03a0-45e4-8980-368521b655dd
+admin.html:966 ADMIN DATA: null
+admin.html:967 ADMIN ERROR: {code: '42501', details: null, hint: 'Grant the required privileges to the current role …T SELECT ON public.store_admins TO authenticated;', message: 'permission denied for table store_admins'}
