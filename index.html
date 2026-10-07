@@ -2,38 +2,45 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>محرر الأكواد من مكتبة عامودا الرقمية</title>
 
-<!-- =========================
-     Google Font - Tajawal
-========================= -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Tajawal -->
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
 
 
-<!-- =========================
-     CodeMirror
-========================= -->
+<!-- CodeMirror -->
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 
-
-<!-- =========================
-     CodeMirror Autocomplete
-========================= -->
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css">
 
 
 <style>
+
+/* =========================
+   الأساس
+========================= */
 
 *{
     box-sizing:border-box;
@@ -55,8 +62,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-
 
     --white:#ffffff;
 
-    --danger:#b63b3b;
     --success:#2d8a57;
+    --danger:#b63b3b;
 
     --shadow:0 10px 30px rgba(0,0,0,.15);
 }
@@ -105,8 +112,6 @@ header{
     align-items:center;
 
     justify-content:space-between;
-
-    gap:20px;
 
     box-shadow:var(--shadow);
 
@@ -194,7 +199,8 @@ header{
 
     border-bottom:1px solid rgba(0,0,0,.08);
 
-    box-shadow:0 3px 12px rgba(0,0,0,.05);
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.05);
 
     position:sticky;
 
@@ -234,7 +240,8 @@ header{
 
     transform:translateY(-2px);
 
-    box-shadow:0 5px 12px rgba(0,0,0,.12);
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.12);
 }
 
 .btn-run{
@@ -283,7 +290,7 @@ header{
 
 
 /* =========================
-   Editor Tabs
+   Tabs
 ========================= */
 
 .editor-tabs{
@@ -324,7 +331,8 @@ header{
 
     color:white;
 
-    background:rgba(255,255,255,.08);
+    background:
+        rgba(255,255,255,.08);
 }
 
 .editor-tab.active{
@@ -359,7 +367,7 @@ header{
 
 
 /* =========================
-   Editor Panel
+   Editor
 ========================= */
 
 .editor-panel{
@@ -429,11 +437,6 @@ header{
     text-align:left;
 }
 
-.CodeMirror-linenumbers{
-
-    direction:ltr;
-}
-
 .CodeMirror-hints{
 
     font-family:
@@ -443,12 +446,12 @@ header{
 
     font-size:13px;
 
-    z-index:99999;
+    z-index:999999;
 }
 
 .CodeMirror-hint{
 
-    padding:6px 12px;
+    padding:7px 12px;
 }
 
 .CodeMirror-hint-active{
@@ -520,7 +523,7 @@ header{
 
 
 /* =========================
-   Bottom Info
+   المعلومات
 ========================= */
 
 .bottom-info{
@@ -629,7 +632,7 @@ header{
 
 
 /* =========================
-   Mobile
+   Responsive
 ========================= */
 
 @media(max-width:900px){
@@ -680,7 +683,6 @@ header{
 
         padding:10px 15px;
     }
-
 }
 
 
@@ -705,17 +707,11 @@ header{
         font-size:12px;
     }
 
-    .bottom-info{
-
-        font-size:12px;
-    }
-
     .editor-wrapper,
     #preview{
 
         height:400px;
     }
-
 }
 
 </style>
@@ -753,7 +749,6 @@ header{
     </div>
 
 </header>
-
 
 
 <!-- =========================
@@ -809,15 +804,12 @@ header{
 </div>
 
 
-
 <!-- =========================
      Main
 ========================= -->
 
 <div class="main-container">
 
-
-    <!-- Tabs -->
 
     <div class="editor-tabs">
 
@@ -853,9 +845,6 @@ header{
     </div>
 
 
-
-    <!-- Workspace -->
-
     <div class="workspace">
 
 
@@ -882,21 +871,28 @@ header{
 
             <div class="editor-wrapper">
 
-                <div id="htmlEditor"
-                     class="code-area"></div>
+                <div
+                    id="htmlEditor"
+                    class="code-area">
+                </div>
 
-                <div id="cssEditor"
-                     class="code-area"
-                     style="display:none;"></div>
 
-                <div id="jsEditor"
-                     class="code-area"
-                     style="display:none;"></div>
+                <div
+                    id="cssEditor"
+                    class="code-area"
+                    style="display:none;">
+                </div>
+
+
+                <div
+                    id="jsEditor"
+                    class="code-area"
+                    style="display:none;">
+                </div>
 
             </div>
 
         </div>
-
 
 
         <!-- Preview -->
@@ -930,22 +926,22 @@ header{
     </div>
 
 
-
-    <!-- Bottom Info -->
-
     <div class="bottom-info">
 
         <div class="help-text">
 
-            💡 اكتب الكود وستظهر لك الاقتراحات تلقائيًا.
+            💡 اكتب
+            <b>&lt;</b>
+            في محرر HTML لعرض اقتراحات الوسوم.
 
             <span class="shortcut">
                 Ctrl + Space
             </span>
 
-            لفتح قائمة الاقتراحات يدويًا.
+            لفتح الاقتراحات.
 
         </div>
+
 
         <div>
 
@@ -968,26 +964,20 @@ header{
 </div>
 
 
-
-<!-- Toast -->
-
 <div
     id="statusToast"
     class="status-toast">
 </div>
 
 
-
 <!-- =========================
-     CodeMirror Core
+     CodeMirror
 ========================= -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 
 
-<!-- =========================
-     CodeMirror Modes
-========================= -->
+<!-- Modes -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
 
@@ -996,9 +986,7 @@ header{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 
 
-<!-- =========================
-     Auto Close
-========================= -->
+<!-- Editing -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
 
@@ -1007,9 +995,7 @@ header{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
 
 
-<!-- =========================
-     Autocomplete
-========================= -->
+<!-- Hints -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
 
@@ -1018,7 +1004,6 @@ header{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/css-hint.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/javascript-hint.min.js"></script>
-
 
 
 <script>
@@ -1032,9 +1017,8 @@ const editors = {};
 let currentLanguage = "html";
 
 
-
 /* ==========================================================
-   الأكواد الافتراضية
+   HTML الافتراضي
 ========================================================== */
 
 const defaultHTML = `<!DOCTYPE html>
@@ -1055,15 +1039,15 @@ content="width=device-width, initial-scale=1.0">
 
 <div class="container">
 
-    <h1>مرحباً بك 👋</h1>
+<h1>مرحباً بك 👋</h1>
 
-    <p>
-        ابدأ بكتابة HTML هنا.
-    </p>
+<p>
+ابدأ بكتابة HTML هنا.
+</p>
 
-    <button onclick="showMessage()">
-        اضغط هنا
-    </button>
+<button onclick="showMessage()">
+اضغط هنا
+</button>
 
 </div>
 
@@ -1072,313 +1056,78 @@ content="width=device-width, initial-scale=1.0">
 </html>`;
 
 
+/* ==========================================================
+   CSS الافتراضي
+========================================================== */
+
 const defaultCSS = `body {
 
-    font-family: Tajawal, sans-serif;
+font-family: Tajawal, sans-serif;
 
-    background: #f6f2e9;
+background:#f6f2e9;
 
-    color: #0b2239;
+color:#0b2239;
 
-    margin: 0;
+margin:0;
 
-    padding: 40px;
+padding:40px;
 
 }
 
 .container {
 
-    max-width: 700px;
+max-width:700px;
 
-    margin: auto;
+margin:auto;
 
-    text-align: center;
+text-align:center;
 
 }
 
 h1 {
 
-    color: #19496b;
+color:#19496b;
 
 }
 
 button {
 
-    background: #c7a45b;
+background:#c7a45b;
 
-    color: #0b2239;
+color:#0b2239;
 
-    border: none;
+border:none;
 
-    padding: 12px 25px;
+padding:12px 25px;
 
-    border-radius: 8px;
+border-radius:8px;
 
-    cursor: pointer;
+cursor:pointer;
 
-    font-family: inherit;
+font-family:inherit;
 
-    font-weight: bold;
+font-weight:bold;
 
 }`;
 
+
+/* ==========================================================
+   JavaScript الافتراضي
+========================================================== */
 
 const defaultJS = `function showMessage() {
 
-    alert("مرحباً بك في محرر الأكواد 📚");
+alert("مرحباً بك في محرر الأكواد 📚");
 
 }`;
 
 
-
 /* ==========================================================
-   دالة الاقتراحات
-========================================================== */
-
-function autoHint(cm){
-
-    const mode = cm.getMode().name;
-
-    try{
-
-        if(
-            mode === "xml" ||
-            mode === "htmlmixed"
-        ){
-
-            return CodeMirror.hint.xml(cm);
-
-        }
-
-        if(mode === "css"){
-
-            return CodeMirror.hint.css(cm);
-
-        }
-
-        if(
-            mode === "javascript" ||
-            mode === "javascript"
-        ){
-
-            return CodeMirror.hint.javascript(cm);
-
-        }
-
-    }catch(error){
-
-        console.log(
-            "Autocomplete error:",
-            error
-        );
-
-    }
-
-    return null;
-}
-
-
-
-/* ==========================================================
-   فتح قائمة الاقتراحات
-========================================================== */
-
-function showAutocomplete(cm){
-
-    if(!cm.hasFocus()){
-
-        cm.focus();
-
-    }
-
-    CodeMirror.showHint(
-        cm,
-        autoHint,
-        {
-            completeSingle:false,
-
-            closeOnUnfocus:true,
-
-            alignWithWord:true
-        }
-    );
-
-}
-
-
-
-/* ==========================================================
-   تشغيل الإكمال التلقائي أثناء الكتابة
-========================================================== */
-
-function enableAutoComplete(cm, type){
-
-    cm.on(
-        "inputRead",
-        function(instance, change){
-
-            if(
-                !change ||
-                !change.text ||
-                change.origin === "complete"
-            ){
-
-                return;
-
-            }
-
-
-            const text =
-                change.text.join("");
-
-
-            const cursor =
-                instance.getCursor();
-
-
-            const line =
-                instance.getLine(cursor.line);
-
-
-            const beforeCursor =
-                line.substring(
-                    0,
-                    cursor.ch
-                );
-
-
-            let shouldShow = false;
-
-
-
-            /* HTML */
-
-            if(type === "html"){
-
-                if(
-                    /<[\w-]*$/.test(
-                        beforeCursor
-                    )
-                ){
-
-                    shouldShow = true;
-
-                }
-
-                if(
-                    /\s[\w-]*$/.test(
-                        beforeCursor
-                    ) &&
-                    beforeCursor.includes("<")
-                ){
-
-                    shouldShow = true;
-
-                }
-
-            }
-
-
-
-            /* CSS */
-
-            if(type === "css"){
-
-                if(
-                    /[\w-]+\s*$/.test(
-                        beforeCursor
-                    )
-                ){
-
-                    shouldShow = true;
-
-                }
-
-                if(
-                    /:\s*[\w-]*$/.test(
-                        beforeCursor
-                    )
-                ){
-
-                    shouldShow = true;
-
-                }
-
-            }
-
-
-
-            /* JavaScript */
-
-            if(type === "js"){
-
-                if(
-                    /[\w$]+\s*$/.test(
-                        beforeCursor
-                    )
-                ){
-
-                    shouldShow = true;
-
-                }
-
-                if(
-                    /\.[\w$]*$/.test(
-                        beforeCursor
-                    )
-                ){
-
-                    shouldShow = true;
-
-                }
-
-            }
-
-
-
-            if(
-                shouldShow &&
-                text.length > 0
-            ){
-
-                clearTimeout(
-                    cm._autocompleteTimer
-                );
-
-
-                cm._autocompleteTimer =
-                    setTimeout(
-                        function(){
-
-                            if(cm.hasFocus()){
-
-                                showAutocomplete(cm);
-
-                            }
-
-                        },
-                        120
-                    );
-
-            }
-
-        }
-    );
-
-}
-
-
-
-/* ==========================================================
-   إنشاء محرر HTML
+   إنشاء HTML Editor
 ========================================================== */
 
 editors.html = CodeMirror(
-
-    document.getElementById(
-        "htmlEditor"
-    ),
-
+    document.getElementById("htmlEditor"),
     {
 
         value:defaultHTML,
@@ -1390,8 +1139,6 @@ editors.html = CodeMirror(
         lineNumbers:true,
 
         lineWrapping:false,
-
-        autoCloseTags:true,
 
         autoCloseBrackets:true,
 
@@ -1405,31 +1152,32 @@ editors.html = CodeMirror(
 
         extraKeys:{
 
-            "Ctrl-Space":
-                function(cm){
+            "Ctrl-Space":function(cm){
 
-                    showAutocomplete(cm);
+                openHints(cm);
 
-                }
+            },
+
+            "Enter":function(cm){
+
+                CodeMirror.Pass;
+
+                htmlAutoClose(cm);
+
+            }
 
         }
 
     }
-
 );
 
 
-
 /* ==========================================================
-   إنشاء محرر CSS
+   CSS Editor
 ========================================================== */
 
 editors.css = CodeMirror(
-
-    document.getElementById(
-        "cssEditor"
-    ),
-
+    document.getElementById("cssEditor"),
     {
 
         value:defaultCSS,
@@ -1452,31 +1200,24 @@ editors.css = CodeMirror(
 
         extraKeys:{
 
-            "Ctrl-Space":
-                function(cm){
+            "Ctrl-Space":function(cm){
 
-                    showAutocomplete(cm);
+                openHints(cm);
 
-                }
+            }
 
         }
 
     }
-
 );
 
 
-
 /* ==========================================================
-   إنشاء محرر JavaScript
+   JavaScript Editor
 ========================================================== */
 
 editors.js = CodeMirror(
-
-    document.getElementById(
-        "jsEditor"
-    ),
-
+    document.getElementById("jsEditor"),
     {
 
         value:defaultJS,
@@ -1499,57 +1240,526 @@ editors.js = CodeMirror(
 
         extraKeys:{
 
-            "Ctrl-Space":
-                function(cm){
+            "Ctrl-Space":function(cm){
 
-                    showAutocomplete(cm);
+                openHints(cm);
 
-                }
+            }
 
         }
 
     }
-
 );
 
 
-
 /* ==========================================================
-   تفعيل الاقتراحات
+   قائمة وسوم HTML
 ========================================================== */
 
-enableAutoComplete(
-    editors.html,
-    "html"
-);
+const htmlTags = [
 
-enableAutoComplete(
-    editors.css,
-    "css"
-);
+    "html",
+    "head",
+    "body",
+    "title",
+    "meta",
+    "link",
+    "style",
+    "script",
 
-enableAutoComplete(
-    editors.js,
-    "js"
-);
+    "header",
+    "nav",
+    "main",
+    "section",
+    "article",
+    "aside",
+    "footer",
 
+    "div",
+    "span",
+
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+
+    "p",
+
+    "a",
+
+    "img",
+
+    "picture",
+    "source",
+
+    "ul",
+    "ol",
+    "li",
+
+    "table",
+    "thead",
+    "tbody",
+    "tfoot",
+    "tr",
+    "th",
+    "td",
+
+    "form",
+    "label",
+    "input",
+    "textarea",
+    "select",
+    "option",
+    "button",
+
+    "video",
+    "audio",
+    "iframe",
+
+    "canvas",
+
+    "br",
+    "hr",
+
+    "strong",
+    "b",
+    "em",
+    "i",
+    "u",
+    "small",
+    "mark",
+
+    "details",
+    "summary",
+
+    "figure",
+    "figcaption"
+];
 
 
 /* ==========================================================
-   عرض المحرر المختار
+   الوسوم التي لا تحتاج إغلاق
+========================================================== */
+
+const voidTags = new Set([
+
+    "area",
+    "base",
+    "br",
+    "col",
+    "embed",
+    "hr",
+    "img",
+    "input",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr"
+
+]);
+
+
+/* ==========================================================
+   اقتراحات HTML مخصصة
+========================================================== */
+
+function htmlHint(cm){
+
+    const cursor =
+        cm.getCursor();
+
+    const line =
+        cm.getLine(cursor.line);
+
+    const before =
+        line.substring(
+            0,
+            cursor.ch
+        );
+
+
+    const match =
+        before.match(
+            /<([a-zA-Z0-9-]*)$/
+        );
+
+
+    if(!match){
+
+        return CodeMirror.hint.xml(cm);
+
+    }
+
+
+    const typed =
+        match[1].toLowerCase();
+
+
+    const start =
+        cursor.ch - typed.length;
+
+
+    const list =
+        htmlTags
+            .filter(
+                tag =>
+                    tag.startsWith(typed)
+            )
+            .map(
+                tag => ({
+                    text:tag,
+                    display:
+                        "<" + tag + ">"
+                })
+            );
+
+
+    return {
+
+        list:list,
+
+        from:CodeMirror.Pos(
+            cursor.line,
+            start
+        ),
+
+        to:CodeMirror.Pos(
+            cursor.line,
+            cursor.ch
+        )
+
+    };
+
+}
+
+
+/* ==========================================================
+   CSS / JS / HTML Hints
+========================================================== */
+
+function openHints(cm){
+
+    const mode =
+        cm.getMode().name;
+
+
+    if(
+        mode === "xml" ||
+        mode === "htmlmixed"
+    ){
+
+        CodeMirror.showHint(
+            cm,
+            htmlHint,
+            {
+                completeSingle:false
+            }
+        );
+
+        return;
+
+    }
+
+
+    if(mode === "css"){
+
+        CodeMirror.showHint(
+            cm,
+            CodeMirror.hint.css,
+            {
+                completeSingle:false
+            }
+        );
+
+        return;
+
+    }
+
+
+    if(mode === "javascript"){
+
+        CodeMirror.showHint(
+            cm,
+            CodeMirror.hint.javascript,
+            {
+                completeSingle:false
+            }
+        );
+
+    }
+
+}
+
+
+/* ==========================================================
+   إغلاق HTML تلقائيًا
+========================================================== */
+
+function htmlAutoClose(cm){
+
+    const cursor =
+        cm.getCursor();
+
+    const line =
+        cm.getLine(cursor.line);
+
+
+    /*
+       نبحث عن آخر وسم مفتوح
+       مثل:
+
+       <div>
+
+       <section class="box">
+
+       <h1>
+    */
+
+    const match =
+        line
+            .substring(
+                0,
+                cursor.ch
+            )
+            .match(
+                /<([a-zA-Z][\w:-]*)(?:\s[^<>]*)?>$/
+            );
+
+
+    if(!match){
+
+        CodeMirror.Pass;
+
+        return;
+
+    }
+
+
+    const tagName =
+        match[1].toLowerCase();
+
+
+    /* لا نغلق الوسوم الذاتية */
+
+    if(voidTags.has(tagName)){
+
+        CodeMirror.Pass;
+
+        return;
+
+    }
+
+
+    const closingTag =
+        "</" +
+        tagName +
+        ">";
+
+
+    /*
+       نضع وسم الإغلاق بعد المؤشر
+    */
+
+    cm.replaceRange(
+        closingTag,
+        cursor,
+        cursor
+    );
+
+
+    /*
+       يبقى المؤشر داخل الوسم
+    */
+
+    cm.setCursor(
+        cursor
+    );
+
+}
+
+
+/* ==========================================================
+   معالجة الكتابة داخل HTML
+========================================================== */
+
+editors.html.on(
+    "beforeChange",
+    function(cm, change){
+
+        /*
+           لا نتدخل في اللصق
+           أو العمليات البرمجية
+        */
+
+        if(
+            change.origin !== "+input"
+        ){
+
+            return;
+
+        }
+
+    }
+);
+
+
+/* ==========================================================
+   فتح الاقتراحات عند كتابة <
+========================================================== */
+
+editors.html.on(
+    "inputRead",
+    function(cm, change){
+
+        if(
+            !change.text ||
+            change.origin === "complete"
+        ){
+
+            return;
+
+        }
+
+
+        const text =
+            change.text.join("");
+
+
+        if(
+            text === "<" ||
+            /^[a-zA-Z]$/.test(text)
+        ){
+
+            setTimeout(
+                function(){
+
+                    if(cm.hasFocus()){
+
+                        openHints(cm);
+
+                    }
+
+                },
+                80
+            );
+
+        }
+
+    }
+);
+
+
+/* ==========================================================
+   CSS autocomplete
+========================================================== */
+
+editors.css.on(
+    "inputRead",
+    function(cm, change){
+
+        if(
+            !change.text ||
+            change.origin === "complete"
+        ){
+
+            return;
+
+        }
+
+
+        const text =
+            change.text.join("");
+
+
+        if(
+            /^[a-zA-Z-]$/.test(text)
+        ){
+
+            setTimeout(
+                function(){
+
+                    if(cm.hasFocus()){
+
+                        openHints(cm);
+
+                    }
+
+                },
+                100
+            );
+
+        }
+
+    }
+);
+
+
+/* ==========================================================
+   JavaScript autocomplete
+========================================================== */
+
+editors.js.on(
+    "inputRead",
+    function(cm, change){
+
+        if(
+            !change.text ||
+            change.origin === "complete"
+        ){
+
+            return;
+
+        }
+
+
+        const text =
+            change.text.join("");
+
+
+        if(
+            /^[a-zA-Z_$]$/.test(text) ||
+            text === "."
+        ){
+
+            setTimeout(
+                function(){
+
+                    if(cm.hasFocus()){
+
+                        openHints(cm);
+
+                    }
+
+                },
+                100
+            );
+
+        }
+
+    }
+);
+
+
+/* ==========================================================
+   تبديل المحررات
 ========================================================== */
 
 function showEditor(type){
 
-    currentLanguage = type;
+    currentLanguage =
+        type;
 
 
     document
         .querySelectorAll(".code-area")
         .forEach(
-            function(editor){
+            function(area){
 
-                editor.style.display =
+                area.style.display =
                     "none";
 
             }
@@ -1558,8 +1768,8 @@ function showEditor(type){
 
     document.getElementById(
         type + "Editor"
-    ).style.display = "block";
-
+    ).style.display =
+        "block";
 
 
     document
@@ -1590,7 +1800,6 @@ function showEditor(type){
         );
 
     }
-
 
 
     const titles = {
@@ -1627,7 +1836,6 @@ function showEditor(type){
         labels[type];
 
 
-
     setTimeout(
         function(){
 
@@ -1636,20 +1844,19 @@ function showEditor(type){
             editors[type].focus();
 
         },
-        20
+        30
     );
 
 }
 
 
-
 /* ==========================================================
-   بناء صفحة HTML
+   بناء HTML النهائي
 ========================================================== */
 
 function buildHTML(){
 
-    const html =
+    let html =
         editors.html.getValue();
 
     const css =
@@ -1659,28 +1866,20 @@ function buildHTML(){
         editors.js.getValue();
 
 
-    let result = html;
-
-
-
-    /* إضافة CSS */
-
     if(css.trim()){
 
         const style =
-            `<style>
+`<style>
 ${css}
 </style>`;
 
 
         if(
-            result
-                .toLowerCase()
-                .includes("</head>")
+            /<\/head>/i.test(html)
         ){
 
-            result =
-                result.replace(
+            html =
+                html.replace(
                     /<\/head>/i,
                     style +
                     "\n</head>"
@@ -1688,35 +1887,30 @@ ${css}
 
         }else{
 
-            result =
+            html =
                 style +
                 "\n" +
-                result;
+                html;
 
         }
 
     }
 
 
-
-    /* إضافة JavaScript */
-
     if(js.trim()){
 
         const script =
-            `<script>
+`<script>
 ${js}
 <\/script>`;
 
 
         if(
-            result
-                .toLowerCase()
-                .includes("</body>")
+            /<\/body>/i.test(html)
         ){
 
-            result =
-                result.replace(
+            html =
+                html.replace(
                     /<\/body>/i,
                     script +
                     "\n</body>"
@@ -1724,8 +1918,7 @@ ${js}
 
         }else{
 
-            result =
-                result +
+            html +=
                 "\n" +
                 script;
 
@@ -1734,14 +1927,13 @@ ${js}
     }
 
 
-    return result;
+    return html;
 
 }
 
 
-
 /* ==========================================================
-   تشغيل المشروع
+   تشغيل
 ========================================================== */
 
 function runCode(){
@@ -1770,26 +1962,19 @@ function runCode(){
 
     }catch(error){
 
-        document.getElementById(
-            "previewStatus"
-        ).textContent =
-            "خطأ";
-
+        console.error(error);
 
         showStatus(
             "حدث خطأ أثناء تشغيل الكود"
         );
-
-        console.error(error);
 
     }
 
 }
 
 
-
 /* ==========================================================
-   حفظ المشروع
+   حفظ
 ========================================================== */
 
 function saveProject(){
@@ -1821,9 +2006,8 @@ function saveProject(){
 }
 
 
-
 /* ==========================================================
-   استرجاع المشروع
+   استرجاع
 ========================================================== */
 
 function loadProject(){
@@ -1855,11 +2039,9 @@ function loadProject(){
             project.html || ""
         );
 
-
         editors.css.setValue(
             project.css || ""
         );
-
 
         editors.js.setValue(
             project.js || ""
@@ -1893,13 +2075,11 @@ function loadProject(){
 }
 
 
-
 /* ==========================================================
-   الحفظ التلقائي
+   حفظ تلقائي
 ========================================================== */
 
 setInterval(
-
     function(){
 
         const project = {
@@ -1922,15 +2102,12 @@ setInterval(
         );
 
     },
-
     5000
-
 );
 
 
-
 /* ==========================================================
-   تنزيل HTML
+   تنزيل
 ========================================================== */
 
 function downloadHTML(){
@@ -1957,7 +2134,8 @@ function downloadHTML(){
         document.createElement("a");
 
 
-    link.href = url;
+    link.href =
+        url;
 
     link.download =
         "my-web-page.html";
@@ -1988,9 +2166,8 @@ function downloadHTML(){
 }
 
 
-
 /* ==========================================================
-   مسح الأكواد
+   مسح
 ========================================================== */
 
 function clearProject(){
@@ -2020,13 +2197,6 @@ function clearProject(){
     ).srcdoc = "";
 
 
-    editors.html.refresh();
-
-    editors.css.refresh();
-
-    editors.js.refresh();
-
-
     localStorage.removeItem(
         "webEditorProject"
     );
@@ -2050,9 +2220,8 @@ function clearProject(){
 }
 
 
-
 /* ==========================================================
-   رسالة الحالة
+   الرسائل
 ========================================================== */
 
 let statusTimer;
@@ -2095,7 +2264,6 @@ function showStatus(message){
 }
 
 
-
 /* ==========================================================
    اختصارات لوحة المفاتيح
 ========================================================== */
@@ -2103,8 +2271,6 @@ function showStatus(message){
 document.addEventListener(
     "keydown",
     function(event){
-
-        /* Ctrl + S */
 
         if(
             event.ctrlKey &&
@@ -2117,9 +2283,6 @@ document.addEventListener(
 
         }
 
-
-
-        /* Ctrl + Enter */
 
         if(
             event.ctrlKey &&
@@ -2136,9 +2299,8 @@ document.addEventListener(
 );
 
 
-
 /* ==========================================================
-   تحديث CodeMirror عند تغيير حجم النافذة
+   Resize
 ========================================================== */
 
 window.addEventListener(
@@ -2155,9 +2317,8 @@ window.addEventListener(
 );
 
 
-
 /* ==========================================================
-   تشغيل الصفحة أول مرة
+   البداية
 ========================================================== */
 
 showEditor("html");
