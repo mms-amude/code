@@ -1272,6 +1272,55 @@ header .toolbar *::-webkit-scrollbar {
 .CodeMirror { font-size: 15px !important; }
 @media (max-width: 800px) { .CodeMirror { font-size: 14px !important; } }
 
+
+
+/* الإصلاح المقصود: تصغير تبويبات HTML/CSS/JavaScript لتبقى كلها ضمن الصف دون تمرير */
+.tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 2px !important;
+    height: 36px !important;
+    flex: 0 0 36px !important;
+    min-height: 36px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 3px 6px !important;
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+.tabs::-webkit-scrollbar,
+.tabs::-webkit-scrollbar-button,
+.tabs::-webkit-scrollbar-thumb,
+.tabs::-webkit-scrollbar-track,
+.tabs::-webkit-scrollbar-corner {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+}
+.tabs .tab {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    padding: 6px 12px !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+}
+@media (max-width: 800px) {
+    .tabs { height: 34px !important; flex-basis: 34px !important; min-height: 34px !important; }
+    .tabs .tab { padding: 5px 9px !important; font-size: 11px !important; }
+}
+/* إبقاء حجم خط الكود التجريبي كما طلبت */
+.code-area .CodeMirror { font-size: 15px !important; }
+@media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
+
 </style>
 
 </head>
