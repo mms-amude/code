@@ -578,6 +578,44 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
     header { background: linear-gradient(145deg, #002855, #00416d); }
 }
 
+
+/* تحسين إضافي للنوافذ المنبثقة */
+.modal-overlay {
+    background:
+      radial-gradient(circle at 50% 42%, rgba(0,180,216,.12), transparent 42%),
+      rgba(0, 8, 22, .78);
+}
+.modal-card {
+    position: relative;
+    width: min(100%, 440px);
+    border-radius: 24px;
+    border: 1px solid rgba(83, 211, 255, .42);
+    background:
+      radial-gradient(circle at 100% 0%, rgba(0,180,216,.16), transparent 38%),
+      linear-gradient(150deg, #102d4d 0%, #091b31 72%);
+    box-shadow: 0 30px 90px rgba(0,0,0,.58), 0 0 0 1px rgba(255,255,255,.025), 0 0 45px rgba(0,180,216,.13);
+}
+.modal-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 24px auto;
+    height: 3px;
+    border-radius: 0 0 8px 8px;
+    background: linear-gradient(90deg, transparent, #25c7f4, #6b8cff, transparent);
+}
+.modal-head { padding: 27px 25px 15px; }
+.modal-icon {
+    border-radius: 17px;
+    background: linear-gradient(135deg, #25c7f4, #376bff);
+    box-shadow: 0 8px 28px rgba(37,199,244,.3), inset 0 1px 0 rgba(255,255,255,.28);
+}
+.modal-title { font-size: 21px; letter-spacing: -.2px; }
+.modal-message { padding: 0 25px 25px; font-size: 15px; line-height: 2; color: #d0deed; }
+.modal-actions { padding: 17px 25px 25px; gap: 12px; }
+.modal-actions button { min-height: 46px; border-radius: 13px; }
+.modal-confirm { background: linear-gradient(135deg, #0db8d9, #2867f2); box-shadow: 0 6px 18px rgba(27,130,237,.23); }
+.modal-cancel { background: rgba(255,255,255,.055); border-color: rgba(255,255,255,.12); }
+
 </style>
 
 </head>
@@ -593,7 +631,7 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
 <header>
 
 <div class="logo" aria-label="محرر الأكواد من مكتبة عامودا">
-    محرر الأكواد <span>من مكتبة عامودا</span>
+    محرر الأكواد من مكتبة <span>عامودا</span>
 </div>
 
 
@@ -797,6 +835,10 @@ function hello() {
               <button onclick="document.getElementById('helloModal').remove()" style="border:0;border-radius:10px;padding:11px 28px;background:linear-gradient(135deg,#00a8cc,#2475f5);color:#fff;font-size:15px;font-weight:bold;cursor:pointer">رائع، لنبدأ</button>
             </div>
           </div>`;
+        document.body.appendChild(box);
+    }
+}
+`;
         document.body.appendChild(box);
     }
 }
