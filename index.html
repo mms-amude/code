@@ -31,7 +31,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.mi
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
 
 
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
 <style>
+* { font-family: "Tajawal", Arial, sans-serif; }
+.CodeMirror, .CodeMirror textarea, .CodeMirror pre { font-family: "Tajawal", monospace !important; }
 
 /* =====================================================
    GLOBAL
@@ -145,12 +149,6 @@ button:active {
     background: #d90429;
     color: white;
 }
-
-.fullscreen {
-    background: #6c5ce7;
-    color: white;
-}
-
 
 /* =====================================================
    TABS
@@ -578,44 +576,6 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
     header { background: linear-gradient(145deg, #002855, #00416d); }
 }
 
-
-/* تحسين إضافي للنوافذ المنبثقة */
-.modal-overlay {
-    background:
-      radial-gradient(circle at 50% 42%, rgba(0,180,216,.12), transparent 42%),
-      rgba(0, 8, 22, .78);
-}
-.modal-card {
-    position: relative;
-    width: min(100%, 440px);
-    border-radius: 24px;
-    border: 1px solid rgba(83, 211, 255, .42);
-    background:
-      radial-gradient(circle at 100% 0%, rgba(0,180,216,.16), transparent 38%),
-      linear-gradient(150deg, #102d4d 0%, #091b31 72%);
-    box-shadow: 0 30px 90px rgba(0,0,0,.58), 0 0 0 1px rgba(255,255,255,.025), 0 0 45px rgba(0,180,216,.13);
-}
-.modal-card::before {
-    content: "";
-    position: absolute;
-    inset: 0 24px auto;
-    height: 3px;
-    border-radius: 0 0 8px 8px;
-    background: linear-gradient(90deg, transparent, #25c7f4, #6b8cff, transparent);
-}
-.modal-head { padding: 27px 25px 15px; }
-.modal-icon {
-    border-radius: 17px;
-    background: linear-gradient(135deg, #25c7f4, #376bff);
-    box-shadow: 0 8px 28px rgba(37,199,244,.3), inset 0 1px 0 rgba(255,255,255,.28);
-}
-.modal-title { font-size: 21px; letter-spacing: -.2px; }
-.modal-message { padding: 0 25px 25px; font-size: 15px; line-height: 2; color: #d0deed; }
-.modal-actions { padding: 17px 25px 25px; gap: 12px; }
-.modal-actions button { min-height: 46px; border-radius: 13px; }
-.modal-confirm { background: linear-gradient(135deg, #0db8d9, #2867f2); box-shadow: 0 6px 18px rgba(27,130,237,.23); }
-.modal-cancel { background: rgba(255,255,255,.055); border-color: rgba(255,255,255,.12); }
-
 </style>
 
 </head>
@@ -822,25 +782,17 @@ button:hover {
 
 const defaultJS = `
 function hello() {
-    let box = document.getElementById("helloModal");
-    if (!box) {
-        box = document.createElement("div");
-        box.id = "helloModal";
-        box.innerHTML = `
-          <div style="position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px;background:rgba(4,16,35,.65);backdrop-filter:blur(6px);font-family:Arial,sans-serif">
-            <div dir="rtl" style="width:min(100%,360px);padding:26px;border-radius:20px;background:linear-gradient(145deg,#fff,#edf7ff);color:#17324d;text-align:center;box-shadow:0 20px 60px #0004;border:1px solid #d5e9f8">
-              <div style="width:58px;height:58px;margin:0 auto 14px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#00b4d8,#2878ff);color:white;font-size:28px">✓</div>
-              <h2 style="margin:0 0 10px;font-size:22px">أهلاً بك!</h2>
-              <p style="margin:0 0 22px;line-height:1.8;color:#52677b">مرحباً بك في Web Editor Pro. يمكنك تعديل الأكواد ومعاينة النتيجة مباشرة.</p>
-              <button onclick="document.getElementById('helloModal').remove()" style="border:0;border-radius:10px;padding:11px 28px;background:linear-gradient(135deg,#00a8cc,#2475f5);color:#fff;font-size:15px;font-weight:bold;cursor:pointer">رائع، لنبدأ</button>
-            </div>
-          </div>`;
-        document.body.appendChild(box);
-    }
-}
-`;
-        document.body.appendChild(box);
-    }
+    if (document.getElementById("helloModal")) return;
+    const box = document.createElement("div");
+    box.id = "helloModal";
+    box.innerHTML = '<div dir="rtl" style="position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px;background:rgba(4,16,35,.72);backdrop-filter:blur(7px);font-family:Arial,sans-serif">' +
+      '<div style="width:min(100%,360px);padding:28px;border-radius:22px;background:linear-gradient(145deg,#fff,#edf7ff);color:#17324d;text-align:center;box-shadow:0 24px 70px #0005;border:1px solid #cce5f7">' +
+      '<div style="width:58px;height:58px;margin:0 auto 14px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#00b4d8,#2878ff);color:white;font-size:28px">✓</div>' +
+      '<h2 style="margin:0 0 10px;font-size:22px">أهلاً بك!</h2>' +
+      '<p style="margin:0 0 22px;line-height:1.9;color:#52677b">مرحباً بك في محرر الأكواد. يمكنك تعديل الأكواد ومعاينة النتيجة مباشرة.</p>' +
+      '<button onclick="document.getElementById('helloModal').remove()" style="border:0;border-radius:11px;padding:12px 28px;background:linear-gradient(135deg,#00a8cc,#2475f5);color:#fff;font-size:15px;font-weight:bold;cursor:pointer">رائع، لنبدأ</button>' +
+      '</div></div>';
+    document.body.appendChild(box);
 }
 `;
 
