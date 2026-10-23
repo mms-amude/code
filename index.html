@@ -1208,6 +1208,51 @@ ${css}
   width: 0 !important;
   height: 0 !important;
 }
+
+
+/* إصلاح نهائي: إخفاء شريط التمرير الظاهر أسفل مجموعة الأزرار/على حافة الشاشة */
+html, body {
+    max-width: 100%;
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar,
+header::-webkit-scrollbar, header .toolbar::-webkit-scrollbar,
+.toolbar::-webkit-scrollbar, .tabs::-webkit-scrollbar,
+.editor-container::-webkit-scrollbar, .code-area::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+header {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden !important;
+}
+header .logo { min-width: 0; }
+header .toolbar {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    flex-wrap: wrap;
+    scrollbar-width: none !important;
+}
+header .toolbar, header .toolbar * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+header .toolbar *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+/* إعادة حجم خط الكود التجريبي */
+.CodeMirror { font-size: 15px !important; }
+@media (max-width: 800px) { .CodeMirror { font-size: 14px !important; } }
+
 </style>
 
 </head>
