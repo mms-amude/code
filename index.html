@@ -1249,6 +1249,25 @@ header .toolbar *::-webkit-scrollbar {
     width: 0 !important;
     height: 0 !important;
 }
+/* إزالة شريط التمرير المحدد بالصورة: هو شريط عمودي في صف تبويبات HTML/CSS/JavaScript */
+.tabs {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+.tabs::-webkit-scrollbar,
+.tabs::-webkit-scrollbar-button,
+.tabs::-webkit-scrollbar-thumb,
+.tabs::-webkit-scrollbar-track {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+.tabs .tab {
+    flex-shrink: 0;
+}
+
 /* إعادة حجم خط الكود التجريبي */
 .CodeMirror { font-size: 15px !important; }
 @media (max-width: 800px) { .CodeMirror { font-size: 14px !important; } }
