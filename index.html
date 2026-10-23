@@ -580,6 +580,40 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
     header { background: linear-gradient(145deg, #002855, #00416d); }
 }
 
+
+
+/* تحسين مساحة الأكواد والأزرار */
+.toolbar { align-items:center; gap:10px; }
+.toolbar button {
+    position:relative; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    min-height:42px; padding:10px 17px; border:1px solid rgba(255,255,255,.16);
+    border-radius:13px; font-family:"Tajawal",Arial,sans-serif; font-size:14px; font-weight:800;
+    letter-spacing:0; box-shadow:0 5px 14px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.22);
+    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.toolbar button:hover { transform:translateY(-2px); filter:brightness(1.08); box-shadow:0 9px 22px rgba(0,0,0,.27), inset 0 1px 0 rgba(255,255,255,.24); }
+.toolbar button:active { transform:translateY(0) scale(.98); }
+.toolbar .run { background:linear-gradient(135deg,#22d3ee 0%,#0878d1 100%); color:#fff; }
+.toolbar .save { background:linear-gradient(135deg,#34d399 0%,#07845d 100%); color:#fff; }
+.toolbar .download { background:linear-gradient(135deg,#ffe08a 0%,#f5a623 100%); color:#172033; }
+.toolbar .clear { background:linear-gradient(135deg,#ff7b8b 0%,#d7264d 100%); color:#fff; }
+.tabs { gap:8px; padding:7px 12px; background:linear-gradient(90deg,#001529,#082b49); }
+.tab { border:1px solid transparent; border-radius:10px; padding:9px 20px; font-size:14px; }
+.tab.active { border:1px solid rgba(37,199,244,.35); border-bottom:2px solid #25c7f4; border-radius:10px; background:linear-gradient(145deg,#203c58,#142b43); box-shadow:0 4px 12px rgba(0,0,0,.16); }
+.CodeMirror { font-family:Consolas,"Courier New",monospace !important; line-height:1.38; }
+.CodeMirror-scroll { scrollbar-width:thin; scrollbar-color:#52627b #202431; }
+.CodeMirror-vscrollbar::-webkit-scrollbar, .CodeMirror-hscrollbar::-webkit-scrollbar { width:7px; height:7px; }
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb, .CodeMirror-hscrollbar::-webkit-scrollbar-thumb { background:#52627b; border-radius:8px; }
+@media(max-width:800px) {
+  .toolbar { gap:7px; }
+  .toolbar button { min-height:38px; padding:8px 12px; border-radius:11px; }
+  .tab { padding:8px 14px; }
+}
+@media(max-width:480px) {
+  header { gap:9px; }
+  .toolbar button { padding:7px 9px; font-size:12px; }
+}
+
 </style>
 
 </head>
@@ -896,6 +930,14 @@ editors.css.setValue(defaultCSS.trim());
 
 editors.js.setValue(defaultJS.trim());
 
+Object.keys(editors).forEach(function(type) {
+    editors[type].on('change', function() {
+        if (editors[type].getWrapperElement().style.display !== 'none') {
+            fitEditorToPanel(type);
+        }
+    });
+});
+
 
 /* =====================================================
    SHOW EDITOR
@@ -930,7 +972,23 @@ function showEditor(type, element) {
 
 
     editors[type].refresh();
+    fitEditorToPanel(type);
 
+}
+
+/* قلّل حجم الخط تلقائياً عند الحاجة كي يظهر أكبر قدر ممكن من الكود دون تمرير */
+function fitEditorToPanel(type) {
+    const editor = editors[type];
+    if (!editor) return;
+    const wrapper = editor.getWrapperElement();
+    if (!wrapper || wrapper.offsetParent === null) return;
+    const availableHeight = Math.max(180, wrapper.clientHeight - 12);
+    const lines = Math.max(1, editor.lineCount());
+    const fitSize = Math.floor(availableHeight / (lines * 1.42));
+    const fontSize = Math.max(10, Math.min(15, fitSize));
+    wrapper.style.fontSize = fontSize + 'px';
+    wrapper.style.lineHeight = '1.38';
+    editor.refresh();
 }
 
 
@@ -1507,6 +1565,9 @@ window.addEventListener(
             .forEach(key => {
 
                 editors[key].refresh();
+                if (editors[key].getWrapperElement().style.display !== 'none') {
+                    fitEditorToPanel(key);
+                }
 
             });
 
