@@ -721,6 +721,47 @@ header .toolbar::-webkit-scrollbar {
 .code-area .CodeMirror { font-size: 15px !important; }
 @media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
 
+
+/* إصلاح نهائي لشريط التمرير الظاهر بمحاذاة صف تبويبات HTML/CSS/JavaScript */
+html, body { overflow: hidden !important; }
+.tabs {
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 2px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  flex: 0 0 36px !important;
+  padding: 2px 6px !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.tabs > .tab {
+  box-sizing: border-box !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  padding: 6px 12px !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+}
+.tabs, .tabs * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+.tabs::-webkit-scrollbar, .tabs *::-webkit-scrollbar {
+  display: none !important; width: 0 !important; height: 0 !important;
+}
+/* حجم خط محرر الكود التجريبي كما طُلب */
+.code-area .CodeMirror { font-size: 15px !important; }
+@media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
+
 </style>
 
 </head>
