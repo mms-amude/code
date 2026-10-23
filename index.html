@@ -25,7 +25,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.mi
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 
-<!-- إغلاق الوسوم والأقواس تلقائياً -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
@@ -245,11 +245,11 @@ button:active {
     overflow: hidden;
 }
 
-.code-area textarea {
+.code-area > textarea {
     display: none;
 }
 
-/* إخفاء أشرطة التمرير المرئية داخل محررات الأكواد */
+
 .CodeMirror-scroll {
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
@@ -267,7 +267,7 @@ button:active {
     pointer-events: none !important;
 }
 
-/* منع شريط التمرير داخل مساحة المحرر نفسها */
+
 .code-area {
     overflow: hidden !important;
 }
@@ -595,7 +595,7 @@ iframe {
 }
 
 
-/* الهوية البصرية لمكتبة عامودا */
+
 :root { color-scheme: dark; --accent: #25c7f4; --accent-2: #2684ff; }
 ::selection { background: rgba(37,199,244,.28); }
 header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
@@ -614,7 +614,7 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
 
 
 
-/* تحسين مساحة الأكواد والأزرار */
+
 .toolbar { align-items:center; gap:10px; }
 .toolbar button {
     position:relative; display:inline-flex; align-items:center; justify-content:center; gap:8px;
@@ -648,7 +648,7 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
 
 
 
-/* لوحة أزرار احترافية: ألوان متناسقة وهادئة */
+
 .toolbar { gap: 9px; align-items: center; }
 .toolbar button {
   min-height: 42px;
@@ -703,7 +703,7 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
 @media (max-width: 480px) { .toolbar button { padding: 8px 10px; font-size: 12px; } }
 
 
-/* إصلاح شريط التمرير أسفل أزرار الشريط العلوي (بجوار زر مسح) */
+
 header .toolbar {
     overflow: hidden !important;
     overflow-x: hidden !important;
@@ -717,12 +717,11 @@ header .toolbar::-webkit-scrollbar {
     width: 0 !important;
     height: 0 !important;
 }
-/* إعادة حجم خط محرر الكود التجريبي إلى حجمه الأصلي */
+
 .code-area .CodeMirror { font-size: 15px !important; }
 @media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
 
 
-/* إصلاح نهائي لشريط التمرير الظاهر بمحاذاة صف تبويبات HTML/CSS/JavaScript */
 html, body { overflow: hidden !important; }
 .tabs {
   box-sizing: border-box !important;
@@ -758,7 +757,7 @@ html, body { overflow: hidden !important; }
 .tabs::-webkit-scrollbar, .tabs *::-webkit-scrollbar {
   display: none !important; width: 0 !important; height: 0 !important;
 }
-/* حجم خط محرر الكود التجريبي كما طُلب */
+
 .code-area .CodeMirror { font-size: 15px !important; }
 @media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
 
@@ -874,7 +873,7 @@ sandbox="allow-scripts allow-forms allow-modals allow-popups">
 
 
 
-<!-- نافذة منبثقة مخصصة -->
+
 <div id="customModal" class="modal-overlay" aria-hidden="true">
     <section class="modal-card" id="customModalCard" role="dialog" aria-modal="true"
              aria-labelledby="customModalTitle" aria-describedby="customModalMessage">
@@ -1124,7 +1123,7 @@ function showEditor(type, element) {
 
 }
 
-/* قلّل حجم الخط تلقائياً عند الحاجة كي يظهر أكبر قدر ممكن من الكود دون تمرير */
+
 function fitEditorToPanel(type) {
     const editor = editors[type];
     if (!editor) return;
@@ -1214,7 +1213,7 @@ ${css}
 
 
 
-/* إصلاح نهائي: إخفاء أشرطة التمرير التي أعادت قواعد CSS اللاحقة إظهارها */
+
 .CodeMirror .CodeMirror-scroll,
 .CodeMirror-scroll {
   scrollbar-width: none !important;
@@ -1251,7 +1250,7 @@ ${css}
 }
 
 
-/* إصلاح نهائي: إخفاء شريط التمرير الظاهر أسفل مجموعة الأزرار/على حافة الشاشة */
+
 html, body {
     max-width: 100%;
     overflow: hidden !important;
@@ -1290,7 +1289,7 @@ header .toolbar *::-webkit-scrollbar {
     width: 0 !important;
     height: 0 !important;
 }
-/* إزالة شريط التمرير المحدد بالصورة: هو شريط عمودي في صف تبويبات HTML/CSS/JavaScript */
+
 .tabs {
     overflow-x: auto !important;
     overflow-y: hidden !important;
@@ -1309,13 +1308,12 @@ header .toolbar *::-webkit-scrollbar {
     flex-shrink: 0;
 }
 
-/* إعادة حجم خط الكود التجريبي */
+
 .CodeMirror { font-size: 15px !important; }
 @media (max-width: 800px) { .CodeMirror { font-size: 14px !important; } }
 
 
 
-/* الإصلاح المقصود: تصغير تبويبات HTML/CSS/JavaScript لتبقى كلها ضمن الصف دون تمرير */
 .tabs {
     display: flex !important;
     flex-wrap: nowrap !important;
@@ -1358,7 +1356,7 @@ header .toolbar *::-webkit-scrollbar {
     .tabs { height: 34px !important; flex-basis: 34px !important; min-height: 34px !important; }
     .tabs .tab { padding: 5px 9px !important; font-size: 11px !important; }
 }
-/* إبقاء حجم خط الكود التجريبي كما طلبت */
+
 .code-area .CodeMirror { font-size: 15px !important; }
 @media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
 
@@ -1899,4 +1897,3 @@ window.addEventListener(
 
 </body>
 </html>
-```
