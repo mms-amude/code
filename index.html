@@ -5,17 +5,732 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>محرر الأكواد من مكتبة عامودا</title>
+<title>محرر الأكواد من مكتبة عامودا الرقمية</title>
 
-<!-- =====================================================
-     CodeMirror
-===================================================== -->
+<!-- Tajawal -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
+<!-- CodeMirror -->
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
+<style>
+
+:root {
+    --navy: #001D3D;
+    --navy2: #002855;
+    --blue: #003566;
+    --gold: #D4AF37;
+    --gold-light: #E8D18A;
+    --white: #ffffff;
+    --bg: #f4f6f8;
+    --border: #d8dee5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: "Tajawal", sans-serif;
+    background: var(--bg);
+    color: #222;
+    overflow: hidden;
+}
+
+/* ================= HEADER ================= */
+
+header {
+    height: 70px;
+    background: linear-gradient(135deg, var(--navy), var(--navy2));
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+
+    position: relative;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        var(--gold),
+        var(--gold-light)
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.25);
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-title {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.logo-subtitle {
+    font-size: 11px;
+    color: #dbe6f1;
+    margin-top: 2px;
+}
+
+/* ================= TOOLBAR ================= */
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.toolbar button {
+    font-family: "Tajawal", sans-serif;
+
+    border: 1px solid rgba(255,255,255,.15);
+
+    background: rgba(255,255,255,.08);
+
+    color: white;
+
+    padding: 8px 13px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: .2s;
+}
+
+.toolbar button:hover {
+    background: var(--gold);
+    color: #111;
+    border-color: var(--gold);
+}
+
+.toolbar button:active {
+    transform: scale(.96);
+}
+
+.toolbar .back-button {
+    background: var(--gold);
+    color: var(--navy);
+    border-color: var(--gold);
+    font-weight: 700;
+}
+
+.toolbar .back-button:hover {
+    background: var(--gold-light);
+    border-color: var(--gold-light);
+    color: var(--navy);
+}
+
+/* ================= CONFIRMATION MODAL ================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 15, 35, .62);
+    backdrop-filter: blur(4px);
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    width: min(100%, 390px);
+    background: #fff;
+    border: 1px solid rgba(212, 175, 55, .45);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .28);
+    animation: modalEnter .2s ease-out;
+}
+
+.modal-header {
+    padding: 18px 22px;
+    background: linear-gradient(135deg, var(--navy), var(--navy2));
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.modal-body {
+    padding: 24px 22px;
+    color: #344054;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 22px 22px;
+}
+
+.modal-actions button {
+    flex: 1;
+    min-height: 42px;
+    border: 0;
+    border-radius: 9px;
+    font-family: "Tajawal", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.modal-cancel {
+    background: #eef1f5;
+    color: #344054;
+}
+
+.modal-confirm {
+    background: var(--navy);
+    color: #fff;
+}
+
+.modal-actions button:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+@keyframes modalEnter {
+    from { opacity: 0; transform: translateY(8px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ================= TABS ================= */
+
+.tabs {
+    height: 48px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 12px;
+
+    gap: 5px;
+
+    position: relative;
+    z-index: 90;
+}
+
+.tab {
+    height: 36px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    background: transparent;
+
+    font-family: "Tajawal", sans-serif;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    border-radius: 6px;
+
+    color: #555;
+
+    user-select: none;
+
+    transition: .2s;
+}
+
+.tab:hover {
+    background: #eef2f5;
+}
+
+.tab.active {
+    background: var(--navy);
+    color: white;
+}
+
+/* ================= MAIN EDITOR ================= */
+
+.editor-container {
+
+    height: calc(100vh - 118px);
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 1px;
+
+    background: #cfd5da;
+}
+
+.editor-panel,
+.preview-panel {
+
+    min-width: 0;
+
+    min-height: 0;
+
+    background: white;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+/* ================= EDITOR ================= */
+
+.panel-title {
+
+    height: 42px;
+
+    background: var(--navy2);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 13px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.panel-title span {
+    color: var(--gold-light);
+}
+
+.code-area {
+
+    flex: 1;
+
+    min-height: 0;
+
+    pointer-events: auto;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+/* ================= CODEMIRROR ================= */
+
+.CodeMirror {
+
+    height: 100% !important;
+
+    width: 100%;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 14px;
+
+    direction: ltr;
+
+    text-align: left;
+
+    pointer-events: auto;
+
+    cursor: text;
+
+    position: relative;
+
+    z-index: 10;
+}
+
+.CodeMirror-scroll {
+
+    overflow: auto !important;
+
+    cursor: text;
+}
+
+.CodeMirror textarea {
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace !important;
+}
+
+/* ================= PREVIEW ================= */
+
+.preview-frame {
+
+    flex: 1;
+
+    border: none;
+
+    width: 100%;
+
+    background: white;
+}
+
+/* ================= STATUS ================= */
+
+.status {
+
+    position: fixed;
+
+    bottom: 18px;
+
+    left: 50%;
+
+    transform: translateX(-50%) translateY(80px);
+
+    background: var(--navy);
+
+    color: white;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    font-size: 13px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.25);
+
+    opacity: 0;
+
+    transition: .3s;
+
+    z-index: 9999;
+
+    pointer-events: none;
+}
+
+.status.show {
+
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        translateY(0);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 800px) {
+
+    body {
+        overflow: auto;
+    }
+
+    header {
+
+        height: auto;
+
+        min-height: 70px;
+
+        padding: 10px;
+
+        gap: 10px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .logo {
+
+        justify-content: center;
+    }
+
+    .toolbar {
+
+        justify-content: center;
+    }
+
+    .toolbar button {
+
+        padding: 7px 10px;
+
+        font-size: 12px;
+    }
+
+    .tabs {
+
+        overflow-x: auto;
+
+        white-space: nowrap;
+    }
+
+    .editor-container {
+
+        height: calc(100vh - 118px);
+
+        grid-template-columns: 1fr;
+
+        grid-template-rows: 1fr 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .logo-title {
+        font-size: 15px;
+    }
+
+    .logo-subtitle {
+        font-size: 10px;
+    }
+
+    .toolbar button {
+
+        padding: 6px 8px;
+
+        font-size: 11px;
+    }
+
+    .tab {
+
+        padding: 0 13px;
+
+        font-size: 13px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            📚
+        </div>
+
+        <div class="logo-text">
+
+            <div class="logo-title">
+                محرر الأكواد من مكتبة عامودا الرقمية
+            </div>
+
+            <div class="logo-subtitle">
+                HTML • CSS • JavaScript
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="toolbar">
+
+        <button class="back-button" onclick="history.back()">
+            ↩ العودة لمكتبة عامودا
+        </button>
+
+        <button onclick="runCode()">
+            ▶️ تشغيل
+        </button>
+
+        <button onclick="saveProject()">
+            💾 حفظ
+        </button>
+
+        <button onclick="loadProject()">
+            📂 تحميل
+        </button>
+
+        <button onclick="downloadHTML()">
+            ⬇️ تنزيل
+        </button>
+
+        <button onclick="clearProject()">
+            🗑️ مسح
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ================= TABS ================= -->
+
+<div class="tabs">
+
+    <button
+        class="tab active"
+        data-editor="html"
+        onclick="showEditor('html')">
+
+        HTML
+
+    </button>
+
+    <button
+        class="tab"
+        data-editor="css"
+        onclick="showEditor('css')">
+
+        CSS
+
+    </button>
+
+    <button
+        class="tab"
+        data-editor="js"
+        onclick="showEditor('js')">
+
+        JavaScript
+
+    </button>
+
+</div>
+
+
+<!-- ================= MAIN ================= -->
+
+<div class="editor-container">
+
+    <!-- EDITOR -->
+
+    <section class="editor-panel">
+
+        <div class="panel-title">
+
+            <span>
+                💻 محرر الأكواد
+            </span>
+
+            <span id="currentLanguage">
+                HTML
+            </span>
+
+        </div>
+
+        <div
+            id="htmlEditor"
+            class="code-area">
+        </div>
+
+        <div
+            id="cssEditor"
+            class="code-area"
+            style="display:none;">
+        </div>
+
+        <div
+            id="jsEditor"
+            class="code-area"
+            style="display:none;">
+        </div>
+
+    </section>
+
+
+    <!-- PREVIEW -->
+
+    <section class="preview-panel">
+
+        <div class="panel-title">
+
+            <span>
+                👁️ المعاينة
+            </span>
+
+            <span>
+                Live Preview
+            </span>
+
+        </div>
+
+        <iframe
+            id="preview"
+            class="preview-frame"
+            sandbox="allow-scripts allow-forms allow-modals allow-popups">
+        </iframe>
+
+    </section>
+
+</div>
+
+
+<!-- ================= CONFIRMATION MODAL ================= -->
+
+<div id="confirmModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal">
+        <div class="modal-header" id="confirmTitle">تأكيد المسح</div>
+        <div class="modal-body">هل تريد مسح جميع الأكواد؟</div>
+        <div class="modal-actions">
+            <button type="button" class="modal-cancel" onclick="closeConfirmModal()">إلغاء</button>
+            <button type="button" class="modal-confirm" onclick="confirmClearProject()">مسح الأكواد</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= STATUS ================= -->
+
+<div
+    id="status"
+    class="status">
+</div>
+
+
+<!-- ================= CODEMIRROR ================= -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 
@@ -25,968 +740,99 @@ href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.mi
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
 
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
 
 
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-
-<style>
-* { font-family: "Tajawal", Arial, sans-serif; }
-.CodeMirror, .CodeMirror textarea, .CodeMirror pre { font-family: "Tajawal", monospace !important; }
-
-/* =====================================================
-   GLOBAL
-===================================================== */
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    height: 100dvh;
-}
-
-body {
-    background: #001D3D;
-    color: white;
-    font-family: "Tajawal", Arial, sans-serif;
-    overflow: hidden;
-}
-
-
-/* =====================================================
-   HEADER
-===================================================== */
-
-header {
-    height: 60px;
-    flex: 0 0 60px;
-    min-height: 0;
-    background: linear-gradient(110deg, #002855 0%, #003b70 58%, #005078 100%);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 18px;
-
-    box-shadow: 0 5px 24px rgba(0,0,0,.28);
-    border-bottom: 1px solid rgba(70, 210, 255, .18);
-
-    position: relative;
-    z-index: 20;
-}
-
-.logo {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -.3px;
-    white-space: nowrap;
-    color: #f4f9ff;
-}
-
-.logo span {
-    color: #25c7f4;
-    font-weight: 700;
-}
-
-
-/* =====================================================
-   TOOLBAR
-===================================================== */
-
-.toolbar {
-    display: flex;
-    gap: 7px;
-    flex-wrap: wrap;
-}
-
-button {
-    font-family: "Tajawal", Arial, sans-serif;
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 11px;
-    padding: 10px 16px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: .1px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.16);
-    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.08);
-    box-shadow: 0 7px 18px rgba(0,0,0,.23), inset 0 1px 0 rgba(255,255,255,.2);
-}
-
-button:focus-visible {
-    outline: 3px solid rgba(87,205,255,.8);
-    outline-offset: 3px;
-}
-
-button:active {
-    transform: translateY(0) scale(.98);
-}
-
-.run {
-    background: linear-gradient(135deg, #16c6e8, #0878d1);
-    color: white;
-}
-
-.save {
-    background: linear-gradient(135deg, #28c58a, #13865d);
-    color: white;
-}
-
-.download {
-    background: linear-gradient(135deg, #ffd166, #f59e0b);
-    color: #172033;
-}
-
-.clear {
-    background: linear-gradient(135deg, #ff647c, #d7264d);
-    color: white;
-}
-
-/* =====================================================
-   TABS
-===================================================== */
-
-.tabs {
-    height: 48px;
-    flex: 0 0 48px;
-    min-height: 0;
-
-    background: linear-gradient(90deg, #001529, #052644);
-
-    display: flex;
-    align-items: center;
-
-    padding-right: 10px;
-
-    gap: 4px;
-
-    overflow-x: auto;
-}
-
-.tab {
-    padding: 12px 22px;
-
-    cursor: pointer;
-
-    border-radius: 6px 6px 0 0;
-
-    color: #a9bfd4;
-
-    white-space: nowrap;
-
-    transition: .22s ease;
-    font-family: "Tajawal", Arial, sans-serif;
-    font-weight: 700;
-}
-
-.tab:hover {
-    color: white;
-}
-
-.tab.active {
-    background: linear-gradient(180deg, #29344a, #202b40);
-
-    color: white;
-
-    border-bottom: 3px solid #25c7f4;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-}
-
-
-/* =====================================================
-   MAIN EDITOR
-===================================================== */
-
-.editor-container {
-    flex: 1 1 auto;
-    height: auto;
-    min-height: 0;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    overflow: hidden;
-}
-
-
-/* =====================================================
-   CODE AREA
-===================================================== */
-
-.code-area {
-    direction: ltr;
-
-    height: 100%;
-
-    min-height: 0;
-
-    background: #282a36;
-
-    overflow: hidden;
-}
-
-.code-area > textarea {
-    display: none;
-}
-
-
-.CodeMirror-scroll {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-}
-.CodeMirror-scroll::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-.CodeMirror-vscrollbar,
-.CodeMirror-hscrollbar {
-    visibility: hidden !important;
-    width: 0 !important;
-    height: 0 !important;
-    pointer-events: none !important;
-}
-
-
-.code-area {
-    overflow: hidden !important;
-}
-
-.CodeMirror {
-    height: 100% !important;
-    min-height: 0;
-    overflow: hidden;
-    font-size: 15px;
-
-    direction: ltr;
-
-    text-align: left;
-
-    font-family:
-        Consolas,
-        "Courier New",
-        monospace;
-}
-
-
-/* =====================================================
-   PREVIEW
-===================================================== */
-
-.preview-area {
-    background: white;
-
-    position: relative;
-
-    height: 100%;
-
-    min-height: 0;
-
-    border-right: 2px solid #003566;
-
-    overflow: hidden;
-}
-
-.preview-title {
-    position: absolute;
-
-    top: 0;
-    right: 0;
-    left: 0;
-
-    height: 35px;
-
-    background: linear-gradient(90deg, #003566, #00558c);
-
-    color: white;
-    font-family: "Tajawal", Arial, sans-serif;
-
-    display: flex;
-
-    align-items: center;
-
-    padding-right: 15px;
-
-    z-index: 5;
-
-    font-weight: bold;
-}
-
-.preview-frame {
-    position: absolute;
-
-    top: 35px;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    background: white;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    border: none;
-
-    background: white;
-}
-
-
-/* =====================================================
-   STATUS
-===================================================== */
-
-.status {
-    position: fixed;
-
-    bottom: 12px;
-    left: 12px;
-
-    background: rgba(0,0,0,.75);
-
-    color: white;
-
-    padding: 7px 12px;
-
-    border-radius: 6px;
-
-    font-size: 13px;
-    font-family: "Tajawal", Arial, sans-serif;
-    box-shadow: 0 8px 28px rgba(0,0,0,.28);
-    border: 1px solid rgba(255,255,255,.12);
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition: .3s;
-
-    z-index: 100;
-}
-
-.status.show {
-    opacity: 1;
-}
-
-
-/* =====================================================
-   FULLSCREEN
-===================================================== */
-
-
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media(max-width:800px) {
-
-    body {
-        overflow: hidden;
-    }
-
-    header {
-        height: auto;
-        flex: 0 0 auto;
-        min-height: 60px;
-
-        flex-direction: column;
-
-        gap: 10px;
-
-        padding: 10px;
-    }
-
-    .toolbar {
-        justify-content: center;
-    }
-
-    .tabs {
-        height: 44px;
-        flex: 0 0 44px;
-        overflow-x: auto;
-        direction: rtl;
-    }
-
-    .editor-container {
-        flex: 1 1 0;
-        height: auto;
-        min-height: 0;
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-        overflow: hidden;
-    }
-
-    .preview-area {
-
-        border-right: none;
-
-        border-top: 2px solid #003566;
-    }
-
-    .CodeMirror {
-        font-size: 14px;
-    }
-
-    .logo {
-        font-size: 18px;
-    }
-
-    button {
-        padding: 8px 10px;
-
-        font-size: 13px;
-    }
-
-}
-
-
-/* =====================================================
-   VERY SMALL SCREENS
-===================================================== */
-
-@media(max-width:480px) {
-
-    .toolbar {
-        gap: 4px;
-    }
-
-    button {
-        padding: 7px 8px;
-        font-size: 12px;
-    }
-
-    .tab {
-        padding: 11px 15px;
-    }
-
-}
-
-
-/* =====================================================
-   CUSTOM MODALS
-===================================================== */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(0, 10, 25, .72);
-    backdrop-filter: blur(7px);
-    -webkit-backdrop-filter: blur(7px);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .22s ease, visibility .22s ease;
-}
-.modal-overlay.open {
-    opacity: 1;
-    visibility: visible;
-}
-.modal-card {
-    width: min(100%, 420px);
-    overflow: hidden;
-    color: #f5f8ff;
-    background: linear-gradient(145deg, #102d4d, #071a30);
-    border: 1px solid rgba(0, 180, 216, .35);
-    border-radius: 20px;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, .48), 0 0 35px rgba(0, 180, 216, .10);
-    transform: translateY(14px) scale(.97);
-    transition: transform .22s ease;
-    direction: rtl;
-    font-family: Arial, sans-serif;
-}
-.modal-overlay.open .modal-card {
-    transform: translateY(0) scale(1);
-}
-.modal-head {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 22px 22px 14px;
-}
-.modal-icon {
-    display: grid;
-    place-items: center;
-    flex: 0 0 46px;
-    width: 46px;
-    height: 46px;
-    border-radius: 15px;
-    color: #fff;
-    background: linear-gradient(135deg, #00b4d8, #2878ff);
-    font-size: 23px;
-    box-shadow: 0 7px 22px rgba(0, 180, 216, .22);
-}
-.modal-card.warning .modal-icon {
-    background: linear-gradient(135deg, #ff9f1c, #f05d23);
-}
-.modal-title {
-    margin: 0;
-    font-size: 19px;
-    font-weight: 700;
-    line-height: 1.4;
-}
-.modal-message {
-    margin: 0;
-    padding: 0 22px 22px;
-    color: #c5d3e4;
-    font-size: 14px;
-    line-height: 1.9;
-    white-space: pre-line;
-}
-.modal-actions {
-    display: flex;
-    gap: 10px;
-    padding: 15px 22px 22px;
-    border-top: 1px solid rgba(255,255,255,.08);
-}
-.modal-actions button {
-    flex: 1;
-    min-height: 43px;
-    border-radius: 11px;
-    font-size: 14px;
-}
-.modal-confirm {
-    color: #fff;
-    background: linear-gradient(135deg, #00a8cc, #2475f5);
-}
-.modal-cancel {
-    color: #dce8f5;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.1);
-}
-.modal-close {
-    margin-right: auto;
-    align-self: flex-start;
-    padding: 4px 9px;
-    color: #a9bed3;
-    background: transparent;
-    font-size: 20px;
-}
-.modal-close:hover { color: #fff; }
-@media (prefers-reduced-motion: reduce) {
-    .modal-overlay, .modal-card { transition: none; }
-}
-
-
-
-:root { color-scheme: dark; --accent: #25c7f4; --accent-2: #2684ff; }
-::selection { background: rgba(37,199,244,.28); }
-header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
-.toolbar button { border: 1px solid rgba(255,255,255,.10); }
-.toolbar .run { background: linear-gradient(135deg, #08b6d9, #087fbd); }
-.toolbar .save { background: linear-gradient(135deg, #43c879, #188c62); }
-.toolbar .download { background: linear-gradient(135deg, #ffc45c, #f39a24); }
-.toolbar .clear { background: linear-gradient(135deg, #ff5367, #c9183d); }
-.code-area { box-shadow: inset -1px 0 0 rgba(255,255,255,.04); }
-.preview-area { box-shadow: -8px 0 30px rgba(0,0,0,.12); }
-.modal-card, .modal-message, .modal-title, .modal-actions button { font-family: "Tajawal", Arial, sans-serif; }
-@media (max-width: 800px) {
-    .logo { white-space: normal; text-align: center; line-height: 1.5; }
-    header { background: linear-gradient(145deg, #002855, #00416d); }
-}
-
-
-
-
-.toolbar { align-items:center; gap:10px; }
-.toolbar button {
-    position:relative; display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    min-height:42px; padding:10px 17px; border:1px solid rgba(255,255,255,.16);
-    border-radius:13px; font-family:"Tajawal",Arial,sans-serif; font-size:14px; font-weight:800;
-    letter-spacing:0; box-shadow:0 5px 14px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.22);
-    transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;
-}
-.toolbar button:hover { transform:translateY(-2px); filter:brightness(1.08); box-shadow:0 9px 22px rgba(0,0,0,.27), inset 0 1px 0 rgba(255,255,255,.24); }
-.toolbar button:active { transform:translateY(0) scale(.98); }
-.toolbar .run { background:linear-gradient(135deg,#22d3ee 0%,#0878d1 100%); color:#fff; }
-.toolbar .save { background:linear-gradient(135deg,#34d399 0%,#07845d 100%); color:#fff; }
-.toolbar .download { background:linear-gradient(135deg,#ffe08a 0%,#f5a623 100%); color:#172033; }
-.toolbar .clear { background:linear-gradient(135deg,#ff7b8b 0%,#d7264d 100%); color:#fff; }
-.tabs { gap:8px; padding:7px 12px; background:linear-gradient(90deg,#001529,#082b49); }
-.tab { border:1px solid transparent; border-radius:10px; padding:9px 20px; font-size:14px; }
-.tab.active { border:1px solid rgba(37,199,244,.35); border-bottom:2px solid #25c7f4; border-radius:10px; background:linear-gradient(145deg,#203c58,#142b43); box-shadow:0 4px 12px rgba(0,0,0,.16); }
-.CodeMirror { font-family:Consolas,"Courier New",monospace !important; line-height:1.38; }
-.CodeMirror-scroll { scrollbar-width:thin; scrollbar-color:#52627b #202431; }
-.CodeMirror-vscrollbar::-webkit-scrollbar, .CodeMirror-hscrollbar::-webkit-scrollbar { width:7px; height:7px; }
-.CodeMirror-vscrollbar::-webkit-scrollbar-thumb, .CodeMirror-hscrollbar::-webkit-scrollbar-thumb { background:#52627b; border-radius:8px; }
-@media(max-width:800px) {
-  .toolbar { gap:7px; }
-  .toolbar button { min-height:38px; padding:8px 12px; border-radius:11px; }
-  .tab { padding:8px 14px; }
-}
-@media(max-width:480px) {
-  header { gap:9px; }
-  .toolbar button { padding:7px 9px; font-size:12px; }
-}
-
-
-
-
-.toolbar { gap: 9px; align-items: center; }
-.toolbar button {
-  min-height: 42px;
-  padding: 10px 17px;
-  border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, .28);
-  background: #1e293b;
-  color: #eaf1fb;
-  font-family: "Tajawal", Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0;
-  box-shadow: 0 2px 5px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.06);
-  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
-  filter: none;
-}
-.toolbar button:hover {
-  transform: translateY(-1px);
-  filter: none;
-  box-shadow: 0 5px 12px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.08);
-}
-.toolbar button:active { transform: translateY(0); box-shadow: inset 0 2px 4px rgba(0,0,0,.18); }
-.toolbar .run {
-  color: #fff;
-  background: #2563eb;
-  border-color: #3b82f6;
-  box-shadow: 0 3px 9px rgba(37,99,235,.24), inset 0 1px 0 rgba(255,255,255,.14);
-}
-.toolbar .run:hover { background: #1d4ed8; border-color: #60a5fa; }
-.toolbar .save, .toolbar .download {
-  color: #e5edf8;
-  background: #263449;
-  border-color: #40516a;
-}
-.toolbar .save:hover, .toolbar .download:hover {
-  background: #33465f;
-  border-color: #647994;
-}
-.toolbar .clear {
-  color: #fecaca;
-  background: rgba(127, 29, 29, .22);
-  border-color: rgba(248, 113, 113, .38);
-  box-shadow: 0 2px 5px rgba(0,0,0,.12);
-}
-.toolbar .clear:hover {
-  color: #fff;
-  background: #991b1b;
-  border-color: #ef4444;
-}
-.toolbar button:focus-visible { outline: 2px solid #93c5fd; outline-offset: 3px; }
-@media (max-width: 800px) { .toolbar button { min-height: 39px; padding: 9px 13px; } }
-@media (max-width: 480px) { .toolbar button { padding: 8px 10px; font-size: 12px; } }
-
-
-
-header .toolbar {
-    overflow: hidden !important;
-    overflow-x: hidden !important;
-    max-width: 100%;
-    flex-wrap: wrap;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-}
-header .toolbar::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
-.code-area .CodeMirror { font-size: 15px !important; }
-@media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
-
-
-html, body { overflow: hidden !important; }
-.tabs {
-  box-sizing: border-box !important;
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  justify-content: flex-start !important;
-  align-items: center !important;
-  gap: 2px !important;
-  height: 36px !important;
-  min-height: 36px !important;
-  max-height: 36px !important;
-  flex: 0 0 36px !important;
-  padding: 2px 6px !important;
-  margin: 0 !important;
-  overflow: hidden !important;
-  overflow-x: hidden !important;
-  overflow-y: hidden !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-.tabs > .tab {
-  box-sizing: border-box !important;
-  flex: 0 1 auto !important;
-  min-width: 0 !important;
-  padding: 6px 12px !important;
-  margin: 0 !important;
-  line-height: 1.2 !important;
-  font-size: 12px !important;
-  white-space: nowrap !important;
-}
-.tabs, .tabs * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
-.tabs::-webkit-scrollbar, .tabs *::-webkit-scrollbar {
-  display: none !important; width: 0 !important; height: 0 !important;
-}
-
-.code-area .CodeMirror { font-size: 15px !important; }
-@media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header>
-
-<div class="logo" aria-label="محرر الأكواد من مكتبة عامودا">
-    محرر الأكواد من مكتبة <span>عامودا</span>
-</div>
-
-
-<div class="toolbar">
-
-<button class="run" onclick="runCode()">
-▶ تشغيل
-</button>
-
-<button class="save" onclick="saveProject()">
-💾 حفظ
-</button>
-
-<button class="download" onclick="downloadHTML()">
-📥 تحميل
-</button>
-
-<button class="clear" onclick="clearAll()">
-🗑️ مسح
-</button>
-
-</div>
-
-</header>
-
-
-
-<!-- =====================================================
-     TABS
-===================================================== -->
-
-<div class="tabs">
-
-<div class="tab active"
-     onclick="showEditor('html',this)">
-HTML
-</div>
-
-<div class="tab"
-     onclick="showEditor('css',this)">
-CSS
-</div>
-
-<div class="tab"
-     onclick="showEditor('js',this)">
-JavaScript
-</div>
-
-</div>
-
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<div class="editor-container">
-
-
-<!-- CODE -->
-
-<div class="code-area">
-
-<textarea id="html"></textarea>
-
-<textarea id="css"></textarea>
-
-<textarea id="js"></textarea>
-
-</div>
-
-
-<!-- PREVIEW -->
-
-<div class="preview-area">
-
-<div class="preview-title">
-    👁️ المعاينة
-</div>
-
-<div class="preview-frame">
-
-<iframe
-id="preview"
-sandbox="allow-scripts allow-forms allow-modals allow-popups">
-</iframe>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-
-
-<div id="customModal" class="modal-overlay" aria-hidden="true">
-    <section class="modal-card" id="customModalCard" role="dialog" aria-modal="true"
-             aria-labelledby="customModalTitle" aria-describedby="customModalMessage">
-        <div class="modal-head">
-            <div class="modal-icon" id="customModalIcon">✦</div>
-            <h2 class="modal-title" id="customModalTitle">تنبيه</h2>
-            <button class="modal-close" type="button" aria-label="إغلاق" onclick="closeCustomModal(false)">×</button>
-        </div>
-        <p class="modal-message" id="customModalMessage"></p>
-        <div class="modal-actions" id="customModalActions"></div>
-    </section>
-</div>
-
-
-<!-- STATUS -->
-
-<div id="status"
-class="status">
-تم الحفظ
-</div>
-
-
-
 <script>
 
 /* =====================================================
-   DEFAULT HTML
+   DEFAULT CODE
 ===================================================== */
 
-const defaultHTML = `
-<div class="container">
+const defaultHTML = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
-    <h1>مرحبا بك 👋</h1>
+<head>
+<meta charset="UTF-8">
 
-    <p>
-        هذا محرر HTML احترافي
-    </p>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <button onclick="hello()">
-        اضغط هنا
-    </button>
+<title>صفحتي</title>
 
-</div>
-`;
+</head>
+
+<body>
+
+<h1>مرحباً بك 👋</h1>
+
+<p>
+هذه صفحة تجريبية من محرر الأكواد.
+</p>
+
+<button onclick="sayHello()">
+اضغط هنا
+</button>
+
+</body>
+
+</html>`;
 
 
-/* =====================================================
-   DEFAULT CSS
-===================================================== */
+const defaultCSS = `body {
 
-const defaultCSS = `
-* { box-sizing: border-box; }
-body {
-    font-family: "Tajawal", Arial, sans-serif;
+    font-family: Tajawal, sans-serif;
+
+    background: #f4f6f8;
+
+    color: #001D3D;
+
     text-align: center;
-    padding: 40px;
-    background: linear-gradient(135deg, #f0f7ff, #f7f9fc);
-    color: #18324b;
-    line-height: 1.8;
-}
 
-.container {
-    max-width: 600px;
-    margin: auto;
-    background: rgba(255,255,255,.96);
-    padding: 34px;
-    border: 1px solid #e4edf7;
-    border-radius: 22px;
-    box-shadow: 0 18px 45px rgba(24,66,105,.12);
+    padding: 50px;
+
 }
 
 h1 {
-    color: #0077b6;
+
+    color: #001D3D;
+
 }
 
 button {
-    padding: 12px 28px;
-    border: 0;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #079bd3, #1765d1);
+
+    background: #001D3D;
+
     color: white;
+
+    border: none;
+
+    padding: 12px 25px;
+
+    border-radius: 8px;
+
     cursor: pointer;
-    font: 700 16px "Tajawal", Arial, sans-serif;
-    box-shadow: 0 8px 18px rgba(23,101,209,.24);
-    transition: transform .18s ease, box-shadow .18s ease;
+
+    font-family: Tajawal, sans-serif;
+
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(23,101,209,.3);
-}
-`;
+
+    background: #D4AF37;
+
+    color: #111;
+
+}`;
 
 
-/* =====================================================
-   DEFAULT JAVASCRIPT
-===================================================== */
+const defaultJS = `function sayHello() {
 
-const defaultJS = `
-function hello() {
-    if (document.getElementById("helloModal")) return;
-    const box = document.createElement("div");
-    box.id = "helloModal";
-    box.innerHTML = '<div dir="rtl" style="position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px;background:rgba(4,16,35,.72);backdrop-filter:blur(7px);font-family:Arial,sans-serif">' +
-      '<div style="width:min(100%,360px);padding:28px;border-radius:22px;background:linear-gradient(145deg,#fff,#edf7ff);color:#17324d;text-align:center;box-shadow:0 24px 70px #0005;border:1px solid #cce5f7">' +
-      '<div style="width:58px;height:58px;margin:0 auto 14px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#00b4d8,#2878ff);color:white;font-size:28px">✓</div>' +
-      '<h2 style="margin:0 0 10px;font-size:22px">أهلاً بك!</h2>' +
-      '<p style="margin:0 0 22px;line-height:1.9;color:#52677b">مرحباً بك في محرر الأكواد. يمكنك تعديل الأكواد ومعاينة النتيجة مباشرة.</p>' +
-      '<button onclick="document.getElementById('helloModal').remove()" style="border:0;border-radius:11px;padding:12px 28px;background:linear-gradient(135deg,#00a8cc,#2475f5);color:#fff;font-size:15px;font-weight:bold;cursor:pointer">رائع، لنبدأ</button>' +
-      '</div></div>';
-    document.body.appendChild(box);
-}
-`;
+    alert("مرحباً بك في محرر الأكواد!");
+
+}`;
 
 
 /* =====================================================
@@ -998,99 +844,111 @@ const editors = {};
 
 /* HTML */
 
-editors.html = CodeMirror.fromTextArea(
-    document.getElementById("html"),
+editors.html = CodeMirror(
+    document.getElementById("htmlEditor"),
     {
+
+        value: defaultHTML,
+
         mode: "xml",
+
         theme: "dracula",
 
         lineNumbers: true,
 
-        lineWrapping: true,
+        lineWrapping: false,
 
         autoCloseTags: true,
 
         autoCloseBrackets: true,
 
-        tabSize: 2,
+        matchBrackets: true,
 
-        indentUnit: 2,
+        indentUnit: 4,
 
-        indentWithTabs: false
+        tabSize: 4,
+
+        autofocus: true
+
     }
 );
 
 
 /* CSS */
 
-editors.css = CodeMirror.fromTextArea(
-    document.getElementById("css"),
+editors.css = CodeMirror(
+    document.getElementById("cssEditor"),
     {
+
+        value: defaultCSS,
+
         mode: "css",
+
         theme: "dracula",
 
         lineNumbers: true,
 
-        lineWrapping: true,
+        lineWrapping: false,
 
         autoCloseBrackets: true,
 
-        tabSize: 2,
+        matchBrackets: true,
 
-        indentUnit: 2,
+        indentUnit: 4,
 
-        indentWithTabs: false
+        tabSize: 4
+
     }
 );
 
 
-/* JAVASCRIPT */
+/* JavaScript */
 
-editors.js = CodeMirror.fromTextArea(
-    document.getElementById("js"),
+editors.js = CodeMirror(
+    document.getElementById("jsEditor"),
     {
+
+        value: defaultJS,
+
         mode: "javascript",
+
         theme: "dracula",
 
         lineNumbers: true,
 
-        lineWrapping: true,
+        lineWrapping: false,
 
         autoCloseBrackets: true,
 
-        tabSize: 2,
+        matchBrackets: true,
 
-        indentUnit: 2,
+        indentUnit: 4,
 
-        indentWithTabs: false
+        tabSize: 4
+
     }
 );
-
-
-/* =====================================================
-   DEFAULT CONTENT
-===================================================== */
-
-editors.html.setValue(defaultHTML.trim());
-
-editors.css.setValue(defaultCSS.trim());
-
-editors.js.setValue(defaultJS.trim());
-
-Object.keys(editors).forEach(function(type) {
-    editors[type].on('change', function() {
-        if (editors[type].getWrapperElement().style.display !== 'none') {
-            fitEditorToPanel(type);
-        }
-    });
-});
 
 
 /* =====================================================
    SHOW EDITOR
 ===================================================== */
 
-function showEditor(type, element) {
+function showEditor(type) {
+
+    document
+        .querySelectorAll(".code-area")
+        .forEach(area => {
+
+            area.style.display = "none";
+
+        });
+
+
+    document.getElementById(
+        type + "Editor"
+    ).style.display = "block";
+
 
     document
         .querySelectorAll(".tab")
@@ -1101,84 +959,53 @@ function showEditor(type, element) {
         });
 
 
-    element.classList.add("active");
+    const activeTab =
+        document.querySelector(
+            `.tab[data-editor="${type}"]`
+        );
 
 
-    Object.keys(editors).forEach(key => {
+    if (activeTab) {
 
-        editors[key]
-            .getWrapperElement()
-            .style.display = "none";
+        activeTab.classList.add("active");
 
-    });
-
-
-    editors[type]
-        .getWrapperElement()
-        .style.display = "block";
-
-
-    editors[type].refresh();
-    fitEditorToPanel(type);
-
-}
-
-
-function fitEditorToPanel(type) {
-    const editor = editors[type];
-    if (!editor) return;
-
-    const wrapper = editor.getWrapperElement();
-    if (!wrapper || wrapper.offsetParent === null) return;
-
-    const codeArea = wrapper.parentElement;
-    const availableHeight = Math.max(100, (codeArea ? codeArea.clientHeight : wrapper.clientHeight) - 8);
-    const availableWidth = Math.max(180, wrapper.clientWidth - 48);
-    const lines = Math.max(1, editor.lineCount());
-
-    // تقدير الأسطر المرئية بعد التفاف الأسطر الطويلة.
-    const charWidth = 0.62;
-    const charsPerLine = Math.max(20, Math.floor(availableWidth / (15 * charWidth)));
-    let visualLines = 0;
-    for (let i = 0; i < lines; i++) {
-        const lineLength = editor.getLine(i).length;
-        visualLines += Math.max(1, Math.ceil(lineLength / charsPerLine));
     }
 
-    const fitSizeByHeight = availableHeight / (visualLines * 1.34);
-    const fitSizeByWidth = availableWidth / (Math.max(1, ...Array.from({length: lines}, (_, i) => editor.getLine(i).length)) * charWidth);
-    const fontSize = Math.max(8, Math.min(15, fitSizeByHeight, fitSizeByWidth));
 
-    wrapper.style.fontSize = fontSize.toFixed(2) + 'px';
-    wrapper.style.lineHeight = '1.25';
-    editor.refresh();
+    const names = {
+
+        html: "HTML",
+
+        css: "CSS",
+
+        js: "JavaScript"
+
+    };
+
+
+    document.getElementById(
+        "currentLanguage"
+    ).textContent = names[type];
+
+
+    setTimeout(() => {
+
+        editors[type].refresh();
+
+        editors[type].focus();
+
+    }, 20);
+
 }
 
 
-window.addEventListener("resize", function () {
-    Object.keys(editors).forEach(function (type) {
-        editors[type].refresh();
-        fitEditorToPanel(type);
-    });
-});
-
 /* =====================================================
-   INITIAL EDITOR
+   BUILD FULL HTML
 ===================================================== */
 
-showEditor(
-    "html",
-    document.querySelector(".tab")
-);
+function buildHTML() {
 
-
-/* =====================================================
-   BUILD HTML
-===================================================== */
-
-function buildDocument() {
-
-    const html =
+    let html =
         editors.html.getValue();
 
     const css =
@@ -1188,216 +1015,80 @@ function buildDocument() {
         editors.js.getValue();
 
 
-    return `
-<!DOCTYPE html>
+    /* إضافة CSS */
 
-<html lang="ar" dir="rtl">
+    if (css.trim()) {
 
-<head>
+        if (html.includes("</head>")) {
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-
-<style>
-html, body, button, input, textarea, select {
-    font-family: "Tajawal", Arial, sans-serif;
-}
-
+            html = html.replace(
+                "</head>",
+                `<style>
 ${css}
-
-
-
-
-.CodeMirror .CodeMirror-scroll,
-.CodeMirror-scroll {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-.CodeMirror .CodeMirror-scroll::-webkit-scrollbar,
-.CodeMirror-scroll::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  background: transparent !important;
-}
-.CodeMirror .CodeMirror-vscrollbar,
-.CodeMirror .CodeMirror-hscrollbar,
-.CodeMirror-vscrollbar,
-.CodeMirror-hscrollbar {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  overflow: hidden !important;
-  pointer-events: none !important;
-}
-.CodeMirror .CodeMirror-vscrollbar::-webkit-scrollbar,
-.CodeMirror .CodeMirror-hscrollbar::-webkit-scrollbar,
-.CodeMirror-vscrollbar::-webkit-scrollbar,
-.CodeMirror-hscrollbar::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-}
-
-
-
-html, body {
-    max-width: 100%;
-    overflow: hidden !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-}
-html::-webkit-scrollbar, body::-webkit-scrollbar,
-header::-webkit-scrollbar, header .toolbar::-webkit-scrollbar,
-.toolbar::-webkit-scrollbar, .tabs::-webkit-scrollbar,
-.editor-container::-webkit-scrollbar, .code-area::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-header {
-    min-width: 0;
-    max-width: 100%;
-    overflow: hidden !important;
-}
-header .logo { min-width: 0; }
-header .toolbar {
-    min-width: 0;
-    max-width: 100%;
-    overflow: hidden !important;
-    overflow-x: hidden !important;
-    overflow-y: hidden !important;
-    flex-wrap: wrap;
-    scrollbar-width: none !important;
-}
-header .toolbar, header .toolbar * {
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-}
-header .toolbar *::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-
-.tabs {
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-}
-.tabs::-webkit-scrollbar,
-.tabs::-webkit-scrollbar-button,
-.tabs::-webkit-scrollbar-thumb,
-.tabs::-webkit-scrollbar-track {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
-.tabs .tab {
-    flex-shrink: 0;
-}
-
-
-.CodeMirror { font-size: 15px !important; }
-@media (max-width: 800px) { .CodeMirror { font-size: 14px !important; } }
-
-
-
-.tabs {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 2px !important;
-    height: 36px !important;
-    flex: 0 0 36px !important;
-    min-height: 36px !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    padding: 3px 6px !important;
-    overflow: hidden !important;
-    overflow-x: hidden !important;
-    overflow-y: hidden !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
-}
-.tabs::-webkit-scrollbar,
-.tabs::-webkit-scrollbar-button,
-.tabs::-webkit-scrollbar-thumb,
-.tabs::-webkit-scrollbar-track,
-.tabs::-webkit-scrollbar-corner {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    background: transparent !important;
-}
-.tabs .tab {
-    flex: 0 1 auto !important;
-    min-width: 0 !important;
-    padding: 6px 12px !important;
-    margin: 0 !important;
-    font-size: 12px !important;
-    line-height: 1.2 !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-}
-@media (max-width: 800px) {
-    .tabs { height: 34px !important; flex-basis: 34px !important; min-height: 34px !important; }
-    .tabs .tab { padding: 5px 9px !important; font-size: 11px !important; }
-}
-
-.code-area .CodeMirror { font-size: 15px !important; }
-@media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
-
 </style>
+</head>`
+            );
 
-</head>
+        } else {
 
-<body>
+            html =
+                `<style>
+${css}
+</style>
+` + html;
 
-${html}
+        }
 
-<script>
+    }
 
+
+    /* إضافة JavaScript */
+
+    if (js.trim()) {
+
+        if (html.includes("</body>")) {
+
+            html = html.replace(
+                "</body>",
+                `<script>
 ${js}
-
 <\/script>
+</body>`
+            );
 
-</body>
+        } else {
 
-</html>
-`;
+            html +=
+                `<script>
+${js}
+<\/script>`;
 
+        }
+
+    }
+
+
+    return html;
 }
 
 
 /* =====================================================
-   RUN
+   RUN CODE
 ===================================================== */
 
 function runCode() {
 
-    const documentCode =
-        buildDocument();
+    const preview =
+        document.getElementById("preview");
 
 
-    document
-        .getElementById("preview")
-        .srcdoc = documentCode;
+    preview.srcdoc =
+        buildHTML();
 
 
-    showStatus("تم تشغيل المشروع ▶");
+    showStatus(
+        "تم تشغيل الكود بنجاح ▶️"
+    );
 
 }
 
@@ -1417,45 +1108,20 @@ function saveProject() {
             editors.css.getValue(),
 
         js:
-            editors.js.getValue(),
-
-        savedAt:
-            new Date().toISOString()
+            editors.js.getValue()
 
     };
 
 
-    try {
-
-        localStorage.setItem(
-            "webEditorProject",
-            JSON.stringify(project)
-        );
+    localStorage.setItem(
+        "webEditorProject",
+        JSON.stringify(project)
+    );
 
 
-        localStorage.setItem(
-            "webEditorAutoSave",
-            JSON.stringify(project)
-        );
-
-
-        showStatus("تم حفظ المشروع بنجاح 💾");
-
-
-    } catch(error) {
-
-        openCustomModal({
-            title: "تعذر حفظ المشروع",
-            message: "لم يتمكن المتصفح من حفظ المشروع. تحقق من إعدادات التخزين أو المساحة المتاحة، ثم حاول مجددًا.",
-            icon: "!",
-            type: "warning",
-            confirmText: "حسنًا",
-            showCancel: false
-        });
-
-        console.error(error);
-
-    }
+    showStatus(
+        "تم حفظ المشروع بنجاح 💾"
+    );
 
 }
 
@@ -1466,31 +1132,27 @@ function saveProject() {
 
 function loadProject() {
 
+    const saved =
+        localStorage.getItem(
+            "webEditorProject"
+        );
+
+
+    if (!saved) {
+
+        showStatus(
+            "لا يوجد مشروع محفوظ 📂"
+        );
+
+        return;
+
+    }
+
+
     try {
-
-        const saved =
-            localStorage.getItem(
-                "webEditorProject"
-            );
-
-
-        if (!saved) {
-
-            return false;
-
-        }
-
 
         const project =
             JSON.parse(saved);
-
-
-        if (!project ||
-            typeof project !== "object") {
-
-            return false;
-
-        }
 
 
         editors.html.setValue(
@@ -1506,21 +1168,19 @@ function loadProject() {
         );
 
 
-        showStatus("تم استرجاع المشروع 💾");
+        runCode();
 
 
-        return true;
-
-
-    } catch(error) {
-
-        console.error(
-            "خطأ أثناء تحميل المشروع:",
-            error
+        showStatus(
+            "تم تحميل المشروع بنجاح 📂"
         );
 
 
-        return false;
+    } catch (error) {
+
+        showStatus(
+            "حدث خطأ أثناء تحميل المشروع"
+        );
 
     }
 
@@ -1531,7 +1191,7 @@ function loadProject() {
    AUTO SAVE
 ===================================================== */
 
-function autoSave() {
+setInterval(() => {
 
     const project = {
 
@@ -1542,57 +1202,34 @@ function autoSave() {
             editors.css.getValue(),
 
         js:
-            editors.js.getValue(),
-
-        savedAt:
-            new Date().toISOString()
+            editors.js.getValue()
 
     };
 
 
-    try {
+    localStorage.setItem(
+        "webEditorAutoSave",
+        JSON.stringify(project)
+    );
 
-        localStorage.setItem(
-            "webEditorAutoSave",
-            JSON.stringify(project)
-        );
-
-    } catch(error) {
-
-        console.error(
-            "خطأ في الحفظ التلقائي:",
-            error
-        );
-
-    }
-
-}
-
-
-/* حفظ تلقائي كل 5 ثوانٍ */
-
-setInterval(
-    autoSave,
-    5000
-);
+}, 5000);
 
 
 /* =====================================================
-   DOWNLOAD
+   DOWNLOAD HTML
 ===================================================== */
 
 function downloadHTML() {
 
-    const fullHTML =
-        buildDocument();
+    const content =
+        buildHTML();
 
 
     const blob =
         new Blob(
-            [fullHTML],
+            [content],
             {
-                type:
-                    "text/html;charset=utf-8"
+                type: "text/html;charset=utf-8"
             }
         );
 
@@ -1601,32 +1238,27 @@ function downloadHTML() {
         URL.createObjectURL(blob);
 
 
-    const a =
+    const link =
         document.createElement("a");
 
 
-    a.href = url;
+    link.href = url;
 
-    a.download =
-        "my-page.html";
-
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    document.body.removeChild(a);
+    link.download =
+        "my-web-page.html";
 
 
-    setTimeout(() => {
+    document.body.appendChild(link);
 
-        URL.revokeObjectURL(url);
+    link.click();
 
-    }, 100);
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
 
 
     showStatus(
-        "تم تحميل الصفحة 📥"
+        "تم تنزيل ملف HTML ⬇️"
     );
 
 }
@@ -1636,22 +1268,25 @@ function downloadHTML() {
    CLEAR
 ===================================================== */
 
-function clearAll() {
-
-    openCustomModal({
-        title: "تأكيد مسح المشروع",
-        message: "هل تريد مسح جميع الأكواد وبيانات الحفظ؟ لا يمكن التراجع عن هذه الخطوة.",
-        icon: "⚠",
-        type: "warning",
-        confirmText: "نعم، امسح الكل",
-        cancelText: "إلغاء",
-        onConfirm: function () {
-            performClearAll();
-        }
-    });
+function clearProject() {
+    openConfirmModal();
 }
 
-function performClearAll() {
+function openConfirmModal() {
+    document.getElementById("confirmModal").classList.add("show");
+}
+
+function closeConfirmModal() {
+    document.getElementById("confirmModal").classList.remove("show");
+}
+
+function confirmClearProject() {
+    closeConfirmModal();
+
+    /*
+       مسح جميع الأكواد بالكامل
+    */
+
     editors.html.setValue("");
 
     editors.css.setValue("");
@@ -1659,98 +1294,52 @@ function performClearAll() {
     editors.js.setValue("");
 
 
-    try {
+    /*
+       مسح المعاينة
+    */
 
-        localStorage.removeItem(
-            "webEditorProject"
-        );
-
-        localStorage.removeItem(
-            "webEditorAutoSave"
-        );
-
-    } catch(error) {
-
-        console.error(error);
-
-    }
+    document.getElementById(
+        "preview"
+    ).srcdoc = "";
 
 
-    runCode();
+    /*
+       تحديث المحررات
+    */
+
+    editors.html.refresh();
+
+    editors.css.refresh();
+
+    editors.js.refresh();
+
 
     showStatus(
-        "تم مسح المشروع 🗑️"
+        "تم مسح جميع الأكواد 🗑️"
     );
 
 }
 
 
-
 /* =====================================================
-   CUSTOM MODAL CONTROLLER
+   MODAL CONTROLS
 ===================================================== */
-let customModalCallback = null;
 
-function openCustomModal(options) {
-    const overlay = document.getElementById("customModal");
-    const card = document.getElementById("customModalCard");
-    const actions = document.getElementById("customModalActions");
-    const cancelText = options.cancelText || "إلغاء";
-    const confirmText = options.confirmText || "حسنًا";
-
-    document.getElementById("customModalTitle").textContent = options.title || "تنبيه";
-    document.getElementById("customModalMessage").textContent = options.message || "";
-    document.getElementById("customModalIcon").textContent = options.icon || "✦";
-    card.classList.toggle("warning", options.type === "warning");
-    actions.replaceChildren();
-    customModalCallback = typeof options.onConfirm === "function" ? options.onConfirm : null;
-
-    if (options.showCancel !== false) {
-        const cancel = document.createElement("button");
-        cancel.type = "button";
-        cancel.className = "modal-cancel";
-        cancel.textContent = cancelText;
-        cancel.onclick = () => closeCustomModal(false);
-        actions.appendChild(cancel);
+document.getElementById("confirmModal").addEventListener("click", function(event) {
+    if (event.target === this) {
+        closeConfirmModal();
     }
-
-    const confirm = document.createElement("button");
-    confirm.type = "button";
-    confirm.className = "modal-confirm";
-    confirm.textContent = confirmText;
-    confirm.onclick = () => closeCustomModal(true);
-    actions.appendChild(confirm);
-
-    overlay.classList.add("open");
-    overlay.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    confirm.focus();
-}
-
-function closeCustomModal(confirmed) {
-    const overlay = document.getElementById("customModal");
-    overlay.classList.remove("open");
-    overlay.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-    const callback = customModalCallback;
-    customModalCallback = null;
-    if (confirmed && callback) callback();
-}
-
-document.getElementById("customModal").addEventListener("click", function(event) {
-    if (event.target === this) closeCustomModal(false);
 });
 
 document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape" &&
-        document.getElementById("customModal").classList.contains("open")) {
-        closeCustomModal(false);
+    if (event.key === "Escape") {
+        closeConfirmModal();
     }
 });
 
 
 /* =====================================================
-   STATUS MESSAGE
+   STATUS
 ===================================================== */
 
 let statusTimer;
@@ -1773,7 +1362,9 @@ function showStatus(message) {
     );
 
 
-    clearTimeout(statusTimer);
+    clearTimeout(
+        statusTimer
+    );
 
 
     statusTimer =
@@ -1783,16 +1374,9 @@ function showStatus(message) {
                 "show"
             );
 
-        }, 2000);
+        }, 2500);
 
 }
-
-
-/* =====================================================
-   FULLSCREEN
-===================================================== */
-
-
 
 
 /* =====================================================
@@ -1803,11 +1387,12 @@ document.addEventListener(
     "keydown",
     function(event) {
 
-
-        /* Ctrl + S */
+        /*
+           Ctrl + S
+        */
 
         if (
-            event.ctrlKey &&
+            (event.ctrlKey || event.metaKey) &&
             event.key.toLowerCase() === "s"
         ) {
 
@@ -1818,10 +1403,12 @@ document.addEventListener(
         }
 
 
-        /* Ctrl + Enter */
+        /*
+           Ctrl + Enter
+        */
 
         if (
-            event.ctrlKey &&
+            (event.ctrlKey || event.metaKey) &&
             event.key === "Enter"
         ) {
 
@@ -1836,43 +1423,6 @@ document.addEventListener(
 
 
 /* =====================================================
-   INITIAL LOAD
-===================================================== */
-
-const projectLoaded =
-    loadProject();
-
-
-/*
-   إذا لم يوجد مشروع محفوظ،
-   استخدم الأكواد الافتراضية.
-*/
-
-if (!projectLoaded) {
-
-    editors.html.setValue(
-        defaultHTML.trim()
-    );
-
-    editors.css.setValue(
-        defaultCSS.trim()
-    );
-
-    editors.js.setValue(
-        defaultJS.trim()
-    );
-
-}
-
-
-/* =====================================================
-   FIRST RUN
-===================================================== */
-
-runCode();
-
-
-/* =====================================================
    WINDOW RESIZE
 ===================================================== */
 
@@ -1880,20 +1430,29 @@ window.addEventListener(
     "resize",
     function() {
 
-        Object.keys(editors)
-            .forEach(key => {
+        setTimeout(() => {
 
-                editors[key].refresh();
-                if (editors[key].getWrapperElement().style.display !== 'none') {
-                    fitEditorToPanel(key);
-                }
+            Object.keys(editors)
+                .forEach(key => {
 
-            });
+                    editors[key].refresh();
+
+                });
+
+        }, 100);
 
     }
 );
+
+
+/* =====================================================
+   INITIAL RUN
+===================================================== */
+
+runCode();
 
 </script>
 
 </body>
 </html>
+```
