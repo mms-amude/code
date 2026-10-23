@@ -2,1016 +2,449 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<title>Web Editor Pro</title>
 
-<meta name="theme-color"
-      content="#0b2239">
+<!-- =====================================================
+     CodeMirror
+===================================================== -->
 
-<title>مكتبة عامودا الرقمية</title>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
 
-<link rel="preconnect"
-      href="https://fonts.googleapis.com">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 
-<link rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap"
-      rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+
+<!-- إغلاق الوسوم والأقواس تلقائياً -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closetag.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
 
 
 <style>
 
-:root {
-    --navy: #0b2239;
-    --navy-2: #123754;
-    --navy-3: #19496b;
-    --gold: #c7a45b;
-    --gold-light: #e2ca91;
-    --cream: #f6f2e9;
-    --cream-2: #eee8dc;
-    --white: #ffffff;
-    --text: #17212b;
-    --muted: #6d7780;
-    --border: #e5ded1;
-    --shadow: 0 12px 35px rgba(11,34,57,0.09);
-    --radius: 18px;
-}
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 * {
+    box-sizing: border-box;
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: "Tajawal", sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    line-height: 1.8;
-}
-
-.top-bar {
-    height: 34px;
-    background: #061827;
-    color: rgba(255,255,255,0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-}
-
-.top-bar span {
-    color: var(--gold-light);
-}
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: rgba(11,34,57,0.97);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 5px 25px rgba(0,0,0,0.12);
-}
-
-.header-inner {
-    max-width: 1200px;
-    height: 78px;
-    margin: auto;
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-icon {
-    width: 45px;
-    height: 45px;
-    border: 1px solid var(--gold);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--gold-light);
-    font-size: 22px;
-}
-
-.logo-name {
-    font-size: 19px;
-    font-weight: 800;
-}
-
-.logo-subtitle {
-    font-size: 10px;
-    color: var(--gold-light);
-    margin-top: -3px;
-}
-
-nav {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-nav a {
-    color: rgba(255,255,255,0.88);
-    text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 9px;
-    font-size: 13px;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    background: rgba(199,164,91,0.15);
-    color: var(--gold-light);
-}
-
-.menu-button {
-    display: none;
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: transparent;
-    color: white;
-    font-size: 21px;
-    cursor: pointer;
-}
-
-.mobile-menu {
-    display: none;
-    background: #061827;
-    padding: 8px 18px 18px;
-}
-
-.mobile-menu a {
-    display: block;
-    padding: 11px;
-    color: white;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    font-size: 14px;
-}
-
-.hero {
-    background:
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(199,164,91,0.14),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(255,255,255,0.05),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #081d30,
-            #0d2d48 55%,
-            #164766
-        );
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: "";
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    border: 1px solid rgba(199,164,91,0.10);
-    top: -280px;
-    left: -150px;
-}
-
-.hero::after {
-    content: "";
-    position: absolute;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    border: 1px solid rgba(199,164,91,0.08);
-    bottom: -250px;
-    right: -150px;
-}
-
-.hero-inner {
-    max-width: 1000px;
-    margin: auto;
-    text-align: center;
-    padding: 78px 20px 85px;
-    position: relative;
-    z-index: 2;
-}
-
-.hero-icon {
-    width: 82px;
-    height: 82px;
-    margin: auto auto 22px;
-    border-radius: 50%;
-    border: 1px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 38px;
-    color: var(--gold-light);
-    box-shadow: 0 0 40px rgba(199,164,91,0.08);
-}
-
-.hero h1 {
-    font-size: 43px;
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-.hero h1 span {
-    color: var(--gold-light);
-}
-
-.hero-description {
-    max-width: 620px;
-    margin: auto;
-    color: rgba(255,255,255,0.75);
-    font-size: 15px;
-}
-
-.search-box {
-    max-width: 680px;
-    margin: 32px auto 0;
-    position: relative;
-}
-
-.search-box input {
     width: 100%;
-    height: 58px;
-    border: none;
-    outline: none;
-    border-radius: 14px;
-    padding: 0 55px 0 20px;
-    font-family: inherit;
-    font-size: 14px;
-    background: white;
-    color: var(--text);
-    box-shadow: 0 12px 35px rgba(0,0,0,0.16);
-}
-
-.search-icon {
-    position: absolute;
-    right: 19px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--navy);
-    font-size: 20px;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px 20px 50px;
-}
-
-.section-heading {
-    text-align: center;
-    margin-bottom: 32px;
-}
-
-.section-heading h2 {
-    color: var(--navy);
-    font-size: 27px;
-    font-weight: 800;
-}
-
-.section-heading p {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.specialties {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 220px));
-    justify-content: center;
-    gap: 14px;
-    margin-bottom: 58px;
-}
-
-.specialty {
-    width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px 12px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: var(--shadow);
-    transition: transform .3s, box-shadow .3s;
-}
-
-.specialty:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 45px rgba(11,34,57,0.14);
-}
-
-.specialty.active {
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 0 3px rgba(199,164,91,0.18), var(--shadow);
-    background: #fffdf8;
-}
-
-.specialty::after {
-    content: "";
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: rgba(199,164,91,0.08);
-    top: -55px;
-    left: -45px;
-}
-
-.specialty-icon {
-    width: 48px;
-    height: 48px;
-    margin: auto auto 8px;
-    border-radius: 13px;
-    background: var(--navy);
-    color: var(--gold-light);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    box-shadow: 0 6px 16px rgba(11,34,57,.12);
-    z-index: 2;
-}
-
-.specialty-icon svg {
-    width: 27px;
-    height: 27px;
-    fill: currentColor;
-    display: block;
-}
-
-.specialty h3 {
-    color: var(--navy);
-    font-size: 16px;
-    margin-bottom: 2px;
-}
-
-.specialty p {
-    color: var(--muted);
-    font-size: 10px;
-}
-
-.gold-line {
-    width: 55px;
-    height: 3px;
-    background: var(--gold);
-    border-radius: 20px;
-    margin: 12px auto 0;
-}
-
-.latest {
-    margin-top: 10px;
-}
-
-.items-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
-
-.item-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: .3s;
-    display: flex;
-    flex-direction: column;
     height: 100%;
 }
 
-.item-card:hover {
-    transform: translateY(-6px);
+body {
+    background: #001D3D;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
 }
 
-.item-image {
-    height: 190px;
-    background: linear-gradient(135deg, var(--navy), var(--navy-3));
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header {
+    height: 60px;
+    background: #002855;
+
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.4);
+
     position: relative;
-    overflow: hidden;
-}
-
-.item-image::after {
-    content: "";
-    position: absolute;
-    inset: 14px;
-    border: 1px solid rgba(199,164,91,0.25);
-    border-radius: 9px;
-}
-
-.item-image img {
-    width: 88%;
-    height: 88%;
-    object-fit: contain;
-    position: absolute;
-    inset: 6%;
-    z-index: 1;
-}
-
-.item-icon {
-    display: none;
-}
-
-.item-content {
-    padding: 17px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.item-type {
-    font-size: 10px;
-    color: var(--gold);
-    font-weight: 700;
-}
-
-.item-title {
-    color: var(--navy);
-    font-size: 16px;
-    font-weight: 800;
-    margin-top: 3px;
-}
-
-.item-description {
-    color: #263238;
-    font-size: 15px;
-    line-height: 1.75;
-    font-weight: 500;
-    min-height: 52px;
-    max-height: 52px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-}
-
-.details-button {
-    width: 100%;
-    border: none;
-    background: var(--navy);
-    color: white;
-    padding: 9px;
-    border-radius: 8px;
-    font-family: inherit;
-    cursor: pointer;
-    margin-top: auto;
-    padding-top: 13px;
-    transition: .3s;
-}
-
-.details-button:hover {
-    background: var(--gold);
-    color: var(--navy);
-}
-
-.stats {
-    background: var(--navy);
-    color: white;
-}
-
-.stats-inner {
-    max-width: 950px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 35px 20px;
-}
-
-.stat {
-    text-align: center;
-    border-left: 1px solid rgba(255,255,255,0.12);
-}
-
-.stat:last-child {
-    border-left: none;
-}
-
-.stat-number {
-    color: var(--gold-light);
-    font-size: 28px;
-    font-weight: 800;
-}
-
-.stat-label {
-    color: rgba(255,255,255,0.68);
-    font-size: 12px;
-}
-
-.about {
-    margin-top: 65px;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 35px;
-    text-align: center;
-    box-shadow: var(--shadow);
-}
-
-.about h2 {
-    color: var(--navy);
-    font-size: 23px;
-}
-
-.about p {
-    max-width: 750px;
-    margin: 10px auto 0;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 2;
-}
-
-footer {
-    background: #061827;
-    color: white;
-    text-align: center;
-    padding: 35px 20px;
-}
-
-.footer-name {
-    color: var(--gold-light);
-    font-weight: 800;
-    font-size: 19px;
-}
-
-.footer-line {
-    width: 55px;
-    height: 2px;
-    background: var(--gold);
-    margin: 13px auto;
-}
-
-footer p {
-    color: rgba(255,255,255,0.55);
-    font-size: 11px;
-}
-
-#topButton {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 44px;
-    height: 44px;
-    border: none;
-    border-radius: 50%;
-    background: var(--gold);
-    color: var(--navy);
-    font-size: 20px;
-    cursor: pointer;
-    display: none;
-    z-index: 999;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-}
-
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(3,15,25,0.75);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 3000;
-}
-
-.modal-box {
-    max-width: 520px;
-    width: 100%;
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.3);
-    animation: modalIn .3s ease;
-}
-
-.modal-header {
-    background: var(--navy);
-    color: white;
-    padding: 25px;
-    text-align: center;
-}
-
-.modal-header-icon {
-    font-size: 42px;
-    color: var(--gold-light);
-}
-
-.modal-header h2 {
-    margin-top: 5px;
-    font-size: 20px;
-}
-
-.modal-body {
-    padding: 25px;
-}
-
-.modal-body p {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 2;
-    white-space: pre-line;
-}
-
-.modal-body p {
-    color: #17212b;
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 2;
-    white-space: normal;
-    max-height: 320px;
-    overflow-y: auto;
-    overflow-wrap: anywhere;
-}
-
-.modal-body p a {
-    color: var(--navy-3);
-    font-weight: 700;
-    text-decoration: underline;
-    text-decoration-color: var(--gold);
-    text-underline-offset: 3px;
-}
-
-.extra-download-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    margin-top: 14px;
-}
-
-.extra-download-button {
-    width: 100%;
-    border: 1px solid rgba(199,164,91,.55);
-    border-radius: 9px;
-    padding: 9px 12px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    background: var(--cream);
-    color: var(--navy);
-    transition: .25s;
-}
-
-.extra-download-button:hover {
-    background: var(--gold);
-    color: var(--navy);
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.modal-button {
-    flex: 1;
-    border: none;
-    border-radius: 9px;
-    padding: 11px;
-    font-family: inherit;
-    cursor: pointer;
-    background: var(--navy);
-    color: white;
-}
-
-.modal-button.close {
-    background: var(--cream-2);
-    color: var(--navy);
-}
-
-@keyframes modalIn {
-    from {
-        opacity: 0;
-        transform: scale(.93);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.no-results {
-    display: none;
-    text-align: center;
-    padding: 55px 20px;
-    color: var(--muted);
-}
-
-.no-results div {
-    font-size: 45px;
-    margin-bottom: 8px;
-}
-
-.loading {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 70px 20px;
-    color: var(--muted);
-}
-
-.loading-icon {
-    font-size: 45px;
-    margin-bottom: 10px;
-}
-
-@media (max-width: 950px) {
-
-    .items-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-}
-
-@media (max-width: 700px) {
-
-    .top-bar {
-        font-size: 10px;
-    }
-
-    .header-inner {
-        height: 70px;
-    }
-
-    nav {
-        display: none;
-    }
-
-    .menu-button {
-        display: block;
-    }
-
-    .hero-inner {
-        padding: 60px 18px 65px;
-    }
-
-    .hero h1 {
-        font-size: 30px;
-    }
-
-    .hero-description {
-        font-size: 12px;
-    }
-
-    .specialties {
-        grid-template-columns: 1fr;
-        gap: 12px;
-        margin-bottom: 50px;
-    }
-
-    .specialty {
-        padding: 15px 12px;
-    }
-
-    .specialty-icon {
-        width: 45px;
-        height: 45px;
-        margin-bottom: 7px;
-    }
-
-    .specialty-icon svg {
-        width: 25px;
-        height: 25px;
-    }
-
-    .specialty h3 {
-        font-size: 15px;
-    }
-
-    .specialty p {
-        font-size: 10px;
-    }
-
-    .items-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-
-    .item-image {
-        height: 160px;
-    }
-
-    .item-content {
-        padding: 12px;
-    }
-
-    .item-title {
-        font-size: 14px;
-    }
-
-    .item-description {
-        font-size: 10px;
-    }
-
-    .details-button {
-        font-size: 11px;
-    }
-
-    .stats-inner {
-        padding: 27px 10px;
-    }
-
-    .stat-number {
-        font-size: 21px;
-    }
-
-    .stat-label {
-        font-size: 10px;
-    }
-
-    .about {
-        padding: 25px 18px;
-    }
-
-}
-
-@media (max-width: 380px) {
-
-    .items-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .item-image {
-        height: 145px;
-    }
-
-    .hero h1 {
-        font-size: 26px;
-    }
-
-}
-
-
-
-/* إخفاء زري التحميل والإغلاق في نافذة تفاصيل الموضوع فقط */
-#downloadButton,
-.modal-button.close {
-    display: none !important;
-}
-
-
-
-/* تحسينات القسم العلوي فقط: تصغير المساحات وإخفاء العناصر الزخرفية */
-.top-bar {
-    height: 26px;
-    font-size: 11px;
-}
-
-.top-bar span {
-    display: none;
-}
-
-.header-inner {
-    height: 62px;
-    padding: 0 16px;
+    z-index: 20;
 }
 
 .logo {
-    gap: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
 }
 
-.logo-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 18px;
+.logo span {
+    color: #00b4d8;
 }
 
-.logo-name {
-    font-size: 16px;
+
+/* =====================================================
+   TOOLBAR
+===================================================== */
+
+.toolbar {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
 }
 
-.logo-subtitle {
+button {
+    border: none;
+    border-radius: 7px;
+
+    padding: 9px 13px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    transition: .2s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: scale(.97);
+}
+
+.run {
+    background: #00b4d8;
+    color: white;
+}
+
+.save {
+    background: #38b000;
+    color: white;
+}
+
+.download {
+    background: #fca311;
+    color: black;
+}
+
+.clear {
+    background: #d90429;
+    color: white;
+}
+
+.fullscreen {
+    background: #6c5ce7;
+    color: white;
+}
+
+
+/* =====================================================
+   TABS
+===================================================== */
+
+.tabs {
+    height: 48px;
+
+    background: #001529;
+
+    display: flex;
+    align-items: center;
+
+    padding-right: 10px;
+
+    gap: 4px;
+
+    overflow-x: auto;
+}
+
+.tab {
+    padding: 12px 22px;
+
+    cursor: pointer;
+
+    border-radius: 6px 6px 0 0;
+
+    color: #aaa;
+
+    white-space: nowrap;
+
+    transition: .2s;
+}
+
+.tab:hover {
+    color: white;
+}
+
+.tab.active {
+    background: #282a36;
+
+    color: white;
+
+    border-bottom: 3px solid #00b4d8;
+}
+
+
+/* =====================================================
+   MAIN EDITOR
+===================================================== */
+
+.editor-container {
+    height: calc(100vh - 108px);
+
+    display: grid;
+
+    grid-template-columns: 50% 50%;
+
+    min-height: 0;
+}
+
+
+/* =====================================================
+   CODE AREA
+===================================================== */
+
+.code-area {
+    direction: ltr;
+
+    height: 100%;
+
+    min-height: 0;
+
+    background: #282a36;
+
+    overflow: hidden;
+}
+
+.code-area textarea {
     display: none;
 }
 
-nav {
-    gap: 2px;
+.CodeMirror {
+    height: 100%;
+
+    font-size: 15px;
+
+    direction: ltr;
+
+    text-align: left;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
 }
 
-nav a {
-    padding: 6px 10px;
+
+/* =====================================================
+   PREVIEW
+===================================================== */
+
+.preview-area {
+    background: white;
+
+    position: relative;
+
+    height: 100%;
+
+    min-height: 0;
+
+    border-right: 2px solid #003566;
+
+    overflow: hidden;
+}
+
+.preview-title {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    left: 0;
+
+    height: 35px;
+
+    background: #003566;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-right: 15px;
+
+    z-index: 5;
+
+    font-weight: bold;
+}
+
+.preview-frame {
+    position: absolute;
+
+    top: 35px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background: white;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border: none;
+
+    background: white;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+    position: fixed;
+
+    bottom: 12px;
+    left: 12px;
+
+    background: rgba(0,0,0,.75);
+
+    color: white;
+
+    padding: 7px 12px;
+
+    border-radius: 6px;
+
     font-size: 12px;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: .3s;
+
+    z-index: 100;
 }
 
-.hero-inner {
-    padding: 38px 18px 42px;
+.status.show {
+    opacity: 1;
 }
 
-.hero-icon {
+
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+body.fullscreen-mode header,
+body.fullscreen-mode .tabs {
     display: none;
 }
 
-.hero h1 {
-    font-size: 32px;
-    margin-bottom: 5px;
+body.fullscreen-mode .editor-container {
+    height: 100vh;
 }
 
-.hero-description {
-    font-size: 13px;
-}
 
-.search-box {
-    max-width: 590px;
-    margin-top: 18px;
-}
+/* =====================================================
+   MOBILE
+===================================================== */
 
-.search-box input {
-    height: 46px;
-    border-radius: 11px;
-    font-size: 13px;
-    padding-right: 48px;
-}
+@media(max-width:800px) {
 
-.search-icon {
-    right: 15px;
-}
-
-@media (max-width: 700px) {
-    .top-bar {
-        height: 23px;
-        font-size: 10px;
+    body {
+        overflow: auto;
     }
 
-    .header-inner {
-        height: 56px;
-        padding: 0 12px;
+    header {
+        height: auto;
+
+        min-height: 60px;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        padding: 10px;
     }
 
-    .logo-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 16px;
+    .toolbar {
+        justify-content: center;
     }
 
-    .logo-name {
+    .tabs {
+        height: 48px;
+
+        overflow-x: auto;
+
+        direction: rtl;
+    }
+
+    .editor-container {
+
+        height: calc(100vh - 155px);
+
+        min-height: 500px;
+
+        grid-template-columns: 1fr;
+
+        grid-template-rows: 50% 50%;
+    }
+
+    .preview-area {
+
+        border-right: none;
+
+        border-top: 2px solid #003566;
+    }
+
+    .CodeMirror {
         font-size: 14px;
     }
 
-    .menu-button {
-        width: 36px;
-        height: 36px;
+    .logo {
         font-size: 18px;
     }
 
-    .hero-inner {
-        padding: 28px 14px 30px;
+    button {
+        padding: 8px 10px;
+
+        font-size: 13px;
     }
 
-    .hero h1 {
-        font-size: 25px;
+}
+
+
+/* =====================================================
+   VERY SMALL SCREENS
+===================================================== */
+
+@media(max-width:480px) {
+
+    .toolbar {
+        gap: 4px;
     }
 
-    .hero-description {
+    button {
+        padding: 7px 8px;
         font-size: 12px;
-        line-height: 1.7;
     }
 
-    .search-box {
-        margin-top: 14px;
+    .tab {
+        padding: 11px 15px;
     }
 
-    .search-box input {
-        height: 43px;
-        font-size: 12px;
-    }
 }
 
 </style>
@@ -1021,955 +454,786 @@ nav a {
 
 <body>
 
-<section class="hero" id="home">
 
-    <div class="hero-inner">
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-        <h1>
-            مكتبة
-            <span>
-                عامودا الرقمية
-            </span>
-        </h1>
+<header>
 
-        <p class="hero-description">
-            منصة رقمية تجمع التطبيقات والبرامج والكتب
-            في مكان واحد، بتصميم بسيط وأنيق وسهل الاستخدام.
-        </p>
+<div class="logo">
+    Web <span>Editor</span> Pro
+</div>
 
-        <div class="search-box">
 
-            <span class="search-icon">
-                🔍
-            </span>
+<div class="toolbar">
 
-            <input
-                id="searchInput"
-                type="text"
-                placeholder="ابحث عن تطبيق أو برنامج أو كتاب..."
-                onkeyup="searchItems()">
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<main class="container">
-
-<section id="specialties">
-
-<div class="specialties">
-
-        <div
-            class="specialty"
-            data-type="android"
-            onclick="filterType('android')">
-
-            <div class="specialty-icon" aria-label="Android">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M7.2 8.4h9.6v8.1c0 .9-.7 1.6-1.6 1.6h-6.4c-.9 0-1.6-.7-1.6-1.6V8.4Zm-1.1 1.1H5v5.1h1.1V9.5Zm12.8 0H20v5.1h-1.1V9.5ZM9 6.9 7.8 4.8l.9-.5L10 6.5c.6-.2 1.3-.3 2-.3s1.4.1 2 .3l1.3-2.2.9.5-1.2 2.1c1.1.6 1.8 1.6 1.8 2.8H7.2c0-1.2.7-2.2 1.8-2.8ZM9.5 7.8c.3 0 .5-.2.5-.5s-.2-.5-.5-.5-.5.2-.5.5Zm5 0c.3 0 .5-.2.5-.5s-.2-.5-.5-.5-.5.2-.5.5Z"/>
-                </svg>
-            </div>
-
-            <h3>
-                تطبيقات أندرويد
-            </h3>
-
-            <p>
-                تطبيقات Android المفيدة والمتنوعة
-            </p>
-
-        </div>
-
-
-        <div
-            class="specialty"
-            data-type="computer"
-            onclick="filterType('computer')">
-
-            <div class="specialty-icon" aria-label="Windows">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M3 4.5 11 3.4v8.1H3V4.5Zm9-1.25L21 2v9.5h-9V3.25ZM3 12.5h8v8.1L3 19.5v-7Zm9 0h9V22l-9-1.25V12.5Z"/>
-                </svg>
-            </div>
-
-            <h3>
-                برامج الكمبيوتر
-            </h3>
-
-            <p>
-                برامج Windows والأدوات المفيدة
-            </p>
-
-        </div>
-
-
-        <div
-            class="specialty"
-            data-type="books"
-            onclick="filterType('books')">
-
-            <div class="specialty-icon" aria-label="PDF Books">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M6 2.5h9l4 4v15H6a2 2 0 0 1-2-2v-15a2 2 0 0 1 2-2Zm8 1.7v3.2h3.2L14 4.2ZM8 10h8v1.3H8V10Zm0 3h8v1.3H8V13Zm0 3h5.5v1.3H8V16Z"/>
-                </svg>
-            </div>
-
-            <h3>
-                كتب رقمية PDF
-            </h3>
-
-            <p>
-                كتب ومراجع رقمية للقراءة
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<section id="latest" class="latest">
-
-<div
-        class="items-grid"
-        id="itemsGrid">
-
-        <div class="loading">
-
-            <div class="loading-icon">
-                ⏳
-            </div>
-
-            <h3>
-                جاري تحميل محتويات المكتبة...
-            </h3>
-
-            <p>
-                يرجى الانتظار قليلاً
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div
-        id="noResults"
-        class="no-results">
-
-        <div>
-            🔎
-        </div>
-
-        <h3>
-            لا توجد نتائج
-        </h3>
-
-        <p>
-            حاول استخدام كلمة بحث أخرى.
-        </p>
-
-    </div>
-
-</section>
-
-
-<section id="about">
-
-    <div class="about">
-
-        <h2>
-            عن مكتبة عامودا الرقمية
-        </h2>
-
-        <div class="gold-line"></div>
-
-        <p>
-            مكتبة عامودا الرقمية هي منصة إلكترونية
-            تهدف إلى جمع التطبيقات والبرامج والكتب
-            الرقمية في مكان واحد، وتقديمها بطريقة
-            منظمة وسهلة الاستخدام للزوار.
-        </p>
-
-    </div>
-
-</section>
-
-</main>
-
-
-<section class="stats">
-
-    <div class="stats-inner">
-
-        <div class="stat">
-
-            <div
-                class="stat-number"
-                id="androidCount">
-                0
-            </div>
-
-            <div class="stat-label">
-                تطبيقات أندرويد
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div
-                class="stat-number"
-                id="computerCount">
-                0
-            </div>
-
-            <div class="stat-label">
-                برامج كمبيوتر
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div
-                class="stat-number"
-                id="bookCount">
-                0
-            </div>
-
-            <div class="stat-label">
-                كتب PDF
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<footer>
-
-    <div class="footer-name">
-        مكتبة عامودا الرقمية
-    </div>
-
-    <div class="footer-line"></div>
-
-    <p>
-        تطبيقات أندرويد • برامج الكمبيوتر • كتب رقمية PDF
-    </p>
-
-    <p style="margin-top:8px">
-        © 2026 مكتبة عامودا الرقمية
-    </p>
-
-</footer>
-
-
-<button
-    id="topButton"
-    onclick="scrollToTop()">
-    ↑
+<button class="run" onclick="runCode()">
+▶ تشغيل
 </button>
 
+<button class="save" onclick="saveProject()">
+💾 حفظ
+</button>
 
-<div
-    id="detailsModal"
-    class="modal"
-    onclick="closeModalOutside(event)">
+<button class="download" onclick="downloadHTML()">
+📥 تحميل
+</button>
 
-    <div class="modal-box">
+<button class="clear" onclick="clearAll()">
+🗑️ مسح
+</button>
 
-        <div class="modal-header">
+<button class="fullscreen" onclick="toggleFullscreen()">
+⛶ ملء الشاشة
+</button>
 
-            <div
-                id="modalIcon"
-                class="modal-header-icon">
-                📱
-            </div>
+</div>
 
-            <h2 id="modalTitle">
-                اسم العنصر
-            </h2>
-
-        </div>
+</header>
 
 
-        <div class="modal-body">
 
-            <p id="modalDescription">
-                معلومات العنصر ستظهر هنا.
-            </p>
+<!-- =====================================================
+     TABS
+===================================================== -->
 
-            <div id="extraDownloadButtons" class="extra-download-buttons"></div>
+<div class="tabs">
 
-            <div class="modal-buttons">
+<div class="tab active"
+     onclick="showEditor('html',this)">
+HTML
+</div>
 
-                <button
-                    id="downloadButton"
-                    class="modal-button"
-                    onclick="openDownload()">
+<div class="tab"
+     onclick="showEditor('css',this)">
+CSS
+</div>
 
-                    تحميل / قراءة
-
-                </button>
-
-
-                <button
-                    class="modal-button close"
-                    onclick="closeModal()">
-
-                    إغلاق
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
+<div class="tab"
+     onclick="showEditor('js',this)">
+JavaScript
+</div>
 
 </div>
 
 
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="editor-container">
+
+
+<!-- CODE -->
+
+<div class="code-area">
+
+<textarea id="html"></textarea>
+
+<textarea id="css"></textarea>
+
+<textarea id="js"></textarea>
+
+</div>
+
+
+<!-- PREVIEW -->
+
+<div class="preview-area">
+
+<div class="preview-title">
+    👁️ المعاينة
+</div>
+
+<div class="preview-frame">
+
+<iframe
+id="preview"
+sandbox="allow-scripts allow-forms allow-modals allow-popups">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- STATUS -->
+
+<div id="status"
+class="status">
+تم الحفظ
+</div>
+
+
+
 <script>
 
-const SUPABASE_URL =
-    "https://topktljgtexniilikpwa.supabase.co";
+/* =====================================================
+   DEFAULT HTML
+===================================================== */
 
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_Uu4yVJnpnUh4o3aYHnzGBA_XeDXosEt";
+const defaultHTML = `
+<div class="container">
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
+    <h1>مرحبا بك 👋</h1>
+
+    <p>
+        هذا محرر HTML احترافي
+    </p>
+
+    <button onclick="hello()">
+        اضغط هنا
+    </button>
+
+</div>
+`;
 
 
-let libraryItems = [];
+/* =====================================================
+   DEFAULT CSS
+===================================================== */
 
-let currentItem = null;
-
-
-function toggleMenu() {
-
-    const menu =
-        document.getElementById("mobileMenu");
-
-    if (menu.style.display === "block") {
-        menu.style.display = "none";
-    } else {
-        menu.style.display = "block";
-    }
-
+const defaultCSS = `
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 40px;
+    background: #f5f5f5;
 }
 
-
-function closeMenu() {
-
-    document.getElementById(
-        "mobileMenu"
-    ).style.display = "none";
-
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #ccc;
 }
 
-
-async function loadLibrary() {
-
-    const grid =
-        document.getElementById("itemsGrid");
-
-    try {
-
-        const { data, error } =
-            await supabaseClient
-                .from("library_items")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-        if (error) {
-
-            console.error(
-                "Supabase error:",
-                error
-            );
-
-            grid.innerHTML = `
-
-                <div class="loading">
-
-                    <div class="loading-icon">
-                        ⚠️
-                    </div>
-
-                    <h3>
-                        تعذر تحميل محتويات المكتبة
-                    </h3>
-
-                    <p>
-                        تحقق من اتصال قاعدة البيانات.
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-        libraryItems = data || [];
-
-        renderItems(libraryItems);
-
-        updateCounters();
-
-        // عند فتح الموقع على شاشة الكمبيوتر، اعرض برامج الكمبيوتر افتراضياً.
-        if (window.matchMedia("(min-width: 701px)").matches) {
-            filterType("computer", false);
-        }
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-        grid.innerHTML = `
-
-            <div class="loading">
-
-                <div class="loading-icon">
-                    ⚠️
-                </div>
-
-                <h3>
-                    حدث خطأ أثناء تحميل المكتبة
-                </h3>
-
-            </div>
-
-        `;
-
-    }
-
+h1 {
+    color: #0077b6;
 }
 
-
-function renderItems(items) {
-
-    const grid =
-        document.getElementById("itemsGrid");
-
-    const noResults =
-        document.getElementById("noResults");
-
-    if (!items || items.length === 0) {
-
-        grid.innerHTML = "";
-
-        noResults.style.display = "block";
-
-        return;
-
-    }
-
-    noResults.style.display = "none";
-
-    grid.innerHTML =
-        items.map(function(item) {
-
-            let icon = "📱";
-            let typeName = "تطبيق أندرويد";
-
-            if (item.type === "computer") {
-
-                icon = "💻";
-                typeName = "برنامج كمبيوتر";
-
-            }
-
-            if (item.type === "books") {
-
-                icon = "📚";
-                typeName = "كتاب PDF";
-
-            }
-
-            let imageHTML = "";
-
-            if (
-                item.image_url &&
-                item.image_url.trim() !== ""
-            ) {
-
-                imageHTML = `
-
-                    <img
-                        src="${escapeHTML(item.image_url)}"
-                        alt="${escapeHTML(item.title)}"
-                        onerror="this.style.display='none';">
-
-                `;
-
-            }
-
-            const searchText = [
-
-                item.title || "",
-                item.author || "",
-                item.description || "",
-                item.version || "",
-                typeName
-
-            ].join(" ").toLowerCase();
-
-            return `
-
-                <div
-                    class="item-card"
-                    data-type="${escapeHTML(item.type)}"
-                    data-search="${escapeHTML(searchText)}">
-
-                    <div class="item-image">
-
-                        ${imageHTML}
-
-                        <div class="item-icon">
-                            ${icon}
-                        </div>
-
-                    </div>
-
-
-                    <div class="item-content">
-
-                        <div class="item-type">
-                            ${typeName}
-                        </div>
-
-                        <div class="item-title">
-                            ${escapeHTML(item.title)}
-                        </div>
-
-                        <div class="item-description">
-
-                            ${escapeHTML(
-                                item.description ||
-                                (
-                                    item.type === "books"
-                                    ? "كتاب رقمي بصيغة PDF."
-                                    : "محتوى رقمي متوفر في المكتبة."
-                                )
-                            )}
-
-                        </div>
-
-                        <button
-                            class="details-button"
-                            onclick="showDetailsById(${Number(item.id)})">
-
-                            التفاصيل
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("");
-
-    updateCounters();
-
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    background: #0077b6;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
 }
 
+button:hover {
+    background: #005f8a;
+}
+`;
 
-function escapeHTML(value) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
+/* =====================================================
+   DEFAULT JAVASCRIPT
+===================================================== */
 
-        return "";
+const defaultJS = `
+function hello() {
 
-    }
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    alert("أهلاً بك في Web Editor!");
 
 }
+`;
 
 
-function searchItems() {
+/* =====================================================
+   EDITORS
+===================================================== */
 
-    const search =
-        document
-            .getElementById("searchInput")
-            .value
-            .toLowerCase()
-            .trim();
+const editors = {};
 
-    const cards =
-        document.querySelectorAll(".item-card");
 
-    let found = 0;
+/* HTML */
 
-    cards.forEach(function(card) {
+editors.html = CodeMirror.fromTextArea(
+    document.getElementById("html"),
+    {
+        mode: "xml",
+        theme: "dracula",
 
-        const text =
-            card.dataset.search.toLowerCase();
+        lineNumbers: true,
 
-        if (text.includes(search)) {
+        lineWrapping: true,
 
-            card.style.display = "";
+        autoCloseTags: true,
 
-            found++;
+        autoCloseBrackets: true,
 
-        } else {
+        tabSize: 2,
 
-            card.style.display = "none";
+        indentUnit: 2,
 
-        }
+        indentWithTabs: false
+    }
+);
+
+
+/* CSS */
+
+editors.css = CodeMirror.fromTextArea(
+    document.getElementById("css"),
+    {
+        mode: "css",
+        theme: "dracula",
+
+        lineNumbers: true,
+
+        lineWrapping: true,
+
+        autoCloseBrackets: true,
+
+        tabSize: 2,
+
+        indentUnit: 2,
+
+        indentWithTabs: false
+    }
+);
+
+
+/* JAVASCRIPT */
+
+editors.js = CodeMirror.fromTextArea(
+    document.getElementById("js"),
+    {
+        mode: "javascript",
+        theme: "dracula",
+
+        lineNumbers: true,
+
+        lineWrapping: true,
+
+        autoCloseBrackets: true,
+
+        tabSize: 2,
+
+        indentUnit: 2,
+
+        indentWithTabs: false
+    }
+);
+
+
+/* =====================================================
+   DEFAULT CONTENT
+===================================================== */
+
+editors.html.setValue(defaultHTML.trim());
+
+editors.css.setValue(defaultCSS.trim());
+
+editors.js.setValue(defaultJS.trim());
+
+
+/* =====================================================
+   SHOW EDITOR
+===================================================== */
+
+function showEditor(type, element) {
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+
+            tab.classList.remove("active");
+
+        });
+
+
+    element.classList.add("active");
+
+
+    Object.keys(editors).forEach(key => {
+
+        editors[key]
+            .getWrapperElement()
+            .style.display = "none";
 
     });
 
-    document.getElementById(
-        "noResults"
-    ).style.display =
-        found === 0
-        ? "block"
-        : "none";
 
-}
+    editors[type]
+        .getWrapperElement()
+        .style.display = "block";
 
 
-function filterType(type, scrollToItems = true) {
-
-    document.querySelectorAll(".specialty").forEach(function(button) {
-        button.classList.toggle("active", button.dataset.type === type);
-    });
-
-    const cards =
-        document.querySelectorAll(".item-card");
-
-    let found = 0;
-
-    cards.forEach(function(card) {
-
-        if (card.dataset.type === type) {
-
-            card.style.display = "";
-
-            found++;
-
-        } else {
-
-            card.style.display = "none";
-
-        }
-
-    });
-
-    document.getElementById(
-        "noResults"
-    ).style.display =
-        found === 0
-        ? "block"
-        : "none";
-
-    document.getElementById(
-        "searchInput"
-    ).value = "";
-
-    if (scrollToItems) {
-        document
-            .getElementById("latest")
-            .scrollIntoView({
-                behavior: "smooth"
-            });
-    }
-
-}
-
-
-function linkifyDescription(text) {
-
-    const safe = escapeHTML(String(text || ""));
-
-    return safe.replace(
-        /(https?:\/\/[^\s<]+)/gi,
-        function(url) {
-
-            let clean = url;
-            let trailing = "";
-            const match = clean.match(/[.,،؛:!?؟)\]}]+$/);
-
-            if (match) {
-                trailing = match[0];
-                clean = clean.slice(0, -trailing.length);
-            }
-
-            return '<a href="' + escapeHTML(clean) +
-                   '" target="_blank" rel="noopener noreferrer">' +
-                   clean + '</a>' + trailing;
-        }
-    );
-}
-
-/*
-صيغة الأزرار الإضافية داخل وصف التفاصيل:
-[[button|تحميل APK|https://example.com/app.apk]]
-[[button|النسخة القديمة|https://example.com/old.apk]]
-يمكن وضع أكثر من زر في نفس الوصف.
-*/
-function renderModalDescription(text) {
-
-    const box = document.getElementById("modalDescription");
-    const buttonsBox = document.getElementById("extraDownloadButtons");
-
-    if (!box || !buttonsBox) return;
-
-    const raw = String(text || "");
-    const pattern = /\[\[button\|([^|\]]+)\|(https?:\/\/[^\]\s]+)\]\]/gi;
-    const buttons = [];
-
-    const cleanText = raw.replace(pattern, function(full, label, url) {
-        buttons.push({ label: label.trim(), url: url.trim() });
-        return "";
-    }).trim();
-
-    box.innerHTML = linkifyDescription(cleanText).replace(/\n/g, "<br>");
-    buttonsBox.innerHTML = "";
-
-    buttons.forEach(function(item) {
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "extra-download-button";
-        button.textContent = item.label;
-        button.onclick = function() {
-            window.location.href = item.url;
-        };
-        buttonsBox.appendChild(button);
-    });
-}
-
-
-function showDetailsById(id) {
-
-    const item =
-        libraryItems.find(
-            function(element) {
-
-                return Number(element.id) ===
-                    Number(id);
-
-            }
-        );
-
-    if (!item) {
-        return;
-    }
-
-    currentItem = item;
-
-    const modal =
-        document.getElementById("detailsModal");
-
-    const modalTitle =
-        document.getElementById("modalTitle");
-
-    const modalDescription =
-        document.getElementById("modalDescription");
-
-    const modalIcon =
-        document.getElementById("modalIcon");
-
-    if (item.type === "android") {
-
-        modalIcon.textContent = "📱";
-
-    }
-
-    else if (item.type === "computer") {
-
-        modalIcon.textContent = "💻";
-
-    }
-
-    else {
-
-        modalIcon.textContent = "📚";
-
-    }
-
-    modalTitle.textContent =
-        item.title || "بدون عنوان";
-
-    let description = "";
-
-    if (item.description) {
-
-        description += item.description;
-
-    }
-
-    if (
-        item.author &&
-        item.type === "books"
-    ) {
-
-        description +=
-            "\n\nالمؤلف: " +
-            item.author;
-
-    }
-
-    if (
-        item.version &&
-        item.type !== "books"
-    ) {
-
-        description +=
-            "\n\nالإصدار: " +
-            item.version;
-
-    }
-
-    if (!description) {
-
-        description =
-            "لا توجد معلومات إضافية.";
-
-    }
-
-    renderModalDescription(description);
-
-    const downloadButton =
-        document.getElementById(
-            "downloadButton"
-        );
-
-    if (
-        item.file_url &&
-        item.file_url.trim() !== ""
-    ) {
-
-        downloadButton.style.display =
-            "block";
-
-        downloadButton.textContent =
-            item.type === "books"
-            ? "قراءة / تحميل PDF"
-            : "تحميل";
-
-    }
-
-    else {
-
-        downloadButton.style.display =
-            "none";
-
-    }
-
-    modal.style.display = "flex";
+    editors[type].refresh();
 
 }
 
 
 /* =====================================================
-   تعديل طريقة التحميل
+   INITIAL EDITOR
 ===================================================== */
 
-function openDownload() {
+showEditor(
+    "html",
+    document.querySelector(".tab")
+);
 
-    if (
-        !currentItem ||
-        !currentItem.file_url
-    ) {
 
-        return;
+/* =====================================================
+   BUILD HTML
+===================================================== */
 
-    }
+function buildDocument() {
 
-    const url =
-        currentItem.file_url.trim();
+    const html =
+        editors.html.getValue();
 
-    if (!url) {
+    const css =
+        editors.css.getValue();
 
-        return;
+    const js =
+        editors.js.getValue();
 
-    }
 
-    /*
-       الانتقال المباشر إلى الرابط
-       بدل فتح نافذة جديدة.
-    */
+    return `
+<!DOCTYPE html>
 
-    window.location.href = url;
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<style>
+
+${css}
+
+</style>
+
+</head>
+
+<body>
+
+${html}
+
+<script>
+
+${js}
+
+<\/script>
+
+</body>
+
+</html>
+`;
 
 }
 
 
-function closeModal() {
+/* =====================================================
+   RUN
+===================================================== */
 
-    document.getElementById(
-        "detailsModal"
-    ).style.display = "none";
+function runCode() {
+
+    const documentCode =
+        buildDocument();
+
+
+    document
+        .getElementById("preview")
+        .srcdoc = documentCode;
+
+
+    showStatus("تم تشغيل المشروع ▶");
 
 }
 
 
-function closeModalOutside(event) {
+/* =====================================================
+   SAVE PROJECT
+===================================================== */
 
-    if (
-        event.target.id ===
-        "detailsModal"
-    ) {
+function saveProject() {
 
-        closeModal();
+    const project = {
+
+        html:
+            editors.html.getValue(),
+
+        css:
+            editors.css.getValue(),
+
+        js:
+            editors.js.getValue(),
+
+        savedAt:
+            new Date().toISOString()
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            "webEditorProject",
+            JSON.stringify(project)
+        );
+
+
+        localStorage.setItem(
+            "webEditorAutoSave",
+            JSON.stringify(project)
+        );
+
+
+        showStatus("تم حفظ المشروع بنجاح 💾");
+
+
+    } catch(error) {
+
+        alert(
+            "تعذر حفظ المشروع في المتصفح."
+        );
+
+        console.error(error);
 
     }
 
 }
 
 
-window.addEventListener(
-    "scroll",
-    function() {
+/* =====================================================
+   LOAD PROJECT
+===================================================== */
 
-        const button =
-            document.getElementById(
-                "topButton"
+function loadProject() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "webEditorProject"
             );
 
-        if (window.scrollY > 350) {
 
-            button.style.display = "block";
+        if (!saved) {
 
-        } else {
+            return false;
 
-            button.style.display = "none";
+        }
+
+
+        const project =
+            JSON.parse(saved);
+
+
+        if (!project ||
+            typeof project !== "object") {
+
+            return false;
+
+        }
+
+
+        editors.html.setValue(
+            project.html || ""
+        );
+
+        editors.css.setValue(
+            project.css || ""
+        );
+
+        editors.js.setValue(
+            project.js || ""
+        );
+
+
+        showStatus("تم استرجاع المشروع 💾");
+
+
+        return true;
+
+
+    } catch(error) {
+
+        console.error(
+            "خطأ أثناء تحميل المشروع:",
+            error
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   AUTO SAVE
+===================================================== */
+
+function autoSave() {
+
+    const project = {
+
+        html:
+            editors.html.getValue(),
+
+        css:
+            editors.css.getValue(),
+
+        js:
+            editors.js.getValue(),
+
+        savedAt:
+            new Date().toISOString()
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            "webEditorAutoSave",
+            JSON.stringify(project)
+        );
+
+    } catch(error) {
+
+        console.error(
+            "خطأ في الحفظ التلقائي:",
+            error
+        );
+
+    }
+
+}
+
+
+/* حفظ تلقائي كل 5 ثوانٍ */
+
+setInterval(
+    autoSave,
+    5000
+);
+
+
+/* =====================================================
+   DOWNLOAD
+===================================================== */
+
+function downloadHTML() {
+
+    const fullHTML =
+        buildDocument();
+
+
+    const blob =
+        new Blob(
+            [fullHTML],
+            {
+                type:
+                    "text/html;charset=utf-8"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+
+    a.href = url;
+
+    a.download =
+        "my-page.html";
+
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    document.body.removeChild(a);
+
+
+    setTimeout(() => {
+
+        URL.revokeObjectURL(url);
+
+    }, 100);
+
+
+    showStatus(
+        "تم تحميل الصفحة 📥"
+    );
+
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearAll() {
+
+    const answer =
+        confirm(
+            "هل تريد مسح جميع الأكواد والحفظ؟"
+        );
+
+
+    if (!answer) {
+
+        return;
+
+    }
+
+
+    editors.html.setValue("");
+
+    editors.css.setValue("");
+
+    editors.js.setValue("");
+
+
+    try {
+
+        localStorage.removeItem(
+            "webEditorProject"
+        );
+
+        localStorage.removeItem(
+            "webEditorAutoSave"
+        );
+
+    } catch(error) {
+
+        console.error(error);
+
+    }
+
+
+    runCode();
+
+    showStatus(
+        "تم مسح المشروع 🗑️"
+    );
+
+}
+
+
+/* =====================================================
+   STATUS MESSAGE
+===================================================== */
+
+let statusTimer;
+
+
+function showStatus(message) {
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    status.textContent =
+        message;
+
+
+    status.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(statusTimer);
+
+
+    statusTimer =
+        setTimeout(() => {
+
+            status.classList.remove(
+                "show"
+            );
+
+        }, 2000);
+
+}
+
+
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+function toggleFullscreen() {
+
+    document.body
+        .classList
+        .toggle(
+            "fullscreen-mode"
+        );
+
+
+    setTimeout(() => {
+
+        Object.keys(editors)
+            .forEach(key => {
+
+                editors[key].refresh();
+
+            });
+
+    }, 100);
+
+}
+
+
+/* =====================================================
+   KEYBOARD SHORTCUTS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+
+        /* Ctrl + S */
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() === "s"
+        ) {
+
+            event.preventDefault();
+
+            saveProject();
+
+        }
+
+
+        /* Ctrl + Enter */
+
+        if (
+            event.ctrlKey &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            runCode();
 
         }
 
@@ -1977,81 +1241,63 @@ window.addEventListener(
 );
 
 
-function scrollToTop() {
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+const projectLoaded =
+    loadProject();
+
+
+/*
+   إذا لم يوجد مشروع محفوظ،
+   استخدم الأكواد الافتراضية.
+*/
+
+if (!projectLoaded) {
+
+    editors.html.setValue(
+        defaultHTML.trim()
+    );
+
+    editors.css.setValue(
+        defaultCSS.trim()
+    );
+
+    editors.js.setValue(
+        defaultJS.trim()
+    );
 
 }
 
+
+/* =====================================================
+   FIRST RUN
+===================================================== */
+
+runCode();
+
+
+/* =====================================================
+   WINDOW RESIZE
+===================================================== */
 
 window.addEventListener(
     "resize",
     function() {
 
-        if (window.innerWidth > 700) {
+        Object.keys(editors)
+            .forEach(key => {
 
-            document.getElementById(
-                "mobileMenu"
-            ).style.display = "none";
+                editors[key].refresh();
 
-        }
+            });
 
     }
 );
 
-
-function updateCounters() {
-
-    const android =
-        libraryItems.filter(
-            function(item) {
-
-                return item.type === "android";
-
-            }
-        ).length;
-
-    const computer =
-        libraryItems.filter(
-            function(item) {
-
-                return item.type === "computer";
-
-            }
-        ).length;
-
-    const books =
-        libraryItems.filter(
-            function(item) {
-
-                return item.type === "books";
-
-            }
-        ).length;
-
-    document.getElementById(
-        "androidCount"
-    ).textContent = android;
-
-    document.getElementById(
-        "computerCount"
-    ).textContent = computer;
-
-    document.getElementById(
-        "bookCount"
-    ).textContent = books;
-
-}
-
-
-loadLibrary();
-
 </script>
 
 </body>
-
 </html>
 ```
