@@ -702,6 +702,25 @@ header .logo { text-shadow: 0 2px 14px rgba(0,0,0,.18); }
 @media (max-width: 800px) { .toolbar button { min-height: 39px; padding: 9px 13px; } }
 @media (max-width: 480px) { .toolbar button { padding: 8px 10px; font-size: 12px; } }
 
+
+/* إصلاح شريط التمرير أسفل أزرار الشريط العلوي (بجوار زر مسح) */
+header .toolbar {
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    max-width: 100%;
+    flex-wrap: wrap;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+header .toolbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+/* إعادة حجم خط محرر الكود التجريبي إلى حجمه الأصلي */
+.code-area .CodeMirror { font-size: 15px !important; }
+@media (max-width: 800px) { .code-area .CodeMirror { font-size: 14px !important; } }
+
 </style>
 
 </head>
