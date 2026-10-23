@@ -447,6 +447,114 @@ body.fullscreen-mode .editor-container {
 
 }
 
+
+/* =====================================================
+   CUSTOM MODALS
+===================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 10, 25, .72);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .22s ease, visibility .22s ease;
+}
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-card {
+    width: min(100%, 420px);
+    overflow: hidden;
+    color: #f5f8ff;
+    background: linear-gradient(145deg, #102d4d, #071a30);
+    border: 1px solid rgba(0, 180, 216, .35);
+    border-radius: 20px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .48), 0 0 35px rgba(0, 180, 216, .10);
+    transform: translateY(14px) scale(.97);
+    transition: transform .22s ease;
+    direction: rtl;
+    font-family: Arial, sans-serif;
+}
+.modal-overlay.open .modal-card {
+    transform: translateY(0) scale(1);
+}
+.modal-head {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 22px 22px 14px;
+}
+.modal-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    border-radius: 15px;
+    color: #fff;
+    background: linear-gradient(135deg, #00b4d8, #2878ff);
+    font-size: 23px;
+    box-shadow: 0 7px 22px rgba(0, 180, 216, .22);
+}
+.modal-card.warning .modal-icon {
+    background: linear-gradient(135deg, #ff9f1c, #f05d23);
+}
+.modal-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.modal-message {
+    margin: 0;
+    padding: 0 22px 22px;
+    color: #c5d3e4;
+    font-size: 14px;
+    line-height: 1.9;
+    white-space: pre-line;
+}
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    padding: 15px 22px 22px;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+.modal-actions button {
+    flex: 1;
+    min-height: 43px;
+    border-radius: 11px;
+    font-size: 14px;
+}
+.modal-confirm {
+    color: #fff;
+    background: linear-gradient(135deg, #00a8cc, #2475f5);
+}
+.modal-cancel {
+    color: #dce8f5;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.1);
+}
+.modal-close {
+    margin-right: auto;
+    align-self: flex-start;
+    padding: 4px 9px;
+    color: #a9bed3;
+    background: transparent;
+    font-size: 20px;
+}
+.modal-close:hover { color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+    .modal-overlay, .modal-card { transition: none; }
+}
+
 </style>
 
 </head>
@@ -562,6 +670,22 @@ sandbox="allow-scripts allow-forms allow-modals allow-popups">
 
 
 
+
+<!-- نافذة منبثقة مخصصة -->
+<div id="customModal" class="modal-overlay" aria-hidden="true">
+    <section class="modal-card" id="customModalCard" role="dialog" aria-modal="true"
+             aria-labelledby="customModalTitle" aria-describedby="customModalMessage">
+        <div class="modal-head">
+            <div class="modal-icon" id="customModalIcon">✦</div>
+            <h2 class="modal-title" id="customModalTitle">تنبيه</h2>
+            <button class="modal-close" type="button" aria-label="إغلاق" onclick="closeCustomModal(false)">×</button>
+        </div>
+        <p class="modal-message" id="customModalMessage"></p>
+        <div class="modal-actions" id="customModalActions"></div>
+    </section>
+</div>
+
+
 <!-- STATUS -->
 
 <div id="status"
@@ -641,9 +765,21 @@ button:hover {
 
 const defaultJS = `
 function hello() {
-
-    alert("أهلاً بك في Web Editor!");
-
+    let box = document.getElementById("helloModal");
+    if (!box) {
+        box = document.createElement("div");
+        box.id = "helloModal";
+        box.innerHTML = `
+          <div style="position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:20px;background:rgba(4,16,35,.65);backdrop-filter:blur(6px);font-family:Arial,sans-serif">
+            <div dir="rtl" style="width:min(100%,360px);padding:26px;border-radius:20px;background:linear-gradient(145deg,#fff,#edf7ff);color:#17324d;text-align:center;box-shadow:0 20px 60px #0004;border:1px solid #d5e9f8">
+              <div style="width:58px;height:58px;margin:0 auto 14px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#00b4d8,#2878ff);color:white;font-size:28px">✓</div>
+              <h2 style="margin:0 0 10px;font-size:22px">أهلاً بك!</h2>
+              <p style="margin:0 0 22px;line-height:1.8;color:#52677b">مرحباً بك في Web Editor Pro. يمكنك تعديل الأكواد ومعاينة النتيجة مباشرة.</p>
+              <button onclick="document.getElementById('helloModal').remove()" style="border:0;border-radius:10px;padding:11px 28px;background:linear-gradient(135deg,#00a8cc,#2475f5);color:#fff;font-size:15px;font-weight:bold;cursor:pointer">رائع، لنبدأ</button>
+            </div>
+          </div>`;
+        document.body.appendChild(box);
+    }
 }
 `;
 
@@ -900,9 +1036,14 @@ function saveProject() {
 
     } catch(error) {
 
-        alert(
-            "تعذر حفظ المشروع في المتصفح."
-        );
+        openCustomModal({
+            title: "تعذر حفظ المشروع",
+            message: "لم يتمكن المتصفح من حفظ المشروع. تحقق من إعدادات التخزين أو المساحة المتاحة، ثم حاول مجددًا.",
+            icon: "!",
+            type: "warning",
+            confirmText: "حسنًا",
+            showCancel: false
+        });
 
         console.error(error);
 
@@ -1089,19 +1230,20 @@ function downloadHTML() {
 
 function clearAll() {
 
-    const answer =
-        confirm(
-            "هل تريد مسح جميع الأكواد والحفظ؟"
-        );
+    openCustomModal({
+        title: "تأكيد مسح المشروع",
+        message: "هل تريد مسح جميع الأكواد وبيانات الحفظ؟ لا يمكن التراجع عن هذه الخطوة.",
+        icon: "⚠",
+        type: "warning",
+        confirmText: "نعم، امسح الكل",
+        cancelText: "إلغاء",
+        onConfirm: function () {
+            performClearAll();
+        }
+    });
+}
 
-
-    if (!answer) {
-
-        return;
-
-    }
-
-
+function performClearAll() {
     editors.html.setValue("");
 
     editors.css.setValue("");
@@ -1133,6 +1275,70 @@ function clearAll() {
     );
 
 }
+
+
+
+/* =====================================================
+   CUSTOM MODAL CONTROLLER
+===================================================== */
+let customModalCallback = null;
+
+function openCustomModal(options) {
+    const overlay = document.getElementById("customModal");
+    const card = document.getElementById("customModalCard");
+    const actions = document.getElementById("customModalActions");
+    const cancelText = options.cancelText || "إلغاء";
+    const confirmText = options.confirmText || "حسنًا";
+
+    document.getElementById("customModalTitle").textContent = options.title || "تنبيه";
+    document.getElementById("customModalMessage").textContent = options.message || "";
+    document.getElementById("customModalIcon").textContent = options.icon || "✦";
+    card.classList.toggle("warning", options.type === "warning");
+    actions.replaceChildren();
+    customModalCallback = typeof options.onConfirm === "function" ? options.onConfirm : null;
+
+    if (options.showCancel !== false) {
+        const cancel = document.createElement("button");
+        cancel.type = "button";
+        cancel.className = "modal-cancel";
+        cancel.textContent = cancelText;
+        cancel.onclick = () => closeCustomModal(false);
+        actions.appendChild(cancel);
+    }
+
+    const confirm = document.createElement("button");
+    confirm.type = "button";
+    confirm.className = "modal-confirm";
+    confirm.textContent = confirmText;
+    confirm.onclick = () => closeCustomModal(true);
+    actions.appendChild(confirm);
+
+    overlay.classList.add("open");
+    overlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    confirm.focus();
+}
+
+function closeCustomModal(confirmed) {
+    const overlay = document.getElementById("customModal");
+    overlay.classList.remove("open");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    const callback = customModalCallback;
+    customModalCallback = null;
+    if (confirmed && callback) callback();
+}
+
+document.getElementById("customModal").addEventListener("click", function(event) {
+    if (event.target === this) closeCustomModal(false);
+});
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape" &&
+        document.getElementById("customModal").classList.contains("open")) {
+        closeCustomModal(false);
+    }
+});
 
 
 /* =====================================================
