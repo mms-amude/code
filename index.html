@@ -1152,6 +1152,43 @@ html, body, button, input, textarea, select {
 
 ${css}
 
+
+
+/* إصلاح نهائي: إخفاء أشرطة التمرير التي أعادت قواعد CSS اللاحقة إظهارها */
+.CodeMirror .CodeMirror-scroll,
+.CodeMirror-scroll {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+.CodeMirror .CodeMirror-scroll::-webkit-scrollbar,
+.CodeMirror-scroll::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+.CodeMirror .CodeMirror-vscrollbar,
+.CodeMirror .CodeMirror-hscrollbar,
+.CodeMirror-vscrollbar,
+.CodeMirror-hscrollbar {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+.CodeMirror .CodeMirror-vscrollbar::-webkit-scrollbar,
+.CodeMirror .CodeMirror-hscrollbar::-webkit-scrollbar,
+.CodeMirror-vscrollbar::-webkit-scrollbar,
+.CodeMirror-hscrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
 </style>
 
 </head>
