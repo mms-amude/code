@@ -1,1 +1,2057 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color"
+      content="#0b2239">
+
+<title>مكتبة عامودا الرقمية</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<style>
+
+:root {
+    --navy: #0b2239;
+    --navy-2: #123754;
+    --navy-3: #19496b;
+    --gold: #c7a45b;
+    --gold-light: #e2ca91;
+    --cream: #f6f2e9;
+    --cream-2: #eee8dc;
+    --white: #ffffff;
+    --text: #17212b;
+    --muted: #6d7780;
+    --border: #e5ded1;
+    --shadow: 0 12px 35px rgba(11,34,57,0.09);
+    --radius: 18px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Tajawal", sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.8;
+}
+
+.top-bar {
+    height: 34px;
+    background: #061827;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+.top-bar span {
+    color: var(--gold-light);
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(11,34,57,0.97);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+}
+
+.header-inner {
+    max-width: 1200px;
+    height: 78px;
+    margin: auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: white;
+}
+
+.logo-icon {
+    width: 45px;
+    height: 45px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-light);
+    font-size: 22px;
+}
+
+.logo-name {
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.logo-subtitle {
+    font-size: 10px;
+    color: var(--gold-light);
+    margin-top: -3px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+nav a {
+    color: rgba(255,255,255,0.88);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 9px;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    background: rgba(199,164,91,0.15);
+    color: var(--gold-light);
+}
+
+.menu-button {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: white;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.mobile-menu {
+    display: none;
+    background: #061827;
+    padding: 8px 18px 18px;
+}
+
+.mobile-menu a {
+    display: block;
+    padding: 11px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    font-size: 14px;
+}
+
+.hero {
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(199,164,91,0.14),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(255,255,255,0.05),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #081d30,
+            #0d2d48 55%,
+            #164766
+        );
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(199,164,91,0.10);
+    top: -280px;
+    left: -150px;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(199,164,91,0.08);
+    bottom: -250px;
+    right: -150px;
+}
+
+.hero-inner {
+    max-width: 1000px;
+    margin: auto;
+    text-align: center;
+    padding: 78px 20px 85px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-icon {
+    width: 82px;
+    height: 82px;
+    margin: auto auto 22px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    color: var(--gold-light);
+    box-shadow: 0 0 40px rgba(199,164,91,0.08);
+}
+
+.hero h1 {
+    font-size: 43px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.hero h1 span {
+    color: var(--gold-light);
+}
+
+.hero-description {
+    max-width: 620px;
+    margin: auto;
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+}
+
+.search-box {
+    max-width: 680px;
+    margin: 32px auto 0;
+    position: relative;
+}
+
+.search-box input {
+    width: 100%;
+    height: 58px;
+    border: none;
+    outline: none;
+    border-radius: 14px;
+    padding: 0 55px 0 20px;
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+    color: var(--text);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.16);
+}
+
+.search-icon {
+    position: absolute;
+    right: 19px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--navy);
+    font-size: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px 50px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.section-heading h2 {
+    color: var(--navy);
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.specialties {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 220px));
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 58px;
+}
+
+.specialty {
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform .3s, box-shadow .3s;
+}
+
+.specialty:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(11,34,57,0.14);
+}
+
+.specialty.active {
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 0 3px rgba(199,164,91,0.18), var(--shadow);
+    background: #fffdf8;
+}
+
+.specialty::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(199,164,91,0.08);
+    top: -55px;
+    left: -45px;
+}
+
+.specialty-icon {
+    width: 48px;
+    height: 48px;
+    margin: auto auto 8px;
+    border-radius: 13px;
+    background: var(--navy);
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 6px 16px rgba(11,34,57,.12);
+    z-index: 2;
+}
+
+.specialty-icon svg {
+    width: 27px;
+    height: 27px;
+    fill: currentColor;
+    display: block;
+}
+
+.specialty h3 {
+    color: var(--navy);
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.specialty p {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.gold-line {
+    width: 55px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 20px;
+    margin: 12px auto 0;
+}
+
+.latest {
+    margin-top: 10px;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.item-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: .3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.item-card:hover {
+    transform: translateY(-6px);
+}
+
+.item-image {
+    height: 190px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-3));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.item-image::after {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(199,164,91,0.25);
+    border-radius: 9px;
+}
+
+.item-image img {
+    width: 88%;
+    height: 88%;
+    object-fit: contain;
+    position: absolute;
+    inset: 6%;
+    z-index: 1;
+}
+
+.item-icon {
+    display: none;
+}
+
+.item-content {
+    padding: 17px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.item-type {
+    font-size: 10px;
+    color: var(--gold);
+    font-weight: 700;
+}
+
+.item-title {
+    color: var(--navy);
+    font-size: 16px;
+    font-weight: 800;
+    margin-top: 3px;
+}
+
+.item-description {
+    color: #263238;
+    font-size: 15px;
+    line-height: 1.75;
+    font-weight: 500;
+    min-height: 52px;
+    max-height: 52px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.details-button {
+    width: 100%;
+    border: none;
+    background: var(--navy);
+    color: white;
+    padding: 9px;
+    border-radius: 8px;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: auto;
+    padding-top: 13px;
+    transition: .3s;
+}
+
+.details-button:hover {
+    background: var(--gold);
+    color: var(--navy);
+}
+
+.stats {
+    background: var(--navy);
+    color: white;
+}
+
+.stats-inner {
+    max-width: 950px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 35px 20px;
+}
+
+.stat {
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.12);
+}
+
+.stat:last-child {
+    border-left: none;
+}
+
+.stat-number {
+    color: var(--gold-light);
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.stat-label {
+    color: rgba(255,255,255,0.68);
+    font-size: 12px;
+}
+
+.about {
+    margin-top: 65px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 35px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.about h2 {
+    color: var(--navy);
+    font-size: 23px;
+}
+
+.about p {
+    max-width: 750px;
+    margin: 10px auto 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 2;
+}
+
+footer {
+    background: #061827;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+.footer-name {
+    color: var(--gold-light);
+    font-weight: 800;
+    font-size: 19px;
+}
+
+.footer-line {
+    width: 55px;
+    height: 2px;
+    background: var(--gold);
+    margin: 13px auto;
+}
+
+footer p {
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+}
+
+#topButton {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    z-index: 999;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(3,15,25,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 3000;
+}
+
+.modal-box {
+    max-width: 520px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+    animation: modalIn .3s ease;
+}
+
+.modal-header {
+    background: var(--navy);
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.modal-header-icon {
+    font-size: 42px;
+    color: var(--gold-light);
+}
+
+.modal-header h2 {
+    margin-top: 5px;
+    font-size: 20px;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-body p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 2;
+    white-space: pre-line;
+}
+
+.modal-body p {
+    color: #17212b;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 2;
+    white-space: normal;
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+}
+
+.modal-body p a {
+    color: var(--navy-3);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-underline-offset: 3px;
+}
+
+.extra-download-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 14px;
+}
+
+.extra-download-button {
+    width: 100%;
+    border: 1px solid rgba(199,164,91,.55);
+    border-radius: 9px;
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--cream);
+    color: var(--navy);
+    transition: .25s;
+}
+
+.extra-download-button:hover {
+    background: var(--gold);
+    color: var(--navy);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-button {
+    flex: 1;
+    border: none;
+    border-radius: 9px;
+    padding: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    background: var(--navy);
+    color: white;
+}
+
+.modal-button.close {
+    background: var(--cream-2);
+    color: var(--navy);
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(.93);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.no-results {
+    display: none;
+    text-align: center;
+    padding: 55px 20px;
+    color: var(--muted);
+}
+
+.no-results div {
+    font-size: 45px;
+    margin-bottom: 8px;
+}
+
+.loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 70px 20px;
+    color: var(--muted);
+}
+
+.loading-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 950px) {
+
+    .items-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .top-bar {
+        font-size: 10px;
+    }
+
+    .header-inner {
+        height: 70px;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    .hero-inner {
+        padding: 60px 18px 65px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .hero-description {
+        font-size: 12px;
+    }
+
+    .specialties {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 50px;
+    }
+
+    .specialty {
+        padding: 15px 12px;
+    }
+
+    .specialty-icon {
+        width: 45px;
+        height: 45px;
+        margin-bottom: 7px;
+    }
+
+    .specialty-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .specialty h3 {
+        font-size: 15px;
+    }
+
+    .specialty p {
+        font-size: 10px;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .item-image {
+        height: 160px;
+    }
+
+    .item-content {
+        padding: 12px;
+    }
+
+    .item-title {
+        font-size: 14px;
+    }
+
+    .item-description {
+        font-size: 10px;
+    }
+
+    .details-button {
+        font-size: 11px;
+    }
+
+    .stats-inner {
+        padding: 27px 10px;
+    }
+
+    .stat-number {
+        font-size: 21px;
+    }
+
+    .stat-label {
+        font-size: 10px;
+    }
+
+    .about {
+        padding: 25px 18px;
+    }
+
+}
+
+@media (max-width: 380px) {
+
+    .items-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .item-image {
+        height: 145px;
+    }
+
+    .hero h1 {
+        font-size: 26px;
+    }
+
+}
+
+
+
+/* إخفاء زري التحميل والإغلاق في نافذة تفاصيل الموضوع فقط */
+#downloadButton,
+.modal-button.close {
+    display: none !important;
+}
+
+
+
+/* تحسينات القسم العلوي فقط: تصغير المساحات وإخفاء العناصر الزخرفية */
+.top-bar {
+    height: 26px;
+    font-size: 11px;
+}
+
+.top-bar span {
+    display: none;
+}
+
+.header-inner {
+    height: 62px;
+    padding: 0 16px;
+}
+
+.logo {
+    gap: 8px;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+}
+
+.logo-name {
+    font-size: 16px;
+}
+
+.logo-subtitle {
+    display: none;
+}
+
+nav {
+    gap: 2px;
+}
+
+nav a {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.hero-inner {
+    padding: 38px 18px 42px;
+}
+
+.hero-icon {
+    display: none;
+}
+
+.hero h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+.hero-description {
+    font-size: 13px;
+}
+
+.search-box {
+    max-width: 590px;
+    margin-top: 18px;
+}
+
+.search-box input {
+    height: 46px;
+    border-radius: 11px;
+    font-size: 13px;
+    padding-right: 48px;
+}
+
+.search-icon {
+    right: 15px;
+}
+
+@media (max-width: 700px) {
+    .top-bar {
+        height: 23px;
+        font-size: 10px;
+    }
+
+    .header-inner {
+        height: 56px;
+        padding: 0 12px;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .logo-name {
+        font-size: 14px;
+    }
+
+    .menu-button {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .hero-inner {
+        padding: 28px 14px 30px;
+    }
+
+    .hero h1 {
+        font-size: 25px;
+    }
+
+    .hero-description {
+        font-size: 12px;
+        line-height: 1.7;
+    }
+
+    .search-box {
+        margin-top: 14px;
+    }
+
+    .search-box input {
+        height: 43px;
+        font-size: 12px;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<section class="hero" id="home">
+
+    <div class="hero-inner">
+
+        <h1>
+            مكتبة
+            <span>
+                عامودا الرقمية
+            </span>
+        </h1>
+
+        <p class="hero-description">
+            منصة رقمية تجمع التطبيقات والبرامج والكتب
+            في مكان واحد، بتصميم بسيط وأنيق وسهل الاستخدام.
+        </p>
+
+        <div class="search-box">
+
+            <span class="search-icon">
+                🔍
+            </span>
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="ابحث عن تطبيق أو برنامج أو كتاب..."
+                onkeyup="searchItems()">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<main class="container">
+
+<section id="specialties">
+
+<div class="specialties">
+
+        <div
+            class="specialty"
+            data-type="android"
+            onclick="filterType('android')">
+
+            <div class="specialty-icon" aria-label="Android">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7.2 8.4h9.6v8.1c0 .9-.7 1.6-1.6 1.6h-6.4c-.9 0-1.6-.7-1.6-1.6V8.4Zm-1.1 1.1H5v5.1h1.1V9.5Zm12.8 0H20v5.1h-1.1V9.5ZM9 6.9 7.8 4.8l.9-.5L10 6.5c.6-.2 1.3-.3 2-.3s1.4.1 2 .3l1.3-2.2.9.5-1.2 2.1c1.1.6 1.8 1.6 1.8 2.8H7.2c0-1.2.7-2.2 1.8-2.8ZM9.5 7.8c.3 0 .5-.2.5-.5s-.2-.5-.5-.5-.5.2-.5.5Zm5 0c.3 0 .5-.2.5-.5s-.2-.5-.5-.5-.5.2-.5.5Z"/>
+                </svg>
+            </div>
+
+            <h3>
+                تطبيقات أندرويد
+            </h3>
+
+            <p>
+                تطبيقات Android المفيدة والمتنوعة
+            </p>
+
+        </div>
+
+
+        <div
+            class="specialty"
+            data-type="computer"
+            onclick="filterType('computer')">
+
+            <div class="specialty-icon" aria-label="Windows">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 4.5 11 3.4v8.1H3V4.5Zm9-1.25L21 2v9.5h-9V3.25ZM3 12.5h8v8.1L3 19.5v-7Zm9 0h9V22l-9-1.25V12.5Z"/>
+                </svg>
+            </div>
+
+            <h3>
+                برامج الكمبيوتر
+            </h3>
+
+            <p>
+                برامج Windows والأدوات المفيدة
+            </p>
+
+        </div>
+
+
+        <div
+            class="specialty"
+            data-type="books"
+            onclick="filterType('books')">
+
+            <div class="specialty-icon" aria-label="PDF Books">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 2.5h9l4 4v15H6a2 2 0 0 1-2-2v-15a2 2 0 0 1 2-2Zm8 1.7v3.2h3.2L14 4.2ZM8 10h8v1.3H8V10Zm0 3h8v1.3H8V13Zm0 3h5.5v1.3H8V16Z"/>
+                </svg>
+            </div>
+
+            <h3>
+                كتب رقمية PDF
+            </h3>
+
+            <p>
+                كتب ومراجع رقمية للقراءة
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="latest" class="latest">
+
+<div
+        class="items-grid"
+        id="itemsGrid">
+
+        <div class="loading">
+
+            <div class="loading-icon">
+                ⏳
+            </div>
+
+            <h3>
+                جاري تحميل محتويات المكتبة...
+            </h3>
+
+            <p>
+                يرجى الانتظار قليلاً
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="noResults"
+        class="no-results">
+
+        <div>
+            🔎
+        </div>
+
+        <h3>
+            لا توجد نتائج
+        </h3>
+
+        <p>
+            حاول استخدام كلمة بحث أخرى.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section id="about">
+
+    <div class="about">
+
+        <h2>
+            عن مكتبة عامودا الرقمية
+        </h2>
+
+        <div class="gold-line"></div>
+
+        <p>
+            مكتبة عامودا الرقمية هي منصة إلكترونية
+            تهدف إلى جمع التطبيقات والبرامج والكتب
+            الرقمية في مكان واحد، وتقديمها بطريقة
+            منظمة وسهلة الاستخدام للزوار.
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<section class="stats">
+
+    <div class="stats-inner">
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="androidCount">
+                0
+            </div>
+
+            <div class="stat-label">
+                تطبيقات أندرويد
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="computerCount">
+                0
+            </div>
+
+            <div class="stat-label">
+                برامج كمبيوتر
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div
+                class="stat-number"
+                id="bookCount">
+                0
+            </div>
+
+            <div class="stat-label">
+                كتب PDF
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <div class="footer-name">
+        مكتبة عامودا الرقمية
+    </div>
+
+    <div class="footer-line"></div>
+
+    <p>
+        تطبيقات أندرويد • برامج الكمبيوتر • كتب رقمية PDF
+    </p>
+
+    <p style="margin-top:8px">
+        © 2026 مكتبة عامودا الرقمية
+    </p>
+
+</footer>
+
+
+<button
+    id="topButton"
+    onclick="scrollToTop()">
+    ↑
+</button>
+
+
+<div
+    id="detailsModal"
+    class="modal"
+    onclick="closeModalOutside(event)">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div
+                id="modalIcon"
+                class="modal-header-icon">
+                📱
+            </div>
+
+            <h2 id="modalTitle">
+                اسم العنصر
+            </h2>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <p id="modalDescription">
+                معلومات العنصر ستظهر هنا.
+            </p>
+
+            <div id="extraDownloadButtons" class="extra-download-buttons"></div>
+
+            <div class="modal-buttons">
+
+                <button
+                    id="downloadButton"
+                    class="modal-button"
+                    onclick="openDownload()">
+
+                    تحميل / قراءة
+
+                </button>
+
+
+                <button
+                    class="modal-button close"
+                    onclick="closeModal()">
+
+                    إغلاق
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://topktljgtexniilikpwa.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_Uu4yVJnpnUh4o3aYHnzGBA_XeDXosEt";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+let libraryItems = [];
+
+let currentItem = null;
+
+
+function toggleMenu() {
+
+    const menu =
+        document.getElementById("mobileMenu");
+
+    if (menu.style.display === "block") {
+        menu.style.display = "none";
+    } else {
+        menu.style.display = "block";
+    }
+
+}
+
+
+function closeMenu() {
+
+    document.getElementById(
+        "mobileMenu"
+    ).style.display = "none";
+
+}
+
+
+async function loadLibrary() {
+
+    const grid =
+        document.getElementById("itemsGrid");
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("library_items")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+        if (error) {
+
+            console.error(
+                "Supabase error:",
+                error
+            );
+
+            grid.innerHTML = `
+
+                <div class="loading">
+
+                    <div class="loading-icon">
+                        ⚠️
+                    </div>
+
+                    <h3>
+                        تعذر تحميل محتويات المكتبة
+                    </h3>
+
+                    <p>
+                        تحقق من اتصال قاعدة البيانات.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        libraryItems = data || [];
+
+        renderItems(libraryItems);
+
+        updateCounters();
+
+        // عند فتح الموقع على شاشة الكمبيوتر، اعرض برامج الكمبيوتر افتراضياً.
+        if (window.matchMedia("(min-width: 701px)").matches) {
+            filterType("computer", false);
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        grid.innerHTML = `
+
+            <div class="loading">
+
+                <div class="loading-icon">
+                    ⚠️
+                </div>
+
+                <h3>
+                    حدث خطأ أثناء تحميل المكتبة
+                </h3>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+function renderItems(items) {
+
+    const grid =
+        document.getElementById("itemsGrid");
+
+    const noResults =
+        document.getElementById("noResults");
+
+    if (!items || items.length === 0) {
+
+        grid.innerHTML = "";
+
+        noResults.style.display = "block";
+
+        return;
+
+    }
+
+    noResults.style.display = "none";
+
+    grid.innerHTML =
+        items.map(function(item) {
+
+            let icon = "📱";
+            let typeName = "تطبيق أندرويد";
+
+            if (item.type === "computer") {
+
+                icon = "💻";
+                typeName = "برنامج كمبيوتر";
+
+            }
+
+            if (item.type === "books") {
+
+                icon = "📚";
+                typeName = "كتاب PDF";
+
+            }
+
+            let imageHTML = "";
+
+            if (
+                item.image_url &&
+                item.image_url.trim() !== ""
+            ) {
+
+                imageHTML = `
+
+                    <img
+                        src="${escapeHTML(item.image_url)}"
+                        alt="${escapeHTML(item.title)}"
+                        onerror="this.style.display='none';">
+
+                `;
+
+            }
+
+            const searchText = [
+
+                item.title || "",
+                item.author || "",
+                item.description || "",
+                item.version || "",
+                typeName
+
+            ].join(" ").toLowerCase();
+
+            return `
+
+                <div
+                    class="item-card"
+                    data-type="${escapeHTML(item.type)}"
+                    data-search="${escapeHTML(searchText)}">
+
+                    <div class="item-image">
+
+                        ${imageHTML}
+
+                        <div class="item-icon">
+                            ${icon}
+                        </div>
+
+                    </div>
+
+
+                    <div class="item-content">
+
+                        <div class="item-type">
+                            ${typeName}
+                        </div>
+
+                        <div class="item-title">
+                            ${escapeHTML(item.title)}
+                        </div>
+
+                        <div class="item-description">
+
+                            ${escapeHTML(
+                                item.description ||
+                                (
+                                    item.type === "books"
+                                    ? "كتاب رقمي بصيغة PDF."
+                                    : "محتوى رقمي متوفر في المكتبة."
+                                )
+                            )}
+
+                        </div>
+
+                        <button
+                            class="details-button"
+                            onclick="showDetailsById(${Number(item.id)})">
+
+                            التفاصيل
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+    updateCounters();
+
+}
+
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function searchItems() {
+
+    const search =
+        document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+    const cards =
+        document.querySelectorAll(".item-card");
+
+    let found = 0;
+
+    cards.forEach(function(card) {
+
+        const text =
+            card.dataset.search.toLowerCase();
+
+        if (text.includes(search)) {
+
+            card.style.display = "";
+
+            found++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    document.getElementById(
+        "noResults"
+    ).style.display =
+        found === 0
+        ? "block"
+        : "none";
+
+}
+
+
+function filterType(type, scrollToItems = true) {
+
+    document.querySelectorAll(".specialty").forEach(function(button) {
+        button.classList.toggle("active", button.dataset.type === type);
+    });
+
+    const cards =
+        document.querySelectorAll(".item-card");
+
+    let found = 0;
+
+    cards.forEach(function(card) {
+
+        if (card.dataset.type === type) {
+
+            card.style.display = "";
+
+            found++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    document.getElementById(
+        "noResults"
+    ).style.display =
+        found === 0
+        ? "block"
+        : "none";
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+    if (scrollToItems) {
+        document
+            .getElementById("latest")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+    }
+
+}
+
+
+function linkifyDescription(text) {
+
+    const safe = escapeHTML(String(text || ""));
+
+    return safe.replace(
+        /(https?:\/\/[^\s<]+)/gi,
+        function(url) {
+
+            let clean = url;
+            let trailing = "";
+            const match = clean.match(/[.,،؛:!?؟)\]}]+$/);
+
+            if (match) {
+                trailing = match[0];
+                clean = clean.slice(0, -trailing.length);
+            }
+
+            return '<a href="' + escapeHTML(clean) +
+                   '" target="_blank" rel="noopener noreferrer">' +
+                   clean + '</a>' + trailing;
+        }
+    );
+}
+
+/*
+صيغة الأزرار الإضافية داخل وصف التفاصيل:
+[[button|تحميل APK|https://example.com/app.apk]]
+[[button|النسخة القديمة|https://example.com/old.apk]]
+يمكن وضع أكثر من زر في نفس الوصف.
+*/
+function renderModalDescription(text) {
+
+    const box = document.getElementById("modalDescription");
+    const buttonsBox = document.getElementById("extraDownloadButtons");
+
+    if (!box || !buttonsBox) return;
+
+    const raw = String(text || "");
+    const pattern = /\[\[button\|([^|\]]+)\|(https?:\/\/[^\]\s]+)\]\]/gi;
+    const buttons = [];
+
+    const cleanText = raw.replace(pattern, function(full, label, url) {
+        buttons.push({ label: label.trim(), url: url.trim() });
+        return "";
+    }).trim();
+
+    box.innerHTML = linkifyDescription(cleanText).replace(/\n/g, "<br>");
+    buttonsBox.innerHTML = "";
+
+    buttons.forEach(function(item) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "extra-download-button";
+        button.textContent = item.label;
+        button.onclick = function() {
+            window.location.href = item.url;
+        };
+        buttonsBox.appendChild(button);
+    });
+}
+
+
+function showDetailsById(id) {
+
+    const item =
+        libraryItems.find(
+            function(element) {
+
+                return Number(element.id) ===
+                    Number(id);
+
+            }
+        );
+
+    if (!item) {
+        return;
+    }
+
+    currentItem = item;
+
+    const modal =
+        document.getElementById("detailsModal");
+
+    const modalTitle =
+        document.getElementById("modalTitle");
+
+    const modalDescription =
+        document.getElementById("modalDescription");
+
+    const modalIcon =
+        document.getElementById("modalIcon");
+
+    if (item.type === "android") {
+
+        modalIcon.textContent = "📱";
+
+    }
+
+    else if (item.type === "computer") {
+
+        modalIcon.textContent = "💻";
+
+    }
+
+    else {
+
+        modalIcon.textContent = "📚";
+
+    }
+
+    modalTitle.textContent =
+        item.title || "بدون عنوان";
+
+    let description = "";
+
+    if (item.description) {
+
+        description += item.description;
+
+    }
+
+    if (
+        item.author &&
+        item.type === "books"
+    ) {
+
+        description +=
+            "\n\nالمؤلف: " +
+            item.author;
+
+    }
+
+    if (
+        item.version &&
+        item.type !== "books"
+    ) {
+
+        description +=
+            "\n\nالإصدار: " +
+            item.version;
+
+    }
+
+    if (!description) {
+
+        description =
+            "لا توجد معلومات إضافية.";
+
+    }
+
+    renderModalDescription(description);
+
+    const downloadButton =
+        document.getElementById(
+            "downloadButton"
+        );
+
+    if (
+        item.file_url &&
+        item.file_url.trim() !== ""
+    ) {
+
+        downloadButton.style.display =
+            "block";
+
+        downloadButton.textContent =
+            item.type === "books"
+            ? "قراءة / تحميل PDF"
+            : "تحميل";
+
+    }
+
+    else {
+
+        downloadButton.style.display =
+            "none";
+
+    }
+
+    modal.style.display = "flex";
+
+}
+
+
+/* =====================================================
+   تعديل طريقة التحميل
+===================================================== */
+
+function openDownload() {
+
+    if (
+        !currentItem ||
+        !currentItem.file_url
+    ) {
+
+        return;
+
+    }
+
+    const url =
+        currentItem.file_url.trim();
+
+    if (!url) {
+
+        return;
+
+    }
+
+    /*
+       الانتقال المباشر إلى الرابط
+       بدل فتح نافذة جديدة.
+    */
+
+    window.location.href = url;
+
+}
+
+
+function closeModal() {
+
+    document.getElementById(
+        "detailsModal"
+    ).style.display = "none";
+
+}
+
+
+function closeModalOutside(event) {
+
+    if (
+        event.target.id ===
+        "detailsModal"
+    ) {
+
+        closeModal();
+
+    }
+
+}
+
+
+window.addEventListener(
+    "scroll",
+    function() {
+
+        const button =
+            document.getElementById(
+                "topButton"
+            );
+
+        if (window.scrollY > 350) {
+
+            button.style.display = "block";
+
+        } else {
+
+            button.style.display = "none";
+
+        }
+
+    }
+);
+
+
+function scrollToTop() {
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (window.innerWidth > 700) {
+
+            document.getElementById(
+                "mobileMenu"
+            ).style.display = "none";
+
+        }
+
+    }
+);
+
+
+function updateCounters() {
+
+    const android =
+        libraryItems.filter(
+            function(item) {
+
+                return item.type === "android";
+
+            }
+        ).length;
+
+    const computer =
+        libraryItems.filter(
+            function(item) {
+
+                return item.type === "computer";
+
+            }
+        ).length;
+
+    const books =
+        libraryItems.filter(
+            function(item) {
+
+                return item.type === "books";
+
+            }
+        ).length;
+
+    document.getElementById(
+        "androidCount"
+    ).textContent = android;
+
+    document.getElementById(
+        "computerCount"
+    ).textContent = computer;
+
+    document.getElementById(
+        "bookCount"
+    ).textContent = books;
+
+}
+
+
+loadLibrary();
+
+</script>
+
+</body>
+
+</html>
+```
