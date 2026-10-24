@@ -780,6 +780,16 @@ content="width=device-width, initial-scale=1.0">
 اضغط هنا
 </button>
 
+<div id="welcomeModal" class="welcome-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="welcomeModalTitle">
+    <div class="welcome-modal">
+        <div class="welcome-modal-header" id="welcomeModalTitle">رسالة ترحيب</div>
+        <div class="welcome-modal-body">مرحباً بك في محرر الأكواد!</div>
+        <div class="welcome-modal-actions">
+            <button type="button" onclick="closeWelcomeModal()">إغلاق</button>
+        </div>
+    </div>
+</div>
+
 </body>
 
 </html>`;
@@ -829,13 +839,85 @@ button:hover {
 
     color: #111;
 
+}
+
+.welcome-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 15, 35, .62);
+    backdrop-filter: blur(4px);
+}
+
+.welcome-modal-overlay.show {
+    display: flex;
+}
+
+.welcome-modal {
+    width: min(100%, 390px);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid rgba(212, 175, 55, .45);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .28);
+    animation: welcomeModalEnter .2s ease-out;
+}
+
+.welcome-modal-header {
+    padding: 18px 22px;
+    background: linear-gradient(135deg, #001D3D, #002855);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.welcome-modal-body {
+    padding: 24px 22px;
+    color: #344054;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.welcome-modal-actions {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 22px 22px;
+}
+
+.welcome-modal-actions button {
+    min-width: 100px;
+    min-height: 42px;
+    border: 0;
+    border-radius: 9px;
+    background: #001D3D;
+    color: #fff;
+    font-family: Tajawal, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.welcome-modal-actions button:hover {
+    background: #D4AF37;
+    color: #111;
+}
+
+@keyframes welcomeModalEnter {
+    from { opacity: 0; transform: translateY(8px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }`;
 
 
 const defaultJS = `function sayHello() {
+    document.getElementById("welcomeModal").classList.add("show");
+}
 
-    alert("مرحباً بك في محرر الأكواد!");
-
+function closeWelcomeModal() {
+    document.getElementById("welcomeModal").classList.remove("show");
 }`;
 
 
